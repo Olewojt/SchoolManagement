@@ -1,1 +1,0 @@
-Startowy commit.
