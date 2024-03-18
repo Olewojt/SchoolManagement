@@ -1,4 +1,4 @@
-import {ChangeEvent, react} from "react";
+import {ChangeEvent} from "react";
 import classes from "./Input.module.css"
 interface InputProps {
     type: 'text' | 'number' | 'email' | 'password',
@@ -24,4 +24,4 @@ const Input = (props: InputProps) => {
     );
 }
 
-export default Input;
+export default Input
