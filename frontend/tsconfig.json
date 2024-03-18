@@ -29,7 +29,8 @@
       "forms/*": ["./src/components/forms/*"],
       "data/*": ["./src/data/*"],
       "pages/*": ["./src/pages/*"],
-      "utilities*/": ["./src/utilities/*"]
+      "utilities*/": ["./src/utilities/*"],
+      "assets/*": ["./src/assets/*"]
     }
   },
   "include": ["src", "electron"],
