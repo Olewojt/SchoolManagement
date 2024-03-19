@@ -5,11 +5,13 @@ import Input from "forms/Input.tsx";
 import Button from "ui/Button.tsx";
 
 import Logo from "assets/Logo.png"
+import {useNavigate} from "react-router-dom";
 
 const Login: React.FC = () => {
     const [name, setName] = useState("")
     const [password, setPassword] = useState("")
 
+    const navigate = useNavigate()
     const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
         setName(e.target.value)
     }
@@ -18,6 +20,12 @@ const Login: React.FC = () => {
     }
     const onButtonClick = () => {
         console.log("Welcome!")
+    }
+
+    const handleClick = () => {
+        setTimeout(() => {
+            navigate("/")
+        }, 1000);
     }
 
     return (
@@ -38,7 +46,7 @@ const Login: React.FC = () => {
                     <div className={classes.text}>
                         <span>Don't remember password?</span>
                         <br />
-                        <a>Reset here</a>
+                        <a onClick={handleClick}>Reset here</a>
                     </div>
                 </div>
             </aside>
