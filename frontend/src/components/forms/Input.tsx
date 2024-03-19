@@ -1,26 +1,23 @@
 import {ChangeEvent} from "react";
-import classes from "./Input.module.css"
+import classes from "./Input.module.scss"
+
 interface InputProps {
     type: 'text' | 'number' | 'email' | 'password',
     placeholder: string,
     value: string | number,
     error: boolean,
-    width: number,
-    height: number,
-    onChange: (e: ChangeEvent<HTMLInputElement>) => void
-}
-const Input = (props: InputProps) => {
-    const style = {
-        width: `${props.width}rem`,
-        height: `${props.height}rem`
-    }
 
+    onChange: (e: ChangeEvent<HTMLInputElement>) => void,
+    className?: string
+}
+
+const Input = (props: InputProps) => {
     return (
-      <>
-          <input type={props.type} value={props.value} placeholder={props.placeholder}
-                 style={style} onChange={props.onChange} />
-          {props.error && <p className={classes.error}>Error</p>}
-      </>
+        <>
+            <input type={props.type} value={props.value} placeholder={props.placeholder}
+                   onChange={props.onChange} className={`${classes.input} ${props.className}`}/>
+            {props.error && <p className={classes.error}>Error</p>}
+        </>
     );
 }
 
