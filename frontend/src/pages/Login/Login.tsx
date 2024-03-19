@@ -51,6 +51,9 @@ const Login: React.FC = () => {
                         <a onClick={handleClick}>Reset here</a>
                     </div>
                 </div>
+                <span className={classes["footer-text"]}>
+                    2024 &copy; Green Comp.
+                </span>
             </aside>
         </div>)
 }
