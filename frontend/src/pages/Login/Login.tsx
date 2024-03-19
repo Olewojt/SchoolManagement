@@ -7,7 +7,6 @@ import Button from "ui/Button.tsx";
 const Login: React.FC = () => {
     const [name, setName] = useState("")
     const [password, setPassword] = useState("")
-
     const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
         setName(e.target.value)
     }
@@ -15,7 +14,7 @@ const Login: React.FC = () => {
         setPassword(e.target.value)
     }
     const onButtonClick = () => {
-        console.log("Welcome!")
+        console.log("login: " +name +"\npassword: "+ password)
     }
 
     return (<div className={classes.login}>
