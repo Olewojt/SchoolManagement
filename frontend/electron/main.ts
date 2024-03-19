@@ -26,6 +26,12 @@ function createWindow() {
       preload: path.join(__dirname, "preload.js"),
     },
     // fullscreen: true,
+    width: 1920,
+    height: 1080,
+    maxWidth: 1920,
+    maxHeight: 1080,
+    minWidth: 505,
+    minHeight: 620
   });
 
   // Test active push message to Renderer-process.
@@ -39,6 +45,8 @@ function createWindow() {
     // win.loadFile('dist/index.html')
     win.loadFile(path.join(process.env.DIST, "index.html"));
   }
+
+  win.maximize()
 }
 
 // Quit when all windows are closed, except on macOS. There, it's common
