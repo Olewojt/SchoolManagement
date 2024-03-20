@@ -77,6 +77,14 @@
   }
 }
 
+.form {
+  display: flex;
+  flex-direction: column;
+  &__input {
+    margin-bottom: 2rem;
+  }
+}
+
 .text {
   display: inline-block;
   float: right;
