@@ -35,7 +35,7 @@ const Reset: React.FC = () => {
                 <div className={`${classes["reset__form"]} ${anime && classes["reset__form--anime"]}`}>
                     <h1 className={classes.header}>Reset Password</h1>
                     <Input type={"text"} error={false}
-                           placeholder={"Login"} value={name}
+                           placeholder={"Login"}
                            onChange={handleNameChange}></Input>
                     <Button className={classes.btn} type={"submit"} children={"Sign in"} onClick={onButtonClick}/>
                     <div className={classes.text}>

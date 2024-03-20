@@ -3,7 +3,7 @@ import classes from "./Button.module.scss"
 
 interface ButtonProps {
     children: string,
-    onClick: MouseEventHandler,
+    onClick?: MouseEventHandler,
     type: "button" | "submit" | "reset" | undefined
     className?: string
 }
