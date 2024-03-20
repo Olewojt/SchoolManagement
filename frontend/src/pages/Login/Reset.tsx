@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useState} from "react";
+import React, {ChangeEvent, FormEvent, useState} from "react";
 import classes from "./Login.module.scss"
 
 import Input from "forms/Input.tsx";
@@ -16,10 +16,11 @@ const Reset: React.FC = () => {
     const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
         setName(e.target.value)
     }
-    const onButtonClick = () => {
+
+    const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
         console.log("Welcome!")
     }
-
     const handleClick = () => {
         setAnime(true)
         setTimeout(() => {
@@ -34,10 +35,14 @@ const Reset: React.FC = () => {
                 <img src={Logo} alt=""/>
                 <div className={`${classes["reset__form"]} ${anime && classes["reset__form--anime"]}`}>
                     <h1 className={classes.header}>Reset Password</h1>
-                    <Input type={"text"} error={false}
-                           placeholder={"Login"}
-                           onChange={handleNameChange}></Input>
-                    <Button className={classes.btn} type={"submit"} children={"Sign in"} onClick={onButtonClick}/>
+                    <form onSubmit={onSubmit} className={classes.form}>
+                        <Input type={"text"} error={false}
+                               value={name}
+                               placeholder={"Login"}
+                               onChange={handleNameChange}
+                               className={classes.form__input}></Input>
+                        <Button className={classes.btn} type={"submit"} children={"Sign in"}/>
+                    </form>
                     <div className={classes.text}>
                         <span>Remember yet?</span>
                         <br/>
