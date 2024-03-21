@@ -13,6 +13,8 @@
   border-radius: 50px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
 
+  transform: translateX(-70%);
+
   span {
     margin: 0 2rem;
 
@@ -24,11 +26,44 @@
   &__anime:hover {
     transform: translateX(40%);
     transition: all .5s ease-in-out;
-
-
   }
   &__anime:not(:hover) {
     transform: translateX(0);
     transition: all .5s ease-in-out;
+  }
+}
+
+.profile {
+  background: rgba(0, 0, 0, 0.15);
+  width: 100%;
+
+  padding: .5rem 2.5rem;
+  margin: 1rem 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-radius: 50px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+
+  &__data {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    span {
+      margin-left: 10px;
+      color: #1a1a1a;
+      font-weight: 500;
+    }
+  }
+  svg:hover {
+    transform: rotate(120deg);
+    transition: transform 0.5s ease;
+  }
+  svg:not(:hover) {
+    transform: rotate(0deg);
+    transition: transform 0.5s ease;
   }
 }
