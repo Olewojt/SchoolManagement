@@ -7,7 +7,6 @@
   }
   100% {
     transform: translateX(0%);
-    $finished: true;
   }
 }
 
@@ -62,13 +61,13 @@
 
     & > *:nth-child(1) {
       animation: slideIn 1.2s cubic-bezier(.52,-0.06,.24,1.12);
-      animation-delay: 3s;
+      animation-delay: 2.5s;
     }
 
     & > *:nth-child(2) {
       transform: translateX(-100%);
       animation: slideInProfile 1s ease-in-out forwards;
-      animation-delay: 2s;
+      animation-delay: 1s;
     }
   }
 }
