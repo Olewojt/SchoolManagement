@@ -1,5 +1,5 @@
 import classes from "./Sidebar.module.scss"
-import Logo from "assets/LogoShort.png"
+import Logo from "assets/images/LogoShort.png"
 import Bookmark from "ui/Bookmark/Bookmark.tsx";
 import ProfileBookmark from "ui/Bookmark/ProfileBookmark.tsx";
 import ProfileImg from "assets/images/Profile.png";

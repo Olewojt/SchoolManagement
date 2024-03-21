@@ -1,0 +1,77 @@
+@keyframes slideIn {
+  0% {
+    transform: translateX(0%);
+  }
+  60% {
+    transform: translateX(50%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes slideInProfile {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(65%);
+  }
+}
+
+.sidebar {
+  width: 350px; //TODO: Tutaj będzie do zmiany w momencie dodania do Routera. Będzie trzeba w Router utworzyć display grid'a
+  height: 100vh;
+
+  display: grid;
+  grid-template-rows: 1fr 3fr 1fr;
+  grid-gap: 2rem;
+
+
+  background: linear-gradient(0deg, rgba(187, 208, 255, 1) 0%, rgba(255, 214, 255, 1) 100%);
+
+  &__title {
+    margin: 0 auto;
+    text-align: center;
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 400;
+      color: #1a1a1a;
+    }
+  }
+
+  &__bookmarks {
+    height: 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+
+    transform: translateX(-65%);
+
+    @for $i from 1 through 3 { // Dostosuj do maksymalnej liczby dzieci w kontenerze
+      & > *:nth-child(#{$i}) {
+        animation: slideIn 1.5s cubic-bezier(.52,-0.06,.24,1.12) forwards;
+        animation-delay: #{.5s * ($i - 1)}; // Każdy kolejny child ma opóźnienie o 0.5s więcej niż poprzedni
+      }
+    }
+  }
+
+  &__profile {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    transform: translateX(-65%);
+
+    & > *:nth-child(1) {
+      animation: slideIn 1.5s cubic-bezier(.52,-0.06,.24,1.12) forwards;
+      animation-delay: 2s;
+    }
+
+    & > *:nth-child(2) {
+      animation: slideInProfile 1s cubic-bezier(.55,.32,.36,.95) forwards;
+      animation-delay: 3s;
+    }
+  }
+}
