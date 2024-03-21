@@ -7,6 +7,7 @@
   }
   100% {
     transform: translateX(0%);
+    $finished: true;
   }
 }
 
@@ -49,10 +50,10 @@
 
     transform: translateX(-65%);
 
-    @for $i from 1 through 3 { // Dostosuj do maksymalnej liczby dzieci w kontenerze
+    @for $i from 1 through 3 {
       & > *:nth-child(#{$i}) {
-        animation: slideIn 1.5s cubic-bezier(.52,-0.06,.24,1.12) forwards;
-        animation-delay: #{.5s * ($i - 1)}; // Każdy kolejny child ma opóźnienie o 0.5s więcej niż poprzedni
+        animation: slideIn 1.5s cubic-bezier(.52,-0.06,.24,1.12);
+        animation-delay: #{.5s * ($i - 1)};
       }
     }
   }
@@ -65,7 +66,7 @@
     transform: translateX(-65%);
 
     & > *:nth-child(1) {
-      animation: slideIn 1.5s cubic-bezier(.52,-0.06,.24,1.12) forwards;
+      animation: slideIn 1.5s cubic-bezier(.52,-0.06,.24,1.12);
       animation-delay: 2s;
     }
 
