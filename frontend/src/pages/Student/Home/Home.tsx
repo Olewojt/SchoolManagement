@@ -1,10 +1,9 @@
-import Bookmark from "ui/Bookmark/Bookmark.tsx";
-
+import classes from "./Home.module.scss"
 const Home = () => {
     return(
-        <div>
-            <Bookmark to="#">Test</Bookmark>
-        </div>
+        <main className={classes.home}>
+
+        </main>
     )
 }
 
