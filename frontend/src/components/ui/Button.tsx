@@ -7,9 +7,11 @@ interface ButtonProps {
     type: "button" | "submit" | "reset" | undefined
     className?: string
 }
+
 const Button = (props: ButtonProps) => {
     return (
-        <button type={props.type} onClick={props.onClick} className={`${classes.btn} ${props.className}`}>{props.children}</button>
+        <button type={props.type} onClick={props.onClick}
+                className={`${classes.btn} ${props.className}`}>{props.children}</button>
     )
 }
 

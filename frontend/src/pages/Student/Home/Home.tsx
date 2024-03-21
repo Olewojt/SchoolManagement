@@ -1,4 +1,4 @@
-import Bookmark from "ui/Bookmark.tsx";
+import Bookmark from "ui/Bookmark/Bookmark.tsx";
 
 const Home = () => {
     return(

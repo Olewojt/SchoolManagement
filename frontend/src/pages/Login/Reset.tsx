@@ -4,7 +4,7 @@ import classes from "./Login.module.scss"
 import Input from "forms/Input.tsx";
 import Button from "ui/Button.tsx";
 
-import Logo from "assets/Logo.png"
+import Logo from "../../assets/images/Logo.png"
 import {useNavigate} from "react-router-dom";
 
 const Reset: React.FC = () => {
