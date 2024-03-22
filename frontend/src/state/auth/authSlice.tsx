@@ -16,6 +16,7 @@ const authSlice = createSlice({
             state.user = user
             state.token = accessToken
         },
+        // @ts-ignore
         logOut: (state, action) => {
             state.user = null
             state.token = null
