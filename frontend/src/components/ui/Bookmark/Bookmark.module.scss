@@ -1,4 +1,6 @@
 .bookmark {
+  user-select: none;
+
   background: rgba(0, 0, 0, 0.15);
   width: 90%;
 
@@ -34,6 +36,8 @@
 }
 
 .profile {
+  user-select: none;
+
   background: rgba(0, 0, 0, 0.15);
   width: 100%;
 

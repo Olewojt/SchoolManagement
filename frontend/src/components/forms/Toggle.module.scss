@@ -1,6 +1,10 @@
 .toggle {
   margin: 1rem;
 
+  label {
+    user-select: none;
+  }
+
   &__input {
     visibility: hidden;
 
