@@ -30,7 +30,9 @@
       "data/*": ["./src/data/*"],
       "pages/*": ["./src/pages/*"],
       "utilities*/": ["./src/utilities/*"],
-      "assets/*": ["./src/assets/*"]
+      "assets/*": ["./src/assets/*"],
+      "state/*": ["./src/state/*"],
+      "styles/*": ["./src/styles/*"]
     }
   },
   "include": ["src", "electron"],

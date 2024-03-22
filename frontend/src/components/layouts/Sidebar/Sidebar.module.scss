@@ -1,0 +1,73 @@
+@keyframes slideIn {
+  0% {
+    transform: translateX(0%);
+  }
+  60% {
+    transform: translateX(50%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes slideInProfile {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(-10%);
+  }
+}
+
+.sidebar {
+  height: 100vh;
+
+  display: grid;
+  grid-template-rows: 1fr 3fr 1fr;
+  grid-gap: 2rem;
+
+
+  background: url("./src/assets/images/lollipop.png") no-repeat bottom,  linear-gradient(0deg, rgba(187, 208, 255, 1) 0%, rgba(255, 214, 255, 1) 100%);
+
+  &__title {
+    margin: 0 auto;
+    text-align: center;
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 400;
+      color: #1a1a1a;
+    }
+  }
+
+  &__bookmarks {
+    height: 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+
+    @for $i from 1 through 3 {
+      & > *:nth-child(#{$i}) {
+        animation: slideIn 2s cubic-bezier(.52,-0.06,.24,1.12);
+        animation-delay: #{.2s * ($i - 1)};
+      }
+    }
+  }
+
+  &__profile {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    & > *:nth-child(1) {
+      animation: slideIn 1.2s cubic-bezier(.52,-0.06,.24,1.12);
+      animation-delay: 2.5s;
+    }
+
+    & > *:nth-child(2) {
+      transform: translateX(-100%);
+      animation: slideInProfile 1s ease-in-out forwards;
+      animation-delay: 1s;
+    }
+  }
+}
