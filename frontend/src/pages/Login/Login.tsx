@@ -27,11 +27,10 @@ const Login: React.FC = () => {
         e.preventDefault()
 
         if (form.name === "admin" && form.password === "admin") {
-            navigate("/home");
+            navigate("/home", {replace: true});
         } else {
             setError(true)
         }
-
     }
 
     const handleClick = () => {
@@ -44,7 +43,8 @@ const Login: React.FC = () => {
     return (
         <div className={classes.login}>
             <div className={classes.login__background}>
-                <h1 style={{background: "rgba(0, 0, 0, 0.7)"}}>Login: admin<br/> Password: admin</h1> {/*TODO: do testow, bedzie trzeba i tak reduxa ogarnac*/}
+                <h1 style={{background: "rgba(0, 0, 0, 0.7)"}}>Login: admin<br/> Password: admin
+                </h1> {/*TODO: do testow, bedzie trzeba i tak reduxa ogarnac*/}
             </div>
             <aside className={classes.login__aside}>
                 <img src={Logo} alt=""/>

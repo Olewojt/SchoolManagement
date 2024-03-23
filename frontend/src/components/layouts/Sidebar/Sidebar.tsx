@@ -10,7 +10,7 @@ const Sidebar = () => {
         <aside className={classes.sidebar}>
             <div className={classes.sidebar__title}>
                 <img src={Logo} alt=""/>
-                <h1>Klasa specjalna</h1>
+                <h1>Class 5C</h1>
             </div>
             <div className={classes.sidebar__bookmarks}>
                 <Bookmark to="#" svgIcon={<TasksIcon/>}>Tasks</Bookmark>
@@ -19,7 +19,7 @@ const Sidebar = () => {
             </div>
             <div className={classes.sidebar__profile}>
                 <Bookmark to="/" svgIcon={<LogoutIcon/>}>Logout</Bookmark>
-                <ProfileBookmark src={ProfileImg} to="#">Dawid Jasper</ProfileBookmark>
+                <ProfileBookmark src={ProfileImg} to="#">David Jasper</ProfileBookmark>
             </div>
         </aside>
     )

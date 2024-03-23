@@ -19,7 +19,7 @@ const Bookmark = (props: BookmarkProps) => {
 
     return (
         <div className={anime ? classes.bookmark__anime : ""}>
-            <Link to={props.to} className={classes.bookmark}>
+            <Link to={props.to} className={classes.bookmark} replace={true}>
                 <span>{props.children}</span>
                 {props.svgIcon}
             </Link>
