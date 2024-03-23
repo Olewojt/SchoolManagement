@@ -19,7 +19,7 @@ const Sidebar = () => {
             </div>
             <div className={classes.sidebar__profile}>
                 <Bookmark to="/" svgIcon={<LogoutIcon/>}>Logout</Bookmark>
-                <ProfileBookmark src={ProfileImg} to="#">David Jasper</ProfileBookmark>
+                <ProfileBookmark src={ProfileImg} to="/config">David Jasper</ProfileBookmark>
             </div>
         </aside>
     )

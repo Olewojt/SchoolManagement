@@ -1,0 +1,29 @@
+.header {
+  &__content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.25);
+    border-radius: 50px;
+    padding-left: 30px;
+    padding-right: 15px;
+  }
+}
+
+.expanded {
+  height: auto;
+
+  &__content {
+    background-color: darkred;
+  }
+}
+
+.button {
+  border: none; // Remove border
+  background-color: transparent; // Set background color to transparent
+  cursor: pointer; // Set cursor to pointer for hover effect
+
+  &:focus {
+    outline: none; // Remove outline when focused
+  }
+}
