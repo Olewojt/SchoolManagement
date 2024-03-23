@@ -76,3 +76,12 @@ export const GroupIcon = (props: IconProps) => {
         </svg>
     )
 }
+
+export const HomeIcon = () => {
+    return (
+        <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17 2L2 16.9592H5.29603V31.63H13.506V21.9081H20.4854V31.63H28.704V16.9592H32L17 2Z"
+                  stroke="#FFD6FF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    )
+}

@@ -1,3 +1,5 @@
+$noactive: true;
+
 .bookmark {
   user-select: none;
 
@@ -26,11 +28,18 @@
   }
 
   &__anime:hover {
-    transform: translateX(40%);
-    transition: all .5s ease-in-out;
+    @if $noactive {
+      transform: translateX(40%);
+      transition: all .5s ease-in-out;
+    }
   }
   &__anime:not(:hover) {
     transform: translateX(0);
+    transition: all .5s ease-in-out;
+  }
+
+  &__active {
+    transform: translateX(55%);
     transition: all .5s ease-in-out;
   }
 }
@@ -71,3 +80,4 @@
     transition: transform 0.5s ease;
   }
 }
+

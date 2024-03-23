@@ -46,10 +46,10 @@
     flex-direction: column;
     justify-content: space-evenly;
 
-    @for $i from 1 through 4 {
+    @for $i from 2 through 4 {
       & > *:nth-child(#{$i}) {
-        animation: slideIn 1s cubic-bezier(.52,-0.06,.24,1.12);
-        animation-delay: #{.2s * ($i - 1)};
+        animation: slideIn .6s ease-in-out;
+        animation-delay: #{.1s * ($i - 1)};
       }
     }
   }
@@ -61,7 +61,7 @@
 
     & > *:nth-child(1) {
       animation: slideIn 1.2s cubic-bezier(.52,-0.06,.24,1.12);
-      animation-delay: 2s;
+      animation-delay: 1.5s;
     }
 
     & > *:nth-child(2) {
