@@ -1,19 +1,11 @@
 import classes from "./Home.module.scss"
-import {Toggle} from "forms/Toggle.tsx";
-import {useState} from "react";
+import TaskCard from "ui/Card/TaskCard.tsx";
+
 const Home = () => {
-    const [isDark, setIsDark] = useState(true)
-    const [isTest, setIsTest] = useState(false)
-    const handleDarkMode = () => {
-        setIsDark(prevState => !prevState)
-    }
-    const handleChangeTest = () => {
-        setIsTest(prevState => !prevState)
-    }
+    const date = new Date();
     return(
         <main className={classes.home}>
-            <Toggle id={"dark-change"} onChange={handleDarkMode} checked={isDark} labelText={"Essunia"} />
-            <Toggle id={"test"} onChange={handleChangeTest} checked={isTest} labelText={"Essunia"} />
+            <TaskCard title={"Rozprawka o miśce w bojlerze"} subject={"Bojlerowanie"} date={date} />
         </main>
     )
 }
