@@ -1,3 +1,6 @@
+interface IconProps {
+    className: string;
+}
 const SettingsIcon = () => {
     return (
         <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -55,3 +58,21 @@ export const LogoutIcon = () => {
     )
 }
 
+export const GroupIcon = (props: IconProps) => {
+    return (
+        <svg className={props.className} width="70" height="70" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="35.0002" cy="26.2499" r="11.6667" fill="#33363F"/>
+            <circle cx="49.5835" cy="26.25" r="8.75" fill="#33363F"/>
+            <circle cx="20.4165" cy="26.25" r="8.75" fill="#33363F"/>
+            <path fillRule="evenodd" clipRule="evenodd"
+                  d="M51.2416 52.5001H60.1453C60.7369 52.5001 61.1932 51.9963 61.0939 51.4131C60.5179 48.0306 58.085 37.9167 49.5837 37.9167C46.9992 37.9167 44.9756 38.8514 43.3945 40.2476C47.7921 43.1007 50.0659 48.0966 51.2416 52.5001Z"
+                  fill="#33363F"/>
+            <path fillRule="evenodd" clipRule="evenodd"
+                  d="M26.6056 40.2475C25.0245 38.8514 23.0009 37.9167 20.4165 37.9167C11.9152 37.9167 9.48219 48.0306 8.90621 51.4131C8.8069 51.9963 9.26314 52.5001 9.85476 52.5001H18.7585C19.9342 48.0966 22.208 43.1006 26.6056 40.2475Z"
+                  fill="#33363F"/>
+            <path
+                d="M34.9998 40.8333C47.4764 40.8333 49.2788 53.6421 49.5392 57.3431C49.578 57.894 49.1355 58.3333 48.5832 58.3333H21.4165C20.8642 58.3333 20.4217 57.894 20.4605 57.3431C20.7209 53.6421 22.5233 40.8333 34.9998 40.8333Z"
+                fill="#33363F"/>
+        </svg>
+    )
+}
