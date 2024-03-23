@@ -16,6 +16,7 @@ const Sidebar = () => {
                 <Bookmark to="#" svgIcon={<TasksIcon/>}>Tasks</Bookmark>
                 <Bookmark to="/grades" svgIcon={<NotesIcon/>}>Grades</Bookmark>
                 <Bookmark to="#" svgIcon={<ReportIcon/>}>Reports</Bookmark>
+                <Bookmark to="#" svgIcon={<ReportIcon/>}>Reports</Bookmark>
             </div>
             <div className={classes.sidebar__profile}>
                 <Bookmark to="/" svgIcon={<LogoutIcon/>}>Logout</Bookmark>
