@@ -5,6 +5,7 @@ import Layout from "layouts/Layout.tsx";
 import Login from "pages/Login/Login.tsx";
 import Reset from "pages/Login/Reset.tsx";
 import Configuration from "pages/Configuration/Configuration.tsx";
+import Grades from "pages/Student/Grades/Grades.tsx";
 
 function App() {
     return (
@@ -16,6 +17,7 @@ function App() {
                     <Route element={<Layout/>}>
                         <Route path="/home" element={<Home/>}/>
                         <Route path="/config" element={<Configuration/>}/>
+                        <Route path="/grades" element={<Grades/>}/>
                     </Route>
                 </Routes>
             </HashRouter>
