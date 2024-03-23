@@ -1,6 +1,5 @@
 import { Link, LinkProps, useLocation } from "react-router-dom";
 import classes from "./Bookmark.module.scss";
-import { useEffect, useState } from "react";
 
 interface BookmarkProps extends LinkProps {
     svgIcon: React.ReactNode;
