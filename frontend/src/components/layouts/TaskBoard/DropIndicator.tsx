@@ -1,4 +1,5 @@
 import {FC} from "react";
+import classes from "./Column.module.scss"
 
 interface DropInicatorProps {
     beforeId: string,
@@ -7,7 +8,7 @@ interface DropInicatorProps {
 
 const DropIndicator: FC<DropInicatorProps> = ({beforeId, column}) => {
     return (
-        <div style={{background: "red", height: "2rem", opacity: "0"}} data-before={beforeId || "-1"} data-column={column}></div>
+        <div className={classes.indicator} data-before={beforeId || "-1"} data-column={column}></div>
     )
 }
 

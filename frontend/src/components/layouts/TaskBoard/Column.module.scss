@@ -4,8 +4,14 @@
     height: 90vh;
     min-width: 23rem;
 
-    &--active {
-      //background-color: rgba(0, 0, 0, 0.1);
-    }
   }
+}
+
+.indicator {
+  background-color: rgba(0, 0, 0, 0.25);
+  height: 1rem;
+  border-radius: 2rem;
+  width: 50%;
+  margin: auto;
+  opacity: 0;
 }

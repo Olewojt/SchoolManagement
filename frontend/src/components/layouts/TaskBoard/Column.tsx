@@ -1,4 +1,4 @@
-import { DragEvent, FC, useState } from "react";
+import { DragEvent, FC } from "react";
 import TaskCard from "ui/Card/TaskCard.tsx";
 import DropIndicator from "layouts/TaskBoard/DropIndicator.tsx";
 import AddCard from "layouts/TaskBoard/AddCard.tsx";
@@ -12,7 +12,6 @@ interface ColumnProps {
 }
 
 const Column: FC<ColumnProps> = ({ title, column, cards, setCards }) => {
-    const [active, setActive] = useState<boolean>(false);
 
     const handleDragStart = (e: DragEvent<HTMLDivElement>, card: any): void => {
         e.dataTransfer.setData("cardId", card.id);
@@ -21,7 +20,6 @@ const Column: FC<ColumnProps> = ({ title, column, cards, setCards }) => {
     const handleDragOver = (e: DragEvent<HTMLDivElement>): void => {
         e.preventDefault();
         highlightIndicator(e);
-        setActive(true);
     };
 
     const highlightIndicator = (e: DragEvent<HTMLDivElement>): void => {
@@ -70,12 +68,10 @@ const Column: FC<ColumnProps> = ({ title, column, cards, setCards }) => {
     };
 
     const handleDragLeave = (): void => {
-        setActive(false);
         clearHighlight();
     };
 
     const handleDragEnd = (e: DragEvent<HTMLDivElement>): void => {
-        setActive(false);
         clearHighlight();
 
         const cardId = e.dataTransfer.getData("cardId");
@@ -121,14 +117,12 @@ const Column: FC<ColumnProps> = ({ title, column, cards, setCards }) => {
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
                 onDrop={handleDragEnd}
-                className={`${classes.column__items} ${
-                    active ? classes["column__items--active"] : ""
-                }`}
+                className={classes.column__items}
             >
                 {filteredCards.map((c: any) => {
                     return <TaskCard key={c.id} {...c} handleDragStart={handleDragStart} />;
                 })}
-                <DropIndicator beforeId="null" column={column} />
+                <DropIndicator beforeId="-1" column={column} />
                 <AddCard />
             </div>
         </div>
