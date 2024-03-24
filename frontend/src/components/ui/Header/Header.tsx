@@ -10,15 +10,15 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = (props: HeaderProps) => {
-    const [isExpanded, setIsExpanded] = useState(false)
+    const [isExpanded, setIsExpanded] = useState(true)
 
     const toggleExpansion = () => {
         setIsExpanded(prev => !prev);
     }
 
     return (
-        <div className={`${classes.header} ${isExpanded && classes.expanded} ${props.className}`}>
-            <div className={classes.header__content}>
+        <div className={`${classes.header} ${isExpanded && classes.expanded}`}>
+            <div className={`${classes.header__content} ${props.className}`}>
                 <h3>{props.value}</h3>
                 <button className={classes.button} onClick={toggleExpansion}>
                     {isExpanded ? (
