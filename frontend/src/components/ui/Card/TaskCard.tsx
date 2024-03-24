@@ -1,14 +1,14 @@
-import classes from "./TaskCard.module.scss"
-import {GroupIcon} from "assets/icons/Icon.tsx";
+import classes from "./TaskCard.module.scss";
+import { GroupIcon } from "assets/icons/Icon.tsx";
 
-interface CardInterdace {
-    title: string,
-    subject: string,
-    date: Date
+interface CardInterface {
+    title: string;
+    subject?: string;
+    date: string;
 }
 
-const TaskCard = (props: CardInterdace) => {
-    const formattedDate = props.date.toLocaleDateString()
+const TaskCard = (props: CardInterface) => {
+    const formattedDate = new Date(props.date).toLocaleDateString(); // Formatowanie daty
     return (
         <div className={classes.card}>
             <GroupIcon className={classes.card__icon}/>
@@ -18,7 +18,7 @@ const TaskCard = (props: CardInterdace) => {
                 <h2>Due Date <span>{formattedDate}</span></h2>
             </div>
         </div>
-    )
+    );
 }
 
 export default TaskCard;
