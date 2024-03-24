@@ -2,5 +2,10 @@
   &__items {
     overflow-y: scroll;
     height: 90vh;
+    min-width: 23rem;
+
+    &--active {
+      //background-color: rgba(0, 0, 0, 0.1);
+    }
   }
 }

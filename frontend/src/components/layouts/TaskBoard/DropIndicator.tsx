@@ -7,7 +7,7 @@ interface DropInicatorProps {
 
 const DropIndicator: FC<DropInicatorProps> = ({beforeId, column}) => {
     return (
-        <div data-before={beforeId || "-1"} data-column={column}></div>
+        <div style={{background: "red", height: "2rem", opacity: "0"}} data-before={beforeId || "-1"} data-column={column}></div>
     )
 }
 
