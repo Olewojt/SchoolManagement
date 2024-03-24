@@ -1,7 +1,7 @@
 .card {
   background-color: #C8B6FF;
   max-width: 23rem;
-  min-width: 20rem;
+  min-width: 15rem;
 
   position: relative;
   margin: 2rem 1.2rem;
@@ -25,6 +25,7 @@
       span {
         text-align: right;
         font-weight: 400;
+        margin-left: .5rem;
       }
     }
 

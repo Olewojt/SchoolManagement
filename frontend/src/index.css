@@ -28,6 +28,7 @@ body {
   min-width: 320px;
   min-height: 100vh;
   background-color: #BBD0FF; /*  Tutaj kolor zmieniany dla tła*/
+  overflow: hidden;
 }
 
 h1 {

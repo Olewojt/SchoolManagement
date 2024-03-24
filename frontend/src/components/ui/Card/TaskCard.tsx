@@ -3,7 +3,7 @@ import { GroupIcon } from "assets/icons/Icon.tsx";
 
 interface CardInterface {
     title: string;
-    subject?: string;
+    subject: string;
     date: string;
 }
 
