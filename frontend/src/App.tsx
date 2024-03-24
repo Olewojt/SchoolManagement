@@ -7,6 +7,7 @@ import Reset from "pages/Login/Reset.tsx";
 import Configuration from "pages/Configuration/Configuration.tsx";
 import Grades from "pages/Student/Grades/Grades.tsx";
 import Tasks from "pages/Student/Tasks/Tasks.tsx";
+import Reports from "pages/Student/Reports/Reports.tsx";
 
 function App() {
     return (
@@ -19,6 +20,7 @@ function App() {
                     <Route path="/config" element={<Configuration/>}/>
                     <Route path="/grades" element={<Grades/>}/>
                     <Route path='/tasks' element={<Tasks/>}/>
+                    <Route path='/reports' element={<Reports/>}/>
                 </Route>
             </Routes>
         </HashRouter>
