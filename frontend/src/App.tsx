@@ -6,23 +6,22 @@ import Login from "pages/Login/Login.tsx";
 import Reset from "pages/Login/Reset.tsx";
 import Configuration from "pages/Configuration/Configuration.tsx";
 import Grades from "pages/Student/Grades/Grades.tsx";
+import Tasks from "pages/Student/Tasks/Tasks.tsx";
 
 function App() {
     return (
-        <>
-            <HashRouter>
-                <Routes>
-                    <Route path="/" element={<Login/>}></Route>
-                    <Route path="/reset" element={<Reset/>}></Route>
-                    <Route element={<Layout/>}>
-                        <Route path="/home" element={<Home/>}/>
-                        <Route path="/config" element={<Configuration/>}/>
-                        <Route path="/grades" element={<Grades/>}/>
-                    </Route>
-                </Routes>
-            </HashRouter>
-        </>
-
+        <HashRouter>
+            <Routes>
+                <Route path="/" element={<Login/>}></Route>
+                <Route path="/reset" element={<Reset/>}></Route>
+                <Route element={<Layout/>}>
+                    <Route path="/home" element={<Home/>}/>
+                    <Route path="/config" element={<Configuration/>}/>
+                    <Route path="/grades" element={<Grades/>}/>
+                    <Route path='/tasks' element={<Tasks/>}/>
+                </Route>
+            </Routes>
+        </HashRouter>
     )
 }
 

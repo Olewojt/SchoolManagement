@@ -1,7 +1,7 @@
 import classes from './GradeCard.module.scss';
 
 interface GradeCardProps {
-    grade: string;
+    grade: number;
     date: Date;
 }
 

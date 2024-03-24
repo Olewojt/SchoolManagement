@@ -27,7 +27,7 @@
       "layouts/*": ["./src/components/layouts/*"],
       "ui/*": ["./src/components/ui/*"],
       "forms/*": ["./src/components/forms/*"],
-      "data/*": ["./src/data/*"],
+      "api/*": ["./src/api/*"],
       "pages/*": ["./src/pages/*"],
       "utilities*/": ["./src/utilities/*"],
       "assets/*": ["./src/assets/*"],

@@ -1,20 +1,11 @@
-
 import classes from "pages/Student/Grades/Grades.module.scss";
 import Header from "ui/Header/Header.tsx";
 import GradeCard from "ui/Card/GradeCard.tsx";
 import {useState} from "react";
+import {DUMMY_GRADES} from "api/Grades.tsx";
 
 const Grades = () => {
-
-    const [gradesData] = useState([
-        { subject: 'Mathematics', grades: [{ grade: '5', date: new Date(Date.now()) }, { grade: '4', date: new Date(Date.now()) }] },
-        { subject: 'Physics', grades: [{ grade: '5', date: new Date(Date.now()) }, { grade: '3', date: new Date(Date.now()) }] },
-        { subject: 'Religion', grades: [{ grade: '1', date: new Date(Date.now()) }, { grade: '2', date: new Date(Date.now()) }] }
-        //tutaj bedzie sie pobieralo z bazy danych oceny kazdego ucznia i przekazywalo liste
-        //w zaleznosci od struktury tabeli mozliwe bedzie dodac funkcje co bedzie przeksztalcac dane zz bazy bo tu jakby jest
-        // tablica w tablicy a w bazie chyba damy kolmny id,przedmiot,ocena i data i bedzie wiele wierszy z przedmiotem matematyka
-
-    ]);
+    const [gradesData] = useState(DUMMY_GRADES);
 
     return (
         <main className={classes.home}>
