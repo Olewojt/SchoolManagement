@@ -2,10 +2,9 @@
   background-color: #C8B6FF;
   max-width: 23rem;
   min-width: 20rem;
-  min-height: 13rem;
 
   position: relative;
-  margin: 1.2rem;
+  margin: 2rem 1.2rem;
   padding: 1.2rem 3rem 1.2rem 3rem;
 
   border-radius: 3rem;
@@ -14,15 +13,19 @@
 
   &__title {
     font-size: 1.6rem;
+    margin-bottom: 2rem;
   }
 
   .card__info {
-    position: relative;
-    bottom: -2.6rem;
     h2 {
       display: flex;
       justify-content: space-between;
       font-size: 1.2rem;
+
+      span {
+        text-align: right;
+        font-weight: 400;
+      }
     }
 
     &::before{
