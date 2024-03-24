@@ -32,6 +32,7 @@
       "utilities*/": ["./src/utilities/*"],
       "assets/*": ["./src/assets/*"],
       "state/*": ["./src/state/*"],
+      "hooks/*": ["./src/hooks/*"],
       "styles/*": ["./src/styles/*"]
     }
   },
