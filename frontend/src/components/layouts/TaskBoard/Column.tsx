@@ -1,6 +1,8 @@
 import classes from "./Column.module.scss"
 import {FC, useState} from "react";
 import TaskCard from "ui/Card/TaskCard.tsx";
+import DropIndicator from "layouts/TaskBoard/DropIndicator.tsx";
+import AddCard from "layouts/TaskBoard/AddCard.tsx";
 
 interface ColumnProps {
     title: string
@@ -24,6 +26,8 @@ const Column: FC<ColumnProps> = ({title, column, cards, setCards}) => {
                 {filteredCards.map((c: any) => {
                     return <TaskCard key={c.id} {...c}/>
                 })}
+                <DropIndicator beforeId="-1" column={column} />
+                <AddCard />
             </div>
         </div>
     )

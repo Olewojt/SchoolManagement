@@ -10,7 +10,7 @@ interface CardInterface {
 const TaskCard = (props: CardInterface) => {
     const formattedDate = new Date(props.date).toLocaleDateString(); // Formatowanie daty
     return (
-        <div className={classes.card}>
+        <div draggable="true" className={classes.card}>
             <GroupIcon className={classes.card__icon}/>
             <h1 className={classes.card__title}>{props.title}</h1>
             <div className={classes.card__info}>

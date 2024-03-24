@@ -21,8 +21,8 @@ const DEFAULT_CARDS = [
     {title: "SOX compliance checklist", id: "2", column: "assessed", subject: "Compliance", date: "2024-03-21"},
     {title: "[SPIKE] Migrate to Azure", id: "3", column: "assessed", subject: "Cloud Computing", date: "2024-03-22"},
     {title: "Document Notifications service", id: "4", column: "assessed", subject: "Documentation", date: "2024-03-23"},
-    {title: "Document Notifications service", id: "4", column: "assessed", subject: "Documentation", date: "2024-03-23"},
-    {title: "Document Notifications service", id: "4", column: "assessed", subject: "Documentation", date: "2024-03-23"},
+    {title: "Document Notifications service", id: "11", column: "assessed", subject: "Documentation", date: "2024-03-23"},
+    {title: "Document Notifications service", id: "12", column: "assessed", subject: "Documentation", date: "2024-03-23"},
     // TODO
     {
         title: "Research DB options for new microservice",

@@ -2,7 +2,7 @@ import React, {ChangeEvent, FormEvent, useState} from "react";
 import classes from "./Login.module.scss"
 
 import Input from "forms/Input.tsx";
-import Button from "ui/Button.tsx";
+import Button from "ui/Button/Button.tsx";
 
 import Logo from "../../assets/images/Logo.png"
 import {useNavigate} from "react-router-dom";

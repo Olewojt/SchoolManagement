@@ -11,6 +11,12 @@
   color: #1a1a1a;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
+
   &__title {
     font-size: 1.6rem;
     margin-bottom: 2rem;
