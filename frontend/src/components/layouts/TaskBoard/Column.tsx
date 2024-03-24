@@ -1,3 +1,4 @@
+import {DragEvent} from "react";
 import classes from "./Column.module.scss"
 import {FC, useState} from "react";
 import TaskCard from "ui/Card/TaskCard.tsx";
@@ -7,12 +8,16 @@ import AddCard from "layouts/TaskBoard/AddCard.tsx";
 interface ColumnProps {
     title: string
     column: string
-    cards: any
+    cards: any[]
     setCards: any
 }
 
 const Column: FC<ColumnProps> = ({title, column, cards, setCards}) => {
     const [active, setActive] = useState(false);
+
+    const handleDragStart = (e: DragEvent<HTMLDivElement>, card: any) => {
+        e.dataTransfer.setData("cardId", card.id);
+    }
 
     const filteredCards = cards.filter((c: any) => c.column === column);
 
@@ -24,10 +29,10 @@ const Column: FC<ColumnProps> = ({title, column, cards, setCards}) => {
             </div>
             <div className={classes.column__items}>
                 {filteredCards.map((c: any) => {
-                    return <TaskCard key={c.id} {...c}/>
+                    return <TaskCard key={c.id} {...c} handleDragStart={handleDragStart}/>
                 })}
-                <DropIndicator beforeId="-1" column={column} />
-                <AddCard />
+                <DropIndicator beforeId="-1" column={column}/>
+                <AddCard/>
             </div>
         </div>
     )

@@ -5,12 +5,16 @@ interface CardInterface {
     title: string;
     subject: string;
     date: string;
+
+    id: string;
+    column: string;
+    handleDragStart: (e: React.DragEvent<HTMLDivElement>, data: { title: string, id: string, column: string }) => void;
 }
 
 const TaskCard = (props: CardInterface) => {
     const formattedDate = new Date(props.date).toLocaleDateString(); // Formatowanie daty
     return (
-        <div draggable="true" className={classes.card}>
+        <div draggable="true" onDragStart={(e) => props.handleDragStart(e, { title: props.title, id: props.id, column: props.column })} className={classes.card}>
             <GroupIcon className={classes.card__icon}/>
             <h1 className={classes.card__title}>{props.title}</h1>
             <div className={classes.card__info}>
