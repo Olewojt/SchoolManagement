@@ -123,7 +123,7 @@ const Column: FC<ColumnProps> = ({ title, column, cards, setCards }) => {
                     return <TaskCard key={c.id} {...c} handleDragStart={handleDragStart} />;
                 })}
                 <DropIndicator beforeId="-1" column={column} />
-                <AddCard />
+                <AddCard column={column} setCards={setCards}/>
             </div>
         </div>
     );

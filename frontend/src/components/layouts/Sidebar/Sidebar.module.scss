@@ -48,7 +48,7 @@
 
     @for $i from 2 through 4 {
       & > *:nth-child(#{$i}) {
-        animation: slideIn .7s ease-in-out;
+        animation: slideIn 1s ease-in-out;
         animation-delay: #{.1s * ($i - 1)};
       }
     }

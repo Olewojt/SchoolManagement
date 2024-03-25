@@ -1,9 +1,22 @@
 import classes from "./Board.module.scss"
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Column from "layouts/TaskBoard/Column.tsx";
 
 const Board = () => {
-    const [cards, setCards] = useState(DEFAULT_CARDS)
+    const [cards, setCards] = useState([])
+    const [hasChecked, setHasChecked] = useState(false)
+
+    useEffect(() => {
+        hasChecked && localStorage.setItem("cards", JSON.stringify(cards))
+    }, [cards])
+
+    useEffect(() => {
+        const cardData = localStorage.getItem("cards")
+
+        setCards(cardData ? JSON.parse(cardData) : [])
+        setHasChecked(true)
+    }, []);
+
     return (
         <div className={classes.board}>
             <Column title="TO-DO" column="todo" cards={cards} setCards={setCards}/>
@@ -20,9 +33,27 @@ const DEFAULT_CARDS = [
     {title: "Look into render bug in dashboard", id: "1", column: "assessed", subject: "UI/UX", date: "2024-03-20"},
     {title: "SOX compliance checklist", id: "2", column: "assessed", subject: "Compliance", date: "2024-03-21"},
     {title: "[SPIKE] Migrate to Azure", id: "3", column: "assessed", subject: "Cloud Computing", date: "2024-03-22"},
-    {title: "Document Notifications service", id: "4", column: "assessed", subject: "Documentation", date: "2024-03-23"},
-    {title: "Document Notifications service", id: "11", column: "assessed", subject: "Documentation", date: "2024-03-23"},
-    {title: "Document Notifications service", id: "12", column: "assessed", subject: "Documentation", date: "2024-03-23"},
+    {
+        title: "Document Notifications service",
+        id: "4",
+        column: "assessed",
+        subject: "Documentation",
+        date: "2024-03-23"
+    },
+    {
+        title: "Document Notifications service",
+        id: "11",
+        column: "assessed",
+        subject: "Documentation",
+        date: "2024-03-23"
+    },
+    {
+        title: "Document Notifications service",
+        id: "12",
+        column: "assessed",
+        subject: "Documentation",
+        date: "2024-03-23"
+    },
     // TODO
     {
         title: "Research DB options for new microservice",
@@ -32,7 +63,13 @@ const DEFAULT_CARDS = [
         subject: "Mathematics"
     },
     {title: "Postmortem for outage", id: "6", column: "todo", subject: "Incident Management", date: "2024-03-25"},
-    {title: "Sync with product on Q3 roadmap", id: "7", column: "todo", subject: "Project Management", date: "2024-03-26"},
+    {
+        title: "Sync with product on Q3 roadmap",
+        id: "7",
+        column: "todo",
+        subject: "Project Management",
+        date: "2024-03-26"
+    },
 
     // DONE
     {

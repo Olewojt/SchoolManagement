@@ -7,7 +7,7 @@ interface AddCardProps {
 }
 
 const AddCard: FC<AddCardProps> = ({column, setCards}) => {
-    const [text, setTex] = useState("")
+    const [text, setText] = useState("")
     const [adding, setAdding] = useState(false)
 
     const handleChange = () => {
@@ -18,16 +18,26 @@ const AddCard: FC<AddCardProps> = ({column, setCards}) => {
         e.preventDefault()
 
         if (!text.trim().length) return;
+
+        const newCard = {
+            column,
+            title: text.trim(),
+            id: Math.random().toString(),
+        };
+
+        setCards((pv: any) => [...pv, newCard]);
+
+        setAdding(false);
     }
 
     return (
         <>
             {adding
                 ?   <form onSubmit={handleSubmit}>
-                        <textarea />
+                        <textarea onChange={(e) => setText(e.target.value)} />
                     <div>
                         <button>Close</button>
-                        <button>Add</button>
+                        <AddButton type={"submit"}>Add Card</AddButton>
                     </div>
                     </form>
                 :   <AddButton type={"button"} onClick={handleChange}>Add Card</AddButton>
