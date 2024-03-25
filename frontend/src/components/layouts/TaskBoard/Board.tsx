@@ -3,13 +3,13 @@ import {useEffect, useState} from "react";
 import Column from "layouts/TaskBoard/Column.tsx";
 
 const Board = () => {
-    const [cards, setCards] = useState([])
+    const [cards, setCards] = useState([DEFAULT_CARDS])
     const [hasChecked, setHasChecked] = useState(false)
 
     useEffect(() => {
         hasChecked && localStorage.setItem("cards", JSON.stringify(cards))
     }, [cards])
-
+    
     useEffect(() => {
         const cardData = localStorage.getItem("cards")
 

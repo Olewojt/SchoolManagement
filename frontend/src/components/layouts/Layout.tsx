@@ -29,3 +29,11 @@ const Layout = () => {
 }
 
 export default Layout;
+
+export const LayoutAuth = () => {
+    return (
+        <main>
+            <Outlet />
+        </main>
+    )
+}
