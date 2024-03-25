@@ -4,7 +4,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.25);
+    background-color: var(--color-transparent);
     border-radius: 50px;
     padding-left: 30px;
     padding-right: 15px;
@@ -20,11 +20,11 @@
 }
 
 .button {
-  border: none; // Remove border
-  background-color: transparent; // Set background color to transparent
-  cursor: pointer; // Set cursor to pointer for hover effect
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
 
   &:focus {
-    outline: none; // Remove outline when focused
+    outline: none;
   }
 }

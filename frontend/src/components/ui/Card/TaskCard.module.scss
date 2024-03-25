@@ -1,5 +1,5 @@
 .card {
-  background-color: #C8B6FF;
+  background-color: var(--color-secondary);
   max-width: 23rem;
   min-width: 15rem;
 
@@ -8,8 +8,8 @@
   padding: 1.2rem 3rem 1.2rem 3rem;
 
   border-radius: 3rem;
-  color: #1a1a1a;
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  color: var(--color-main-font);
+  box-shadow: var(--shadow-main);
 
   cursor: grab;
 
@@ -35,9 +35,9 @@
       }
     }
 
-    &::before{
+    &::before {
       content: "";
-      background-color: #1a1a1a;
+      background-color: var(--color-main-font);
       display: block;
       height: 1px;
       width: 100%;
@@ -48,7 +48,5 @@
     position: absolute;
     top: -1.5rem;
     right: -1rem;
-
-
   }
 }

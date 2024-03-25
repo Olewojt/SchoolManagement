@@ -27,7 +27,7 @@
   grid-gap: 2rem;
 
 
-  background: url("./src/assets/images/lollipop.png") no-repeat bottom,  linear-gradient(0deg, rgba(187, 208, 255, 1) 0%, rgba(255, 214, 255, 1) 100%);
+  background: var(--img-lolipop-bg), var(--color-gradient);
 
   &__title {
     margin: 0 auto;
@@ -36,7 +36,7 @@
     h1 {
       font-size: 2rem;
       font-weight: 400;
-      color: #1a1a1a;
+      color: var(--color-main-font);
     }
   }
 
@@ -60,7 +60,7 @@
     justify-content: space-between;
 
     & > *:nth-child(1) {
-      animation: slideIn 1.2s cubic-bezier(.52,-0.06,.24,1.12);
+      animation: slideIn 1.2s cubic-bezier(.52, -0.06, .24, 1.12);
       animation-delay: 1.5s;
     }
 

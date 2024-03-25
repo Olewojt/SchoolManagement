@@ -13,7 +13,7 @@
       align-items: center;
       font-size: 1.5rem;
       cursor: pointer;
-      color: #1a1a1a;
+      color: var(--color-main-font);
       position: relative;
 
       &::before {
@@ -21,9 +21,9 @@
         height: 1em;
         width: 2em;
         border-radius: 1em;
-        background-color: #FFD6FF;
+        background-color: var(--color-fourth);
         margin-right: .5em;
-        box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+        box-shadow: var(--shadow-main);
       }
 
       &::after {
@@ -31,7 +31,7 @@
         height: 0.8em;
         width: 0.8em;
         border-radius: 1em;
-        background-color: #C8B6FF;
+        background-color: var(--color-secondary);
         position: absolute;
         left: 0.2em;
         transition: all .2s ease-in-out;
@@ -41,11 +41,11 @@
     &:checked + label::after {
       transform: translateX(100%);
       transition: all .2s ease-in-out;
-      background-color: #FFD6FF;
+      background-color: var(--color-fourth);
     }
 
     &:checked + label::before {
-      background-color: #BBD0FF;
+      background-color: var(--color-primary);
     }
   }
 }

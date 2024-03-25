@@ -1,29 +1,26 @@
 :root {
   // Light Mode
-  --color-pink-panterre: #FFD6FF;
-  --color-blue-bukkake: #B8C0FF;
-  --color-heavenly-sex-with-musculary-gays: #BBD0FF;
-  --color-purple-gay: #E7C6FF;
-  --color-purple-blue: #C8B6FF;
-  --color-gradient-light: linear-gradient(0deg, rgba(187, 208, 255, 1) 0%, rgba(255, 214, 255, 1) 100%);
+  --color-primary: #BBD0FF;
+  --color-secondary: #C8B6FF;
+  --color-thrid: #B8C0FF;
+  --color-fourth: #FFD6FF;
+  --color-fifth: #E7C6FF;
+  --color-gradient: linear-gradient(0deg, rgba(187, 208, 255, 1) 0%, rgba(255, 214, 255, 1) 100%);
+
+  --color-transparent: rgba(0, 0, 0, 0.25);
+
+  --color-main-font: #1a1a1a;
+  --color-secondary-font: #FFFFFF;
+
+  --img-family-bg-login: url("assets/images/family-bg-light.png");
+
+  --img-lolipop-bg: url("../src/assets/images/lollipop.png") no-repeat bottom; // TODO: for fixing mby
+  --shadow-main: 2px 2px 4px rgba(0, 0, 0, 0.25);
   --grade-card-bg-5: #47DC4D;
   --grade-card-bg-4: #5467FF;
   --grade-card-bg-3: #FFAC0A;
   --grade-card-bg-2: #483978;
   --grade-card-bg-1: #FF2525;
-  --color-main-font: #1a1a1a;
-  --color-secondary-font: #FFFFFF;
-  --img-lolipop-bg: url("../src/assets/images/lollipop.png") no-repeat bottom; // TODO: for fixing mby
-  --img-family-bg-login-light: url("assets/images/family-bg-light.png");
-  --shadow-main: 2px 2px 4px rgba(0, 0, 0, 0.25);
-
-  // Dark Mode
-  --color-shitty-beetroot: #BA6CBA;
-  --color-darker-blue: #1F428F;
-  --color-blue-and-dick: #2F3EB1;
-  --color-gradient-dark: linear-gradient(0deg, rgba(186, 108, 186, 1) 0%, rgba(31, 66, 143, 1) 100%);
-  --color-raven-from-teen-titans: #9E4DD9;
-  --img-family-bg-login-dark: url("assets/images/family-bg-dark.png");
 
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -37,6 +34,17 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+[data-theme="dark"] {
+  --color-primary: #1F428F;
+  --color-secondary: #9E4DD9;
+  --color-third: #2F3EB1;
+  --color-gradient: linear-gradient(0deg, rgba(186, 108, 186, 1) 0%, rgba(31, 66, 143, 1) 100%);
+  --img-family-bg-login: url("assets/images/family-bg-dark.png");
+
+  --color-main-font: #FFFFFF;
+  --color-secondary-font: #1a1a1a;
 }
 
 a {
@@ -53,7 +61,7 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
-  background-color: #BBD0FF; /*  Tutaj kolor zmieniany dla tła*/
+  //background-color: var(--color-primary); /*  Tutaj kolor zmieniany dla tła*/
   overflow: hidden;
 }
 
