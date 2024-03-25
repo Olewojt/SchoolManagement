@@ -29,7 +29,7 @@ const Reset: React.FC = () => {
     }
 
     return (
-        <div className={classes.login}>
+        <div className={classes.login} data-theme="dark">
             <div className={classes.login__background}/>
             <aside className={classes.login__aside}>
                 <img src={Logo} alt=""/>

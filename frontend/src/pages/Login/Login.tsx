@@ -40,8 +40,12 @@ const Login: React.FC = () => {
         }, 1000);
     }
 
+    // sprawdzic czy jest localStorage ustawione
+    // jesli nie to ustawic na default light,
+    // jesli jest to pobrac to co trzeba
+
     return (
-        <div className={classes.login}>
+        <div className={classes.login} data-theme="dark">
             <div className={classes.login__background}>
                 <h1 style={{background: "rgba(0, 0, 0, 0.7)"}}>Login: admin<br/> Password: admin
                 </h1> {/*TODO: do testow, bedzie trzeba i tak reduxa ogarnac*/}
