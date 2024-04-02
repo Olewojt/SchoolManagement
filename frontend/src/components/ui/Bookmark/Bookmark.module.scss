@@ -24,7 +24,7 @@ $noactive: true;
 
     font-size: 1.4rem;
     font-weight: 400;
-    color: #1a1a1a;
+    color: var(--color-main-font);
   }
 
   &__anime:hover {
@@ -67,7 +67,7 @@ $noactive: true;
 
     span {
       margin-left: 10px;
-      color: #1a1a1a;
+      color: var(--color-main-font);
       font-weight: 500;
     }
   }

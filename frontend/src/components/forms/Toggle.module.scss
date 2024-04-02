@@ -6,7 +6,7 @@
   }
 
   &__input {
-    visibility: hidden;
+    display: none;
 
     & + label {
       display: flex;

@@ -17,10 +17,9 @@ interface SelectProps {
 
 const Select: React.FC<SelectProps> = (props: SelectProps) => {
 
-    const [isExpanded, setIsExpanded] = useState(true)
+    const [isExpanded, setIsExpanded] = useState(false)
     const [checkedItems, setCheckedItems] = useState<{ [key: string]: boolean }>({});
     const [selectAll, setSelectAll] = useState(false);
-
 
     const toggleExpansion = () => {
         setIsExpanded(prev => !prev);
@@ -34,7 +33,6 @@ const Select: React.FC<SelectProps> = (props: SelectProps) => {
         setCheckedItems(newCheckedItems);
         setSelectAll(!selectAll);
     };
-
 
     const handleCheckboxChange = (name: string) => {
         setCheckedItems(prevState => ({

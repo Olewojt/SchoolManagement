@@ -6,7 +6,10 @@ import {useEffect} from "react";
 
 const Configuration = () => {
     let isDarkLocalStorage = localStorage.getItem("isDark") === 'true'
+    let isNotifiedLocalStorage = localStorage.getItem("isNotified") === 'true'
+
     const [isDark, toggleDarkMode] = useToggle(isDarkLocalStorage) //Taki nowy hook napisany. Jest w folderze hooks
+    const [isNotified, toggleNotifications] = useToggle(isNotifiedLocalStorage)
 
     useEffect(() => {
         if (isDarkLocalStorage != isDark) {
@@ -14,13 +17,22 @@ const Configuration = () => {
             window.location.reload()
         }
     }, [isDark])
+
+    useEffect(() => {
+        if (isNotifiedLocalStorage != isNotified) {
+            localStorage.setItem("isNotified", JSON.stringify(isNotified))
+        }
+    }, [isNotified])
+
     return (
         <main className={classes.home}>
-            <Header value={'Account'}>
+            <Header value={'Account'}></Header>
+            <Header value={'Look & Feel'}>
                 <Toggle id={"dark-mode"} onChange={toggleDarkMode} checked={isDark} labelText={"Dark Mode"}></Toggle>
             </Header>
-            <Header value={'Look & Feel'}></Header>
-            <Header value={'Notifications'}></Header>
+            <Header value={'Notifications'}>
+                <Toggle id={"notifications"} onChange={toggleNotifications} checked={isNotified} labelText={"Notifications"}></Toggle>
+            </Header>
         </main>
     )
 }

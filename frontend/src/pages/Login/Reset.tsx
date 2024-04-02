@@ -4,7 +4,7 @@ import classes from "./Login.module.scss"
 import Input from "forms/Input.tsx";
 import Button from "ui/Button/Button.tsx";
 
-import Logo from "../../assets/images/Logo.png"
+import {Logo} from "assets/icons/Icon.tsx"
 import {useNavigate} from "react-router-dom";
 
 const Reset: React.FC = () => {
@@ -32,7 +32,7 @@ const Reset: React.FC = () => {
         <div className={classes.login}>
             <div className={classes.login__background}/>
             <aside className={classes.login__aside}>
-                <img src={Logo} alt=""/>
+                <Logo className={classes.logo}/>
                 <div className={`${classes["reset__form"]} ${anime && classes["reset__form--anime"]}`}>
                     <h1 className={classes.header}>Reset Password</h1>
                     <form onSubmit={onSubmit} className={classes.form}>
