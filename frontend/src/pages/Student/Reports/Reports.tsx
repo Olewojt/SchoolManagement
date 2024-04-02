@@ -1,14 +1,39 @@
 import classes from "./Reports.module.scss"
-import Header from "ui/Header/Header.tsx";
+import Select, {Subject} from "forms/Select.tsx";
 import PieChart from "ui/Charts/PieChart.tsx";
 const Reports = () => {
+
+    const subjects: Subject[] = [
+        {
+            name: "math",
+            display_name: "Mathematics"
+        },
+        {
+            name: "english",
+            display_name: "English"
+        },
+        {
+            name: "physics",
+            display_name: "Physics"
+        },
+        {
+            name: "chemistry",
+            display_name: "Chemistry"
+        },
+        {
+            name: "history",
+            display_name: "History"
+        },
+        {
+            name: "biology",
+            display_name: "Biology"
+        }
+    ];
 
     return (
         <main className={classes.content}>
             <div className={classes.filters}>
-                <Header value={"Subject"}></Header>
-                <Header value={"Subject"}></Header>
-                <Header value={"Subject"}></Header>
+                <Select name={"Subject"} options={subjects}></Select>
             </div>
 
             <div className={classes.charts}>
