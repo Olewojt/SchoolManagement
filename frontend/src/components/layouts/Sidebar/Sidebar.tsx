@@ -1,15 +1,14 @@
 import classes from "./Sidebar.module.scss"
-import Logo from "assets/images/LogoShort.png"
 import Bookmark from "ui/Bookmark/Bookmark.tsx";
 import ProfileBookmark from "ui/Bookmark/ProfileBookmark.tsx";
 import ProfileImg from "assets/images/Profile.png";
-import {LogoutIcon, NotesIcon, ReportIcon, TasksIcon, HomeIcon} from "assets/icons/Icon.tsx";
+import {LogoShort, LogoutIcon, NotesIcon, ReportIcon, TasksIcon, HomeIcon} from "assets/icons/Icon.tsx";
 
 const Sidebar = () => {
     return (
         <aside className={classes.sidebar}>
             <div className={classes.sidebar__title}>
-                <img src={Logo} alt=""/>
+                <LogoShort className={classes.logo}/>
                 <h1>Class 5C</h1>
             </div>
             <div className={classes.sidebar__bookmarks}>

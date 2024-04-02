@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import expand from 'assets/icons/expand.svg'
 import collapse from 'assets/icons/collapse.svg'
 import classes from './Select.module.scss'
-import {getMutationCacheKey} from "@reduxjs/toolkit/dist/query/core/buildSlice";
 
 export interface Subject {
     name: string,

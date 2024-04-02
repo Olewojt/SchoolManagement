@@ -4,7 +4,7 @@ import classes from "./Login.module.scss"
 import Input from "forms/Input.tsx";
 import Button from "ui/Button/Button.tsx";
 
-import Logo from "../../assets/images/Logo.png"
+import {Logo} from "assets/icons/Icon.tsx";
 import {useNavigate} from "react-router-dom";
 
 const Login: React.FC = () => {
@@ -51,7 +51,7 @@ const Login: React.FC = () => {
                 </h1> {/*TODO: do testow, bedzie trzeba i tak reduxa ogarnac*/}
             </div>
             <aside className={classes.login__aside}>
-                <img src={Logo} alt=""/>
+               <Logo className={classes.logo}/>
                 <div className={`${classes["login__form"]} ${anime && classes["login__form--anime"]}`}>
                     <h1 className={classes.header}>Sign in</h1>
                     {error && <p className={classes.error}>Error (taki do poprawy)</p>}

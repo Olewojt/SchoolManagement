@@ -18,15 +18,13 @@ const Header: React.FC<HeaderProps> = (props: HeaderProps) => {
 
     return (
         <div className={`${classes.header} ${isExpanded && classes.expanded}`}>
-            <div className={`${classes.header__content} ${props.className}`}>
+            <div className={`${classes.header__content} ${props.className}`} onClick={toggleExpansion}>
                 <h3>{props.value}</h3>
-                <button className={classes.button} onClick={toggleExpansion}>
-                    {isExpanded ? (
-                        <img src={collapse} alt="collapse-icon" />
-                    ) : (
-                        <img src={expand} alt="expand-icon" />
-                    )}
-                </button>
+                {isExpanded ? (
+                    <img src={collapse} alt="collapse-icon" />
+                ) : (
+                    <img src={expand} alt="expand-icon" />
+                )}
             </div>
             {isExpanded && (
                 <div className={classes.expanded__content}>
