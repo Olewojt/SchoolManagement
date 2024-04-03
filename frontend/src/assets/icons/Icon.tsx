@@ -168,3 +168,28 @@ export const LogoShort = (props: IconProps) => {
         </svg>
     )
 }
+
+export const PlusIcon = () => {
+    return (
+        <svg width="53" height="53" viewBox="0 0 53 53" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g filter="url(#filter0_d_115_1619)">
+                <path d="M11.521 25.6521H39.1563" stroke="#FFD6FF" strokeWidth="4" strokeLinecap="round"/>
+                <path d="M25.3384 11.8345V39.4698" stroke="#FFD6FF" strokeWidth="4" strokeLinecap="round"/>
+            </g>
+            <defs>
+                <filter id="filter0_d_115_1619" x="0.520996" y="0.834473" width="51.6353" height="51.6353"
+                        filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+                    <feFlood floodOpacity="0" result="BackgroundImageFix"/>
+                    <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                                   result="hardAlpha"/>
+                    <feOffset dx="1" dy="1"/>
+                    <feGaussianBlur stdDeviation="5"/>
+                    <feComposite in2="hardAlpha" operator="out"/>
+                    <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+                    <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_115_1619"/>
+                    <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_115_1619" result="shape"/>
+                </filter>
+            </defs>
+        </svg>
+    )
+}

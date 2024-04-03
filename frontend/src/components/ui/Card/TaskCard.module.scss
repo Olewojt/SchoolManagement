@@ -13,6 +13,10 @@
 
   cursor: grab;
 
+  &__true {
+    background-color: red !important;
+  }
+
   &:active {
     cursor: grabbing;
   }
@@ -48,5 +52,16 @@
     position: absolute;
     top: -1.5rem;
     right: -1rem;
+  }
+
+  &__btn {
+    background-color: var(--color-primary);
+    position: absolute;
+    right: 0;
+    bottom: -1.5rem;
+    border-radius: 100vw;
+    padding: 0;
+    display: flex;
+    box-shadow: var(--shadow-main);
   }
 }
