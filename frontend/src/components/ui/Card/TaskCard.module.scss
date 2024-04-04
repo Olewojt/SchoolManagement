@@ -118,6 +118,7 @@
   }
 
   &__content {
+    position: relative;
   }
 
   &__btn {
@@ -130,6 +131,7 @@
     box-shadow: var(--shadow-main);
 
     position: absolute;
+    top: 0;
     right: 0;
     margin: 1rem;
   }

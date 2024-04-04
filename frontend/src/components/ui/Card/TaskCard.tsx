@@ -44,12 +44,13 @@ const TaskCard = (props: CardInterface) => {
                 </button>
             </div>
             {active && <div className={classes.background}></div>}
-            //TODO: będzie można tutaj coś kombinwować z nowym komponenetem dla Studenta/Nauczyciela
+            {/*TODO: będzie można tutaj coś kombinwować z nowym komponenetem dla Studenta/Nauczyciela*/}
             {active
                 && <div className={classes["open-card"]}>
                     <div className={classes["open-card__container"]}>
                         <div className={classes["open-card__blank"]}></div>
                         <div className={classes["open-card__content"]}>
+                            <h1>{props.title}</h1>
                             <button className={classes["open-card__btn"]} type="button" onClick={handleActive}>
                                 <PlusIcon/>
                             </button>
