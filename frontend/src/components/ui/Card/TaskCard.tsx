@@ -1,4 +1,4 @@
-import {DragEvent, FormEvent, MouseEventHandler} from "react";
+import {DragEvent, FormEvent, MouseEventHandler, useState} from "react";
 import classes from "./TaskCard.module.scss";
 import {GroupIcon, PlusIcon} from "assets/icons/Icon.tsx";
 import DropIndicator from "layouts/TaskBoard/DropIndicator.tsx";
@@ -13,14 +13,18 @@ interface CardInterface {
     handleDragStart: (e: DragEvent<HTMLDivElement>, data: { title: string, id: string, column: string }) => void;
 
     onClick?: MouseEventHandler;
-    active?: string
 }
 
 const TaskCard = (props: CardInterface) => {
+    const [active, setActive] = useState(false)
     const formattedDate = new Date(props.date).toLocaleDateString(); // Formatowanie daty
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+    }
+
+    const handleActive = () => {
+        setActive(prevState => !prevState)
     }
 
     return (
@@ -35,24 +39,23 @@ const TaskCard = (props: CardInterface) => {
                     <h2>Subject <span>{props.subject}</span></h2>
                     <h2>Due Date <span>{formattedDate}</span></h2>
                 </div>
-                <button className={classes.card__btn} type="button" onClick={props.onClick}>
+                <button className={classes.card__btn} type="button" onClick={handleActive}>
                     <PlusIcon/>
                 </button>
             </div>
-            {props.active
-                && <>
-                    <div className={classes.background}></div>
-                    <div className={classes["open-card"]}>
-                        <div className={classes["open-card__container"]}>
-                            <div className={classes["open-card__blank"]}></div>
-                            <div className={classes["open-card__content"]}>
-                                <button className={classes["open-card__btn"]} type="button" onClick={props.onClick}>
-                                    <PlusIcon/>
-                                </button>
-                            </div>
+            {active && <div className={classes.background}></div>}
+            //TODO: będzie można tutaj coś kombinwować z nowym komponenetem dla Studenta/Nauczyciela
+            {active
+                && <div className={classes["open-card"]}>
+                    <div className={classes["open-card__container"]}>
+                        <div className={classes["open-card__blank"]}></div>
+                        <div className={classes["open-card__content"]}>
+                            <button className={classes["open-card__btn"]} type="button" onClick={handleActive}>
+                                <PlusIcon/>
+                            </button>
                         </div>
                     </div>
-                </>
+                </div>
             }
         </>
     );

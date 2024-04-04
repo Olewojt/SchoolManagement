@@ -1,4 +1,4 @@
-import {DragEvent, FC, useState} from "react";
+import { DragEvent, FC } from "react";
 import TaskCard from "ui/Card/TaskCard.tsx";
 import DropIndicator from "layouts/TaskBoard/DropIndicator.tsx";
 import AddCard from "layouts/TaskBoard/AddCard.tsx";
@@ -11,19 +11,7 @@ interface ColumnProps {
     setCards: any;
 }
 
-interface ActiveCardsState {
-    [key: string]: boolean;
-}
-
-const Column: FC<ColumnProps> = ({title, column, cards, setCards}) => {
-    const [activeCards, setActiveCards] = useState<ActiveCardsState>({});
-
-    const handleButtonMore = (id: string) => {
-        setActiveCards(prevState => ({
-            ...prevState,
-            [id]: !prevState[id]
-        }));
-    };
+const Column: FC<ColumnProps> = ({ title, column, cards, setCards }) => {
 
     const handleDragStart = (e: DragEvent<HTMLDivElement>, card: any): void => {
         e.dataTransfer.setData("cardId", card.id);
@@ -61,7 +49,7 @@ const Column: FC<ColumnProps> = ({title, column, cards, setCards}) => {
                 const offset = e.clientY - (box.top + DISTANCE_OFFSET);
 
                 if (offset < 0 && offset > closest.offset) {
-                    return {offset: offset, element: child};
+                    return { offset: offset, element: child };
                 } else {
                     return closest;
                 }
@@ -88,7 +76,7 @@ const Column: FC<ColumnProps> = ({title, column, cards, setCards}) => {
 
         const cardId = e.dataTransfer.getData("cardId");
         const indicators = getIndicators();
-        const {element} = getNearestIndicator(e, indicators);
+        const { element } = getNearestIndicator(e, indicators);
 
         const before = (element as HTMLElement).dataset.before || "-1";
         if (before !== cardId) {
@@ -98,7 +86,7 @@ const Column: FC<ColumnProps> = ({title, column, cards, setCards}) => {
 
             if (!cardToTransfer) return;
 
-            cardToTransfer = {...cardToTransfer, column};
+            cardToTransfer = { ...cardToTransfer, column };
 
             copy = copy.filter((c) => c.id !== cardId);
 
@@ -131,20 +119,10 @@ const Column: FC<ColumnProps> = ({title, column, cards, setCards}) => {
                 onDrop={handleDragEnd}
                 className={classes.column__items}
             >
-                <div>
-                    {filteredCards.map((c: any) => {
-                        return (
-                            <TaskCard
-                                key={c.id}
-                                {...c}
-                                handleDragStart={handleDragStart}
-                                onClick={() => handleButtonMore(c.id)}
-                                active={activeCards[c.id]}
-                            />
-                        );
-                    })}
-                </div>
-                <DropIndicator beforeId="-1" column={column}/>
+                {filteredCards.map((c: any) => {
+                    return <TaskCard key={c.id} {...c} handleDragStart={handleDragStart} />;
+                })}
+                <DropIndicator beforeId="-1" column={column} />
                 <AddCard column={column} setCards={setCards}/>
             </div>
         </div>
