@@ -13,10 +13,6 @@
 
   cursor: grab;
 
-  &__true {
-    background-color: red !important;
-  }
-
   &:active {
     cursor: grabbing;
   }
@@ -65,3 +61,78 @@
     box-shadow: var(--shadow-main);
   }
 }
+
+@keyframes openBg {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: scale(80);
+  }
+}
+
+.background {
+  background-color: var(--color-secondary);
+  position: absolute;
+  z-index: 5;
+
+  height: 10rem;
+  width: 20rem;
+
+  border-radius: 3rem;
+
+  animation: openBg .8s cubic-bezier(0.86, 0, 0.07, 1) forwards;
+}
+
+@keyframes contentOpacity {
+  0%, 50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.open-card {
+  z-index: 5;
+  animation: contentOpacity .8s ease-in-out;
+
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  font-size: 1rem;
+
+  &__container {
+    position: relative;
+    height: 100%;
+
+    display: grid;
+    grid-template-columns: 351px 1fr;
+  }
+
+  &__blank {
+  }
+
+  &__content {
+  }
+
+  &__btn {
+    background-color: var(--color-primary);
+    border-radius: 100vw;
+    z-index: 100;
+    padding: 0;
+
+    display: flex;
+    box-shadow: var(--shadow-main);
+
+    position: absolute;
+    right: 0;
+    margin: 1rem;
+  }
+}
+
+
