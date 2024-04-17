@@ -6,6 +6,8 @@ import Button from "ui/Button/Button.tsx";
 
 import {Logo} from "assets/icons/Icon.tsx";
 import {useNavigate} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {setLoggedInUser} from "state/auth/authSlice.tsx";
 
 const Login: React.FC = () => {
     const [form, setForm] = useState({
@@ -17,6 +19,8 @@ const Login: React.FC = () => {
 
     const navigate = useNavigate()
 
+    const dispatch = useDispatch();
+
     const handleForm = (e: ChangeEvent<HTMLInputElement>) => {
         setForm({
             ...form,
@@ -26,7 +30,10 @@ const Login: React.FC = () => {
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        if (form.name === "admin" && form.password === "admin") {
+        if ((form.name === "admin" && form.password === "admin")
+            || (form.name === "student" && form.password === "student")
+            || (form.name === "teacher" && form.password === "teacher")) {
+            dispatch(setLoggedInUser(form.name));
             navigate("/home", {replace: true});
         } else {
             setError(true)
@@ -39,10 +46,6 @@ const Login: React.FC = () => {
             navigate("/reset")
         }, 1000);
     }
-
-    // sprawdzic czy jest localStorage ustawione
-    // jesli nie to ustawic na default light,
-    // jesli jest to pobrac to co trzeba
 
     return (
         <div className={classes.login}>

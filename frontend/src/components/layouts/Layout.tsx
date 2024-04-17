@@ -8,7 +8,15 @@ if (isDark == null) {
     localStorage.setItem("isDark", 'false');
     isDark = false;
 }
+
 const Layout = () => {
+    return (
+        <Outlet/>
+    )
+}
+export default Layout;
+
+export const LayoutMain = () => {
     return (
         <main className={classes.student} data-theme={isDark ? "dark" : ""}>
             <Sidebar/>
@@ -16,8 +24,6 @@ const Layout = () => {
         </main>
     )
 }
-
-export default Layout;
 
 export const LayoutAuth = () => {
     return (
