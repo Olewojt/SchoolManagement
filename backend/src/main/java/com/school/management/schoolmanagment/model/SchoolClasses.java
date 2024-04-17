@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+import static jakarta.persistence.FetchType.EAGER;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -16,7 +17,7 @@ public class SchoolClasses {
     private String name;
     @OneToMany(mappedBy = "schoolClasses")
     private final Set<Users> students = new HashSet<>();
-    @ManyToMany
+    @ManyToMany(fetch = EAGER)
     @JoinTable(name = "class_subjects",
             joinColumns = @JoinColumn(name = "class_id"),
             inverseJoinColumns = @JoinColumn(name = "subject_id"))

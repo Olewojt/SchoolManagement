@@ -2,9 +2,11 @@ package com.school.management.schoolmanagment.model;
 
 import jakarta.persistence.*;
 
+
 import java.util.HashSet;
 import java.util.Set;
 
+import static jakarta.persistence.FetchType.EAGER;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -34,7 +36,7 @@ public class Users {
     private Set<Users> children;
     @ManyToMany(mappedBy = "children")
     private Set<Users> parents;
-    @ManyToMany(mappedBy = "users")
+    @ManyToMany(mappedBy = "users", fetch = EAGER)
     private final Set<Tasks> tasks = new HashSet<>();
 
     public Users() {
@@ -46,6 +48,11 @@ public class Users {
         this.personalInfo = personalInfo;
         this.role = role;
         this.schoolClasses = schoolClasses;
+    }
+
+    public void addTask (Tasks task) {
+        this.tasks.add(task);
+        task.getUsers().add(this);
     }
 
     public void addChild(Users child) {

@@ -7,10 +7,13 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.sql.Blob;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import static jakarta.persistence.EnumType.STRING;
+import static jakarta.persistence.FetchType.EAGER;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -32,8 +35,8 @@ public class Tasks {
     private Instant createdAt;
     @Lob
     private Blob attachment;
-    @ManyToOne(fetch = LAZY)
-    private Grades grade;
+    private Integer grade;
+    private Date gradedAt;
     @ManyToOne(fetch = LAZY)
     private Subjects subject;
     @ManyToMany
@@ -47,7 +50,7 @@ public class Tasks {
 
     public Tasks(String title, String description, LocalDateTime deadline,
                  TaskStatus status, Users taskCreator, String feedback, Instant createdAt,
-                 Blob attachment, Grades grade, Subjects subject) {
+                 Blob attachment, Integer grade, Date gradedAt, Subjects subject) {
         this.title = title;
         this.description = description;
         this.deadline = deadline;
@@ -57,6 +60,7 @@ public class Tasks {
         this.createdAt = createdAt;
         this.attachment = attachment;
         this.grade = grade;
+        this.gradedAt= gradedAt;
         this.subject = subject;
     }
 
@@ -132,12 +136,20 @@ public class Tasks {
         this.attachment = attachment;
     }
 
-    public Grades getGrade() {
+    public Integer getGrade() {
         return grade;
     }
 
-    public void setGrade(Grades grade) {
+    public void setGrade(Integer grade) {
         this.grade = grade;
+    }
+
+    public Date getGradedAt() {
+        return gradedAt;
+    }
+
+    public void setGradedAt(Date gradedAt) {
+        this.gradedAt = gradedAt;
     }
 
     public Subjects getSubject() {

@@ -17,6 +17,10 @@ public class Subjects {
     @ManyToMany(mappedBy = "subjects")
     private final Set<SchoolClasses> schoolClasses = new HashSet<>();
 
+    public Subjects() {
+
+    }
+
     public void addClass(SchoolClasses schoolClass) {
         this.schoolClasses.add(schoolClass);
         schoolClass.getSubjects().add(this);
@@ -25,6 +29,10 @@ public class Subjects {
     public void removeClass(SchoolClasses schoolClass) {
         this.schoolClasses.remove(schoolClass);
         schoolClass.getSubjects().remove(this);
+    }
+
+    public Subjects(String name) {
+        this.name = name;
     }
 
     public Long getId() {
