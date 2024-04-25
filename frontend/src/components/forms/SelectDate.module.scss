@@ -1,0 +1,28 @@
+.expanded {
+
+  &__content {
+    display: grid;
+    grid-template-rows: repeat(5, auto);
+    grid-auto-flow: column;
+    grid-gap: 0.3rem;
+
+    input {
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      border: 0;
+
+      font-weight: 800;
+
+      background-color: var(--color-secondary);
+
+      &:hover {
+        background-color: var(--color-third);
+      }
+    }
+
+    label {
+      font-size: 1.2rem;
+      font-weight: 500;
+    }
+  }
+}

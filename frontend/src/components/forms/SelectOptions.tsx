@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import expand from 'assets/icons/expand.svg'
 import collapse from 'assets/icons/collapse.svg'
-import classes from './Select.module.scss'
+import baseClasses from './SelectOptions.module.scss';
+import classes from './SelectOptions.module.scss'
 
 export interface Subject {
     name: string,
@@ -15,7 +16,7 @@ interface SelectProps {
     className?: string
 }
 
-const Select: React.FC<SelectProps> = (props: SelectProps) => {
+const SelectOptions: React.FC<SelectProps> = (props: SelectProps) => {
 
     const [isExpanded, setIsExpanded] = useState(false)
     const [checkedItems, setCheckedItems] = useState<{ [key: string]: boolean }>({});
@@ -42,8 +43,8 @@ const Select: React.FC<SelectProps> = (props: SelectProps) => {
     };
 
     return (
-        <div className={`${classes.select} ${isExpanded && classes.expanded}`}>
-            <div className={`${classes.select__content} ${props.className}`} onClick={toggleExpansion}>
+        <div className={baseClasses.select}>
+            <div className={`${baseClasses.select__content} ${classes.select__content} ${props.className}`} onClick={toggleExpansion}>
                 <h3>{props.name}</h3>
                 { isExpanded ? (
                     <img src={collapse} alt="collapse-icon" />
@@ -53,7 +54,7 @@ const Select: React.FC<SelectProps> = (props: SelectProps) => {
                 }
             </div>
             {isExpanded && (
-                <div className={classes.expanded__content}>
+                <div className={`${baseClasses.expanded__content} ${classes.expanded__content}`}>
                     {
                         props.options.map( (entry: Subject) =>
                             <div className={classes.expanded__content__checkbox}>
@@ -84,4 +85,4 @@ const Select: React.FC<SelectProps> = (props: SelectProps) => {
     )
 }
 
-export default Select;
+export default SelectOptions;

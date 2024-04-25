@@ -1,6 +1,7 @@
 import classes from "./Reports.module.scss"
-import Select, {Subject} from "forms/Select.tsx";
+import SelectOptions, {Subject} from "forms/SelectOptions.tsx";
 import PieChart from "ui/Charts/PieChart.tsx";
+import SelectDate from "forms/SelectDate.tsx";
 const Reports = () => {
 
     const subjects: Subject[] = [
@@ -33,7 +34,8 @@ const Reports = () => {
     return (
         <main className={classes.content}>
             <div className={classes.filters}>
-                <Select name={"Subject"} options={subjects}></Select>
+                <SelectOptions name={"Subject"} options={subjects}></SelectOptions>
+                <SelectDate name={"Date"}></SelectDate>
             </div>
 
             <div className={classes.charts}>
