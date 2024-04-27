@@ -96,12 +96,14 @@ public class DatabaseSeeder implements CommandLineRunner {
 
 
     private void seedNotifications() {
-        Users user = usersRepository.findByEmail("john.doe@example.com");
+        Optional<Users> byEmail = usersRepository.findByEmail("john.doe@example.com");
+        Users user = byEmail.get();
         notificationRepository.save(new Notification("Welcome to our platform", Instant.now(), user, false));
     }
 
     private void seedReports() {
-        Users user = usersRepository.findByEmail("john.doe@example.com");
+        Optional<Users> optionalUsers = usersRepository.findByEmail("john.doe@example.com");
+        Users user = optionalUsers.get();
         reportsRepository.save(new Reports(ReportType.FIRST_TYPE, Instant.now(), "Sample Report", user, null));
     }
 
@@ -117,7 +119,8 @@ public class DatabaseSeeder implements CommandLineRunner {
 
 
     private void seedTeacherSubjectsInClasses() {
-        Users teacher = usersRepository.findByEmail("john.doe@example.com");
+        Optional<Users> byEmail = usersRepository.findByEmail("john.doe@example.com");
+        Users teacher = byEmail.get();
         Subjects subject = subjectsRepository.findByName("Religion");
         SchoolClasses class1 = schoolClassesRepository.findByName("5A");
         TeacherSubjectsInClasses tsic = new TeacherSubjectsInClasses(teacher, subject, class1);
