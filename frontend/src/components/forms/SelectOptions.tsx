@@ -5,53 +5,29 @@ import baseClasses from './SelectOptions.module.scss';
 import classes from './SelectOptions.module.scss'
 
 export interface Subject {
-    name: string,
-    display_name: string
+    name: string
 }
 
 interface SelectProps {
-    options: Array<any>;
+    options: Array<Subject>;
     name: string;
-    children?: React.ReactNode;
+    checkedItems: { [key: string]: boolean };
+    onCheckboxChange: (name: string) => void;
     className?: string
 }
 
 const SelectOptions: React.FC<SelectProps> = (props: SelectProps) => {
 
     const [isExpanded, setIsExpanded] = useState(false)
-    const [checkedItems, setCheckedItems] = useState<{ [key: string]: boolean }>({});
-    const [selectAll, setSelectAll] = useState(false);
-
     const toggleExpansion = () => {
         setIsExpanded(prev => !prev);
     }
-
-    const handleSelectAll = () => {
-        const newCheckedItems: { [key: string]: boolean } = {};
-        props.options.forEach(entry => {
-            newCheckedItems[entry.name] = !selectAll;
-        });
-        setCheckedItems(newCheckedItems);
-        setSelectAll(!selectAll);
-    };
-
-    const handleCheckboxChange = (name: string) => {
-        setCheckedItems(prevState => ({
-            ...prevState,
-            [name]: !prevState[name]
-        }));
-    };
 
     return (
         <div className={baseClasses.select}>
             <div className={`${baseClasses.select__content} ${classes.select__content} ${props.className}`} onClick={toggleExpansion}>
                 <h3>{props.name}</h3>
-                { isExpanded ? (
-                    <img src={collapse} alt="collapse-icon" />
-                ) : (
-                    <img src={expand} alt="expand-icon"/>
-                )
-                }
+                <img src={isExpanded ? collapse : expand} alt={isExpanded ? "collapse-icon" : "expand-icon"}/>
             </div>
             {isExpanded && (
                 <div className={`${baseClasses.expanded__content} ${classes.expanded__content}`}>
@@ -59,26 +35,17 @@ const SelectOptions: React.FC<SelectProps> = (props: SelectProps) => {
                         props.options.map( (entry: Subject) =>
                             <div className={classes.expanded__content__checkbox}>
                                 <label>
-                                    {entry.display_name}
+                                    {entry.name}
                                     <input
                                         type="checkbox"
-                                        checked={checkedItems[entry.name] || false}
-                                        onChange={() => handleCheckboxChange(entry.name)}
+                                        checked={props.checkedItems[entry.name] || false}
+                                        onChange={() => props.onCheckboxChange(entry.name)}
                                         name={entry.name}
                                     />
                                 </label>
                             </div>
                         )
                     }
-                    <div className={classes.expanded__content__checkbox}>
-                        <label>
-                            Select All
-                            <input
-                                type="checkbox"
-                                onChange={handleSelectAll}
-                            />
-                        </label>
-                    </div>
                 </div>
             )}
         </div>
