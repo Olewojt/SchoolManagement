@@ -49,7 +49,7 @@ function getGradesCount(dummyGrades: DummyGrades[]): GradeDict {
 }
 
 // Absolutnie nie korzystalem z Chatu GPT.
-const Reports = () => {
+const StudentReports = () => {
 
     const subjects = getSubjects(DUMMY_GRADES);
     const initialState = generateInitialState(subjects)
@@ -91,4 +91,4 @@ const Reports = () => {
     );
 }
 
-export default Reports;
+export default StudentReports;

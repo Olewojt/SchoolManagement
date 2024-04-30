@@ -4,7 +4,7 @@ import GradeCard from "ui/Card/GradeCard.tsx";
 import { useState } from "react";
 import { DUMMY_GRADES } from "api/Grades.tsx";
 
-const Grades = () => {
+const StudentGrades = () => {
     const [gradesData] = useState(DUMMY_GRADES);
 
     return (
@@ -22,4 +22,4 @@ const Grades = () => {
     );
 }
 
-export default Grades;
+export default StudentGrades;

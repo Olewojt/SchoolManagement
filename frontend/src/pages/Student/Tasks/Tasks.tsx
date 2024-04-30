@@ -1,6 +1,6 @@
 import classes from "./Tasks.module.scss"
 import Board from "layouts/TaskBoard/Board.tsx";
-const Tasks = () => {
+const StudentTasks = () => {
     return(
         <main className={classes.main}>
             <Board />
@@ -8,4 +8,4 @@ const Tasks = () => {
     )
 }
 
-export default Tasks
+export default StudentTasks

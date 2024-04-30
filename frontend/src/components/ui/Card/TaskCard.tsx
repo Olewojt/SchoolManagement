@@ -2,7 +2,7 @@ import {DragEvent, FormEvent, MouseEventHandler, useState} from "react";
 import classes from "./TaskCard.module.scss";
 import {GroupIcon, PlusIcon} from "assets/icons/Icon.tsx";
 import DropIndicator from "layouts/TaskBoard/DropIndicator.tsx";
-import ProfileImg from "assets/images/Profile.png";
+import ProfileImg from "assets/images/Profile_student.png";
 
 interface CardInterface {
     title: string;
