@@ -76,13 +76,7 @@ const TaskCard = (props: CardInterface) => {
                                 </div>
                             </div>
                             {/*Tutaj dodać jeszcze trzeba takie rzezczy typu descirpiotn dla props itp*/}
-                            <textarea disabled={true} className={classes["open-card__description"]}>Pewnego dnia, mały Wojtek znalazł w stawie
-                                kaczkę wykałaczkę. Była mała, pomarańczowa i miała wesołe, krzykliwe piórka. Wojtek był
-                                zachwycony! Postanowił zabrać ją do domu. Nazwał ją Kaczorem Wykałaczorem. Razem
-                                spędzali dni na przygodach: pływali po kałużach, zbierali kamyki i słuchali szumu drzew.
-                                Kaczor Wykałaczor stał się dla Wojtka najlepszym przyjacielem. Każdego wieczoru usypiali
-                                razem, snując marzenia o kolejnych wspólnych przygodach. Ich przyjaźń była jak magiczna
-                                opowieść, która trwała wiecznie.</textarea>
+                            <textarea value={DUMMY_VALUE} className={classes["open-card__description"]} disabled={true} />
                             <div className={classes["open-card__members--title"]}>
                                 <GroupIcon className={classes["open-card__icon"]}/>
                                 <h2>Project with:</h2>
@@ -114,3 +108,5 @@ const TaskCard = (props: CardInterface) => {
 }
 
 export default TaskCard;
+
+const DUMMY_VALUE : string = "Pewnego dnia, mały Wojtek znalazł w stawie skaczkę wykałaczkę. Była mała, pomarańczowa i miała wesołe, krzykliwe piórka. Wojtek był zachwycony! Postanowił zabrać ją do domu. Nazwał ją Kaczorem Wykałaczorem. Razem spędzali dni na przygodach: pływali po kałużach, zbierali kamyki i słuchali szumu drzew. Kaczor Wykałaczor stał się dla Wojtka najlepszym przyjacielem. Każdego wieczoru usypiali razem, snując marzenia o kolejnych wspólnych przygodach. Ich przyjaźń była jak magiczna opowieść, która trwała wiecznie "

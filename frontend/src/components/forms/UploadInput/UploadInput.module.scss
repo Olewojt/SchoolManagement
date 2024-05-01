@@ -7,7 +7,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-
+  height: 5.5rem;
 }
 
 .upload {
@@ -25,6 +25,8 @@
 
     width: fit-content;
     height: fit-content;
+
+    cursor: pointer;
   }
 }
 
@@ -84,5 +86,8 @@
     color: #33363F;
     font-weight: 700;
     font-size: .9rem;
+  }
+  &__name {
+    padding-right: .8rem;
   }
 }

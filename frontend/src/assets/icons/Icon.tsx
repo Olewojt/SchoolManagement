@@ -240,7 +240,7 @@ export const AttachmentIcon = () => {
 
 export const CheckIcon = () => {
     return (
-        <svg width="31" height="23" viewBox="0 0 31 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="28" height="20" viewBox="0 0 31 23" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M3 9.21452L12.3356 20L28 3" stroke="#33363F" strokeWidth="5" strokeLinecap="round"
                   strokeLinejoin="round"/>
         </svg>
@@ -249,7 +249,7 @@ export const CheckIcon = () => {
 
 export const DocIcon = () => {
     return (
-        <svg width="36" height="43" viewBox="0 0 36 43" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="25" height="38" viewBox="0 0 36 43" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M33 39.5601H3V3H24L33 12.4399V39.5601Z" stroke="#33363F" strokeWidth="5" strokeLinecap="round"
                   strokeLinejoin="round"/>
             <path d="M23 13H33L24 3L23 13Z" stroke="#33363F" strokeWidth="5" strokeLinecap="round"
