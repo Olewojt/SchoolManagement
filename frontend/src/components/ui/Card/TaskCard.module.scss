@@ -130,7 +130,6 @@
     grid-template-columns: (1fr, 1fr);
     grid-template-rows: repeat(5, auto);
 
-
     margin: 1rem 2rem;
 
     color: var(--color-main-font);
@@ -232,6 +231,17 @@
       display: flex;
       align-items: center;
       grid-row: 4;
+
+      position: relative;
+      &::before {
+        content: "";
+        background-color: var(--color-main-font);
+        display: block;
+        height: 1px;
+        width: 100%;
+        position: absolute;
+        top: 0;
+      }
     }
 
     &--profile {
@@ -258,7 +268,9 @@
   }
 }
 
-
-.test {
-  display: flex;
+.send-btn {
+  position: absolute;
+  right: 0;
+  bottom: 3%;
+  margin: 2.5rem;
 }

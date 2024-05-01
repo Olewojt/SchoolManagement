@@ -99,7 +99,7 @@ const TaskCard = (props: CardInterface) => {
                         <button className={classes["open-card__btn"]} type="button" onClick={handleActive}>
                             <PlusIcon/>
                         </button>
-                        <Button type="submit" children="Send task"></Button>
+                        <Button className={classes["send-btn"]} type="submit" children="Send task"></Button>
                     </div>
                 </div>
             }
