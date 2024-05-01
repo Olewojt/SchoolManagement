@@ -214,3 +214,26 @@ export const SearchIcon = () => {
         </svg>
     )
 }
+
+export const CrownIcon = (props: IconProps) => {
+    return (
+        <svg className={props.className} width="44" height="22" viewBox="0 0 44 22" fill="none"
+             xmlns="http://www.w3.org/2000/svg">
+            <path
+                d="M39.3223 20C26.1216 20 18.7205 20 5.51975 20C5.03077 20 4.61508 19.666 4.54137 19.2138L2.01214 3.69826C1.87915 2.88244 2.86759 2.32389 3.57776 2.81356L13.6386 9.75062C14.0624 10.0428 14.6566 9.97354 14.9907 9.59292L21.3589 2.33828C21.7495 1.89334 22.4749 1.88623 22.8753 2.32342L29.5418 9.60136C29.8856 9.97672 30.484 10.0332 30.9011 9.72966L40.4021 2.81461C41.0894 2.31437 42.0826 2.82844 41.9945 3.63884L40.3069 19.1679C40.2555 19.6405 39.8301 20 39.3223 20Z"
+                fill="#BA6CBA" stroke="#BA6CBA" strokeWidth="3"/>
+        </svg>
+    )
+}
+
+export const AttachmentIcon = () => {
+    return (
+        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+                d="M15 28C22.1797 28 28 22.1797 28 15C28 7.8203 22.1797 2 15 2C7.8203 2 2 7.8203 2 15C2 22.1797 7.8203 28 15 28Z"
+                stroke="#2F3EB1" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M10 15H20" stroke="#2F3EB1" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M15 10V20" stroke="#2F3EB1" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+    )
+}

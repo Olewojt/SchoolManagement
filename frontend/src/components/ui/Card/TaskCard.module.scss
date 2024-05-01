@@ -117,7 +117,7 @@
 
     display: grid;
     grid-template-columns: 351px 1fr;
-  }
+    }
 
   &__blank {
   }
@@ -144,6 +144,14 @@
     top: 0;
     right: 0;
     margin: 1rem;
+  }
+
+  &__send-btn {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+
+    color: var(--color-main-font);
   }
 
   &__title {
@@ -186,28 +194,34 @@
   }
 
   &__members {
+    display: flex;
+    align-items: center;
+
+    img {
+      width: 3rem;
+    }
+
     &--title {
       margin-top: 2.5rem;
       display: flex;
       align-items: center;
     }
 
-    &--profiles {
+    &--profile {
       display: flex;
       align-items: center;
-      img {
-        width: 3rem;
-      }
+      margin: 1rem;
+      position: relative;
+
       span {
         padding-left: 1rem;
         font-weight: 500;
       }
     }
 
-    &--profile {
-      display: flex;
-      align-items: center;
-      margin: 1rem;
+    &--lider {
+      position: absolute;
+      top: -.9rem;
     }
   }
 }

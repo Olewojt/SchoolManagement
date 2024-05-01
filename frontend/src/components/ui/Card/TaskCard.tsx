@@ -1,7 +1,8 @@
 import {DragEvent, FormEvent, MouseEventHandler, useState} from "react";
 import classes from "./TaskCard.module.scss";
-import {GroupIcon, PlusIcon} from "assets/icons/Icon.tsx";
+import {AttachmentIcon, CrownIcon, GroupIcon, PlusIcon} from "assets/icons/Icon.tsx";
 import DropIndicator from "layouts/TaskBoard/DropIndicator.tsx";
+import Button from "ui/Button/Button.tsx";
 
 interface CardInterface {
     title: string;
@@ -20,6 +21,7 @@ interface CardInterface {
 type Member = {
     profileImg: string;
     name: string;
+    lider: boolean;
 };
 
 const TaskCard = (props: CardInterface) => {
@@ -84,18 +86,25 @@ const TaskCard = (props: CardInterface) => {
                                 <GroupIcon className={classes["open-card__icon"]}/>
                                 <h2>Project with:</h2>
                             </div>
-                            <div className={classes["open-card__members--profiles"]}>
+                            <div className={classes["open-card__members"]}>
                                 {props.members.map((member, index) => (
                                     <div key={index} className={classes["open-card__members--profile"]}>
+                                        {member.lider &&
+                                            <CrownIcon className={classes["open-card__members--lider"]}/>}
+
                                         <img src={member.profileImg}/>
                                         <span>{member.name}</span>
                                     </div>
                                 ))}
                             </div>
+                            <button className={classes["open-card__send-btn"]}>
+                                <AttachmentIcon/> &nbsp; Add attachment
+                            </button>
                         </div>
                         <button className={classes["open-card__btn"]} type="button" onClick={handleActive}>
                             <PlusIcon/>
                         </button>
+                        <Button type="submit" children="Send task"></Button>
                     </div>
                 </div>
             }

@@ -138,14 +138,17 @@ export default Column;
 const exampleMembers = [
     {
         profileImg: ProfileImg,
-        name: "Dejwid Jaasper"
+        name: "Dejwid Jaasper",
+        lider: true
     },
     {
         profileImg: ProfileImg,
-        name: "Miśkaaaa"
+        name: "Miśkaaaa",
+        lider: false
     },
     {
         profileImg: ProfileImg,
-        name: "Ryszard"
+        name: "Ryszard",
+        lider: false
     }
 ];
