@@ -4,6 +4,9 @@ import DropIndicator from "layouts/TaskBoard/DropIndicator.tsx";
 import AddCard from "layouts/TaskBoard/AddCard.tsx";
 import classes from "./Column.module.scss";
 
+import ProfileImg from "assets/images/Profile_student.png";
+
+
 interface ColumnProps {
     title: string;
     column: string;
@@ -120,7 +123,7 @@ const Column: FC<ColumnProps> = ({ title, column, cards, setCards }) => {
                 className={classes.column__items}
             >
                 {filteredCards.map((c: any) => {
-                    return <TaskCard key={c.id} {...c} handleDragStart={handleDragStart} />;
+                    return <TaskCard key={c.id} {...c} handleDragStart={handleDragStart} members={exampleMembers} />;
                 })}
                 <DropIndicator beforeId="-1" column={column} />
                 <AddCard column={column} setCards={setCards}/>
@@ -130,3 +133,19 @@ const Column: FC<ColumnProps> = ({ title, column, cards, setCards }) => {
 };
 
 export default Column;
+
+
+const exampleMembers = [
+    {
+        profileImg: ProfileImg,
+        name: "Dejwid Jaasper"
+    },
+    {
+        profileImg: ProfileImg,
+        name: "Miśkaaaa"
+    },
+    {
+        profileImg: ProfileImg,
+        name: "Ryszard"
+    }
+];

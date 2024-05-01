@@ -16,8 +16,9 @@ const Notifications: React.FC<NotificationsProps> = (props: NotificationsProps) 
                 <h1>NOTIFICATIONS</h1>
                 <div className={classes.notifications__content__messages}>
                     {
-                        DUMMY_NOTIFICATIONS.map((message) =>
+                        DUMMY_NOTIFICATIONS.map((message, index) =>
                             <Message
+                                key={index}
                                 title={message.title}
                                 date={message.date}
                                 content={message.content}

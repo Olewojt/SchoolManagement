@@ -32,8 +32,8 @@ const SelectOptions: React.FC<SelectProps> = (props: SelectProps) => {
             {isExpanded && (
                 <div className={`${baseClasses.expanded__content} ${classes.expanded__content}`}>
                     {
-                        props.options.map( (entry: Subject) =>
-                            <div className={classes.expanded__content__checkbox}>
+                        props.options.map( (entry: Subject, index) =>
+                            <div className={classes.expanded__content__checkbox} key={index}>
                                 <label>
                                     {entry.name}
                                     <input

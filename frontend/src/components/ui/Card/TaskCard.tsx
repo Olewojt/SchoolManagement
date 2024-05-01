@@ -2,12 +2,13 @@ import {DragEvent, FormEvent, MouseEventHandler, useState} from "react";
 import classes from "./TaskCard.module.scss";
 import {GroupIcon, PlusIcon} from "assets/icons/Icon.tsx";
 import DropIndicator from "layouts/TaskBoard/DropIndicator.tsx";
-import ProfileImg from "assets/images/Profile_student.png";
 
 interface CardInterface {
     title: string;
     subject: string;
     date: string;
+
+    members: Member[];
 
     id: string;
     column: string;
@@ -15,6 +16,11 @@ interface CardInterface {
 
     onClick?: MouseEventHandler;
 }
+
+type Member = {
+    profileImg: string;
+    name: string;
+};
 
 const TaskCard = (props: CardInterface) => {
     const [active, setActive] = useState(false)
@@ -66,19 +72,30 @@ const TaskCard = (props: CardInterface) => {
                                     <h2>{props.date}</h2>
                                 </div>
                             </div>
-                            <h3 className={classes["open-card__description"]}>Pewnego dnia, mały Wojtek znalazł w stawie kaczkę wykałaczkę. Była mała, pomarańczowa i miała wesołe, krzykliwe piórka. Wojtek był zachwycony! Postanowił zabrać ją do domu. Nazwał ją Kaczorem Wykałaczorem. Razem spędzali dni na przygodach: pływali po kałużach, zbierali kamyki i słuchali szumu drzew. Kaczor Wykałaczor stał się dla Wojtka najlepszym przyjacielem. Każdego wieczoru usypiali razem, snując marzenia o kolejnych wspólnych przygodach. Ich przyjaźń była jak magiczna opowieść, która trwała wiecznie.</h3>
+                            {/*Tutaj dodać jeszcze trzeba takie rzezczy typu descirpiotn dla props itp*/}
+                            <h3 className={classes["open-card__description"]}>Pewnego dnia, mały Wojtek znalazł w stawie
+                                kaczkę wykałaczkę. Była mała, pomarańczowa i miała wesołe, krzykliwe piórka. Wojtek był
+                                zachwycony! Postanowił zabrać ją do domu. Nazwał ją Kaczorem Wykałaczorem. Razem
+                                spędzali dni na przygodach: pływali po kałużach, zbierali kamyki i słuchali szumu drzew.
+                                Kaczor Wykałaczor stał się dla Wojtka najlepszym przyjacielem. Każdego wieczoru usypiali
+                                razem, snując marzenia o kolejnych wspólnych przygodach. Ich przyjaźń była jak magiczna
+                                opowieść, która trwała wiecznie.</h3>
                             <div className={classes["open-card__members--title"]}>
                                 <GroupIcon className={classes["open-card__icon"]}/>
                                 <h2>Project with:</h2>
                             </div>
                             <div className={classes["open-card__members--profiles"]}>
-                                <img src={ProfileImg}/>
-                                <span>Dejvid Jasper</span>
+                                {props.members.map((member, index) => (
+                                    <div key={index} className={classes["open-card__members--profile"]}>
+                                        <img src={member.profileImg}/>
+                                        <span>{member.name}</span>
+                                    </div>
+                                ))}
                             </div>
                         </div>
-                            <button className={classes["open-card__btn"]} type="button" onClick={handleActive}>
-                                <PlusIcon/>
-                            </button>
+                        <button className={classes["open-card__btn"]} type="button" onClick={handleActive}>
+                            <PlusIcon/>
+                        </button>
                     </div>
                 </div>
             }

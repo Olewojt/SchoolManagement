@@ -49,6 +49,7 @@ function getGradesCount(dummyGrades: DummyGrades[]): GradeDict {
 }
 
 // Absolutnie nie korzystalem z Chatu GPT.
+// Łotasiet
 const StudentReports = () => {
 
     const subjects = getSubjects(DUMMY_GRADES);

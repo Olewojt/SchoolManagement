@@ -1,5 +1,6 @@
 .card {
-  background-color: var(--color-secondary);
+  background: var(--color-secondary);
+  background: linear-gradient(0deg, var(--color-secondary) 0%, var(--color-primary) 100%);
   max-width: 23rem;
   min-width: 15rem;
 
@@ -76,7 +77,7 @@
 }
 
 .background {
-  background-color: var(--color-secondary);
+  background: linear-gradient(0deg, var(--color-secondary) 0%, var(--color-primary) 100%);
   position: absolute;
   z-index: 5;
 
@@ -186,6 +187,7 @@
 
   &__members {
     &--title {
+      margin-top: 2.5rem;
       display: flex;
       align-items: center;
     }
@@ -193,7 +195,6 @@
     &--profiles {
       display: flex;
       align-items: center;
-      padding-left: 4rem;
       img {
         width: 3rem;
       }
@@ -201,6 +202,12 @@
         padding-left: 1rem;
         font-weight: 500;
       }
+    }
+
+    &--profile {
+      display: flex;
+      align-items: center;
+      margin: 1rem;
     }
   }
 }
