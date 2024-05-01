@@ -3,6 +3,7 @@ import classes from "./TaskCard.module.scss";
 import {AttachmentIcon, CrownIcon, GroupIcon, PlusIcon} from "assets/icons/Icon.tsx";
 import DropIndicator from "layouts/TaskBoard/DropIndicator.tsx";
 import Button from "ui/Button/Button.tsx";
+import UploadInput from "forms/UploadInput/UploadInput.tsx";
 
 interface CardInterface {
     title: string;
@@ -75,13 +76,13 @@ const TaskCard = (props: CardInterface) => {
                                 </div>
                             </div>
                             {/*Tutaj dodać jeszcze trzeba takie rzezczy typu descirpiotn dla props itp*/}
-                            <h3 className={classes["open-card__description"]}>Pewnego dnia, mały Wojtek znalazł w stawie
+                            <textarea disabled={true} className={classes["open-card__description"]}>Pewnego dnia, mały Wojtek znalazł w stawie
                                 kaczkę wykałaczkę. Była mała, pomarańczowa i miała wesołe, krzykliwe piórka. Wojtek był
                                 zachwycony! Postanowił zabrać ją do domu. Nazwał ją Kaczorem Wykałaczorem. Razem
                                 spędzali dni na przygodach: pływali po kałużach, zbierali kamyki i słuchali szumu drzew.
                                 Kaczor Wykałaczor stał się dla Wojtka najlepszym przyjacielem. Każdego wieczoru usypiali
                                 razem, snując marzenia o kolejnych wspólnych przygodach. Ich przyjaźń była jak magiczna
-                                opowieść, która trwała wiecznie.</h3>
+                                opowieść, która trwała wiecznie.</textarea>
                             <div className={classes["open-card__members--title"]}>
                                 <GroupIcon className={classes["open-card__icon"]}/>
                                 <h2>Project with:</h2>
@@ -97,9 +98,9 @@ const TaskCard = (props: CardInterface) => {
                                     </div>
                                 ))}
                             </div>
-                            <button className={classes["open-card__send-btn"]}>
-                                <AttachmentIcon/> &nbsp; Add attachment
-                            </button>
+                            <div className={classes["open-card__upload-area"]}>
+                                <UploadInput />
+                            </div>
                         </div>
                         <button className={classes["open-card__btn"]} type="button" onClick={handleActive}>
                             <PlusIcon/>

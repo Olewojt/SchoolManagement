@@ -231,9 +231,32 @@ export const AttachmentIcon = () => {
         <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
                 d="M15 28C22.1797 28 28 22.1797 28 15C28 7.8203 22.1797 2 15 2C7.8203 2 2 7.8203 2 15C2 22.1797 7.8203 28 15 28Z"
-                stroke="#2F3EB1" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M10 15H20" stroke="#2F3EB1" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M15 10V20" stroke="#2F3EB1" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+                stroke="#33363F" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M10 15H20" stroke="#33363F" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M15 10V20" stroke="#33363F" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+    )
+}
+
+export const CheckIcon = () => {
+    return (
+        <svg width="31" height="23" viewBox="0 0 31 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 9.21452L12.3356 20L28 3" stroke="#33363F" strokeWidth="5" strokeLinecap="round"
+                  strokeLinejoin="round"/>
+        </svg>
+    )
+}
+
+export const DocIcon = () => {
+    return (
+        <svg width="36" height="43" viewBox="0 0 36 43" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M33 39.5601H3V3H24L33 12.4399V39.5601Z" stroke="#33363F" strokeWidth="5" strokeLinecap="round"
+                  strokeLinejoin="round"/>
+            <path d="M23 13H33L24 3L23 13Z" stroke="#33363F" strokeWidth="5" strokeLinecap="round"
+                  strokeLinejoin="round"/>
+            <path d="M12.5 21.5H19.35" stroke="#33363F" strokeWidth="5" strokeLinecap="round"
+                  strokeLinejoin="round"/>
+            <path d="M12.5 30H23.64" stroke="#33363F" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
     )
 }
