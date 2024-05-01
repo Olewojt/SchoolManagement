@@ -1,6 +1,6 @@
 import classes from "./UploadInput.module.scss"
 import {AttachmentIcon, CheckIcon, DocIcon} from "assets/icons/Icon.tsx";
-import {ChangeEvent, useRef, useState} from "react";
+import {useRef, useState} from "react";
 
 const UploadInput = () => {
     const [files, setFiles] = useState<{ name: string; loading: number }[]>([]);

@@ -1,6 +1,6 @@
 import {DragEvent, FormEvent, MouseEventHandler, useState} from "react";
 import classes from "./TaskCard.module.scss";
-import {AttachmentIcon, CrownIcon, GroupIcon, PlusIcon} from "assets/icons/Icon.tsx";
+import {CrownIcon, GroupIcon, PlusIcon} from "assets/icons/Icon.tsx";
 import DropIndicator from "layouts/TaskBoard/DropIndicator.tsx";
 import Button from "ui/Button/Button.tsx";
 import UploadInput from "forms/UploadInput/UploadInput.tsx";

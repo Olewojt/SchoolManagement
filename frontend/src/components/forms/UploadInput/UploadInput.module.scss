@@ -7,7 +7,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 5.5rem;
+  box-shadow: var(--shadow-main);
+  margin-right: 1rem;
 }
 
 .upload {
@@ -62,17 +63,11 @@
 
 .uploaded {
   overflow-y: scroll;
+  height: 23vh;
   &__row {
     @include row;
   }
 
-  &__onprogress{
-    max-height: 15rem;
-  }
-
-  &::-webkit-scrollbar{
-    width: 0;
-  }
   &__details {
     display: flex;
     margin-left: 1.5rem;

@@ -150,5 +150,20 @@ const exampleMembers = [
         profileImg: ProfileImg,
         name: "Ryszard",
         lider: false
+    },
+    {
+        profileImg: ProfileImg,
+        name: "Goha Goha 3 złote",
+        lider: false
+    },
+    {
+        profileImg: ProfileImg,
+        name: "Marcinek",
+        lider: false
+    },
+    {
+        profileImg: ProfileImg,
+        name: "aha",
+        lider: false
     }
 ];
