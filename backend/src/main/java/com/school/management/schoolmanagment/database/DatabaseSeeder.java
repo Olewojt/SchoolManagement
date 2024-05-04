@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -86,9 +87,8 @@ public class DatabaseSeeder implements CommandLineRunner {
     }
 
     private void seedUsersPersonalInfo() {
-        PersonalInfo pi = new PersonalInfo("John", "Doe", "12345678901", "1234567890", new Date(), "USA", "New York", "Main St", "42", "24");
-        personalInfoRepository.save(pi);
-        User user = new User("john.doe@example.com", "password123", pi, roleRepository.findByName("Student"), null);
+        PersonalInfo pi = new PersonalInfo("John", "Doe", "12345678901", "1234567890", LocalDate.now(), "USA", "New York", "Main St", "42", "24");
+        User user = new User("john.doe@example.com", "password123", pi, roleRepository.findByName("Student").get(), null);
         userRepository.save(user);
     }
 

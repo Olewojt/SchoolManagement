@@ -8,7 +8,10 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     generate-ddl: true
+    hibernate:
+      ddl-auto: create
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
-        ddl-auto: create
+jwt:
+  secretKey: flamingo-elephant-lion-monkey476

@@ -1,4 +1,4 @@
-package com.school.management.schoolmanagment;
+package com.school.management.schoolmanagment.database;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,7 @@ import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTest
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = NONE)
-public class DatabaseTests {
+public class DatabaseTest {
 
     @Autowired
     private DataSource dataSource;

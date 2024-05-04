@@ -1,6 +1,9 @@
 package com.school.management.schoolmanagment.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Blob;
@@ -15,6 +18,9 @@ import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
+@NoArgsConstructor
+@Getter
+@Setter
 public class Task {
 
     @Id
@@ -42,9 +48,6 @@ public class Task {
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private final Set<User> users = new HashSet<>();
 
-    public Task() {
-    }
-
     public Task(String title, String description, LocalDateTime deadline,
                 TaskStatus status, User taskCreator, String feedback, Instant createdAt,
                 Blob attachment, Integer grade, Date gradedAt, Subject subject) {
@@ -59,105 +62,5 @@ public class Task {
         this.grade = grade;
         this.gradedAt= gradedAt;
         this.subject = subject;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public LocalDateTime getDeadline() {
-        return deadline;
-    }
-
-    public void setDeadline(LocalDateTime deadline) {
-        this.deadline = deadline;
-    }
-
-    public TaskStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(TaskStatus status) {
-        this.status = status;
-    }
-
-    public User getTaskCreator() {
-        return taskCreator;
-    }
-
-    public void setTaskCreator(User taskCreator) {
-        this.taskCreator = taskCreator;
-    }
-
-    public String getFeedback() {
-        return feedback;
-    }
-
-    public void setFeedback(String feedback) {
-        this.feedback = feedback;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Blob getAttachment() {
-        return attachment;
-    }
-
-    public void setAttachment(Blob attachment) {
-        this.attachment = attachment;
-    }
-
-    public Integer getGrade() {
-        return grade;
-    }
-
-    public void setGrade(Integer grade) {
-        this.grade = grade;
-    }
-
-    public Date getGradedAt() {
-        return gradedAt;
-    }
-
-    public void setGradedAt(Date gradedAt) {
-        this.gradedAt = gradedAt;
-    }
-
-    public Subject getSubject() {
-        return subject;
-    }
-
-    public void setSubject(Subject subject) {
-        this.subject = subject;
-    }
-
-    public Set<User> getUsers() {
-        return users;
     }
 }

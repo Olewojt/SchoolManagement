@@ -1,6 +1,9 @@
 package com.school.management.schoolmanagment.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -8,6 +11,9 @@ import java.util.Set;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
+@NoArgsConstructor
+@Getter
+@Setter
 public class Subject {
 
     @Id
@@ -17,8 +23,8 @@ public class Subject {
     @ManyToMany(mappedBy = "subjects")
     private final Set<SchoolClass> schoolClasses = new HashSet<>();
 
-    public Subject() {
-
+    public Subject(String name) {
+        this.name = name;
     }
 
     public void addClass(SchoolClass schoolClass) {
@@ -29,29 +35,5 @@ public class Subject {
     public void removeClass(SchoolClass schoolClass) {
         this.schoolClasses.remove(schoolClass);
         schoolClass.getSubjects().remove(this);
-    }
-
-    public Subject(String name) {
-        this.name = name;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Set<SchoolClass> getSchoolClasses() {
-        return schoolClasses;
     }
 }

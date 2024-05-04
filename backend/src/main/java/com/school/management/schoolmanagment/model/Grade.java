@@ -3,6 +3,9 @@ package com.school.management.schoolmanagment.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
@@ -10,6 +13,9 @@ import java.time.Instant;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
+@NoArgsConstructor
+@Getter
+@Setter
 public class Grade {
 
     @Id
@@ -19,36 +25,8 @@ public class Grade {
     @CreationTimestamp
     private Instant createdAt;
 
-    public Grade() {
-
-    }
-
     public Grade(Double grade, Instant createdAt) {
         this.grade = grade;
-        this.createdAt = createdAt;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Double getGrade() {
-        return grade;
-    }
-
-    public void setGrade(Double grade) {
-        this.grade = grade;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
     }
 }

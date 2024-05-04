@@ -1,7 +1,7 @@
 package com.school.management.schoolmanagment.model;
 
 import jakarta.persistence.*;
-
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,6 +11,11 @@ import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
 public class User {
 
     @Id
@@ -18,7 +23,7 @@ public class User {
     private Long id;
     private String email;
     private String password;
-    @OneToOne(fetch = LAZY)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "personal_id")
     private PersonalInfo personalInfo;
     @ManyToOne(fetch = LAZY)
@@ -38,9 +43,6 @@ public class User {
     private Set<User> parents;
     @ManyToMany(mappedBy = "users", fetch = EAGER)
     private final Set<Task> tasks = new HashSet<>();
-
-    public User() {
-    }
 
     public User(String email, String password, PersonalInfo personalInfo, Role role, SchoolClass schoolClass) {
         this.email = email;
@@ -67,69 +69,5 @@ public class User {
             this.children.remove(child);
             child.getChildren().remove(this);
         }
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public PersonalInfo getPersonalInfo() {
-        return personalInfo;
-    }
-
-    public void setPersonalInfo(PersonalInfo personalInfo) {
-        this.personalInfo = personalInfo;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public SchoolClass getSchoolClasses() {
-        return schoolClass;
-    }
-
-    public void setSchoolClasses(SchoolClass schoolClass) {
-        this.schoolClass = schoolClass;
-    }
-
-    public Set<User> getChildren() {
-        return children;
-    }
-
-    public void setChildren(Set<User> children) {
-        this.children = children;
-    }
-
-    public Set<User> getParents() {
-        return parents;
-    }
-
-    public void setParents(Set<User> parents) {
-        this.parents = parents;
     }
 }

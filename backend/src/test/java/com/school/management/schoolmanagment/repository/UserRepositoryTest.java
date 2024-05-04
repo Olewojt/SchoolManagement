@@ -1,18 +1,15 @@
-package com.school.management.schoolmanagment;
+package com.school.management.schoolmanagment.repository;
 
 import com.school.management.schoolmanagment.model.PersonalInfo;
 import com.school.management.schoolmanagment.model.Role;
 import com.school.management.schoolmanagment.model.User;
-import com.school.management.schoolmanagment.repository.PersonalInfoRepository;
-import com.school.management.schoolmanagment.repository.RoleRepository;
-import com.school.management.schoolmanagment.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,7 +18,7 @@ import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTest
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = NONE)
-public class UserRepositoryTests {
+public class UserRepositoryTest {
 
     @Autowired
     private UserRepository userRepository;
@@ -32,16 +29,14 @@ public class UserRepositoryTests {
 
     @BeforeEach
     void setUp() {
-        roleRepository.save(new Role("Student"));
-        roleRepository.save(new Role("Teacher"));
-        roleRepository.save(new Role("Administrator"));
+        Role studentRole = roleRepository.save(new Role("Student"));
 
         PersonalInfo pi = new PersonalInfo("John", "Doe", "12345678901", "1234567890",
-                new Date(), "USA", "New York", "Main St", "42", "24");
+                LocalDate.now(), "USA", "New York", "Main St", "42", "24");
         personalInfoRepository.save(pi);
 
         User user = new User("john.doe@example.com", "password123", pi,
-                roleRepository.findByName("Student"), null);
+                studentRole, null);
         userRepository.save(user);
     }
 
@@ -65,7 +60,6 @@ public class UserRepositoryTests {
     void itShouldFindUserWithEmail() {
         Optional<User> foundUser = userRepository.findByEmail("john.doe@example.com");
 
-        assertNotNull(foundUser);
         assertThat(foundUser).isPresent();
         assertThat(foundUser).isNotEmpty();
         assertThat(foundUser).isInstanceOf(Optional.class);

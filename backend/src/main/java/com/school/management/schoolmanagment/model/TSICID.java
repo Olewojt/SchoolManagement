@@ -2,11 +2,13 @@ package com.school.management.schoolmanagment.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.Getter;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
+@Getter
 public class TSICID implements Serializable {
 
     @Column(name = "teacher_id")
@@ -23,18 +25,6 @@ public class TSICID implements Serializable {
         this.teacherId = teacherId;
         this.subjectId = subjectId;
         this.classId = classId;
-    }
-
-    public Long getTeacherId() {
-        return teacherId;
-    }
-
-    public Long getSubjectId() {
-        return subjectId;
-    }
-
-    public Long getClassId() {
-        return classId;
     }
 
     @Override
