@@ -1,11 +1,11 @@
 package com.school.management.schoolmanagment;
 
 import com.school.management.schoolmanagment.model.PersonalInfo;
-import com.school.management.schoolmanagment.model.Roles;
-import com.school.management.schoolmanagment.model.Users;
+import com.school.management.schoolmanagment.model.Role;
+import com.school.management.schoolmanagment.model.User;
 import com.school.management.schoolmanagment.repository.PersonalInfoRepository;
-import com.school.management.schoolmanagment.repository.RolesRepository;
-import com.school.management.schoolmanagment.repository.UsersRepository;
+import com.school.management.schoolmanagment.repository.RoleRepository;
+import com.school.management.schoolmanagment.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,30 +24,30 @@ import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTest
 public class UserRepositoryTests {
 
     @Autowired
-    private UsersRepository usersRepository;
+    private UserRepository userRepository;
     @Autowired
     private PersonalInfoRepository personalInfoRepository;
     @Autowired
-    private RolesRepository rolesRepository;
+    private RoleRepository roleRepository;
 
     @BeforeEach
     void setUp() {
-        rolesRepository.save(new Roles("Student"));
-        rolesRepository.save(new Roles("Teacher"));
-        rolesRepository.save(new Roles("Administrator"));
+        roleRepository.save(new Role("Student"));
+        roleRepository.save(new Role("Teacher"));
+        roleRepository.save(new Role("Administrator"));
 
         PersonalInfo pi = new PersonalInfo("John", "Doe", "12345678901", "1234567890",
                 new Date(), "USA", "New York", "Main St", "42", "24");
         personalInfoRepository.save(pi);
 
-        Users user = new Users("john.doe@example.com", "password123", pi,
-                rolesRepository.findByName("Student"), null);
-        usersRepository.save(user);
+        User user = new User("john.doe@example.com", "password123", pi,
+                roleRepository.findByName("Student"), null);
+        userRepository.save(user);
     }
 
     @Test
     void itShouldFindUserWithEmailAndPassword() {
-        Boolean foundUser = usersRepository.existsByEmailAndPassword("john.doe@example.com",
+        Boolean foundUser = userRepository.existsByEmailAndPassword("john.doe@example.com",
                 "password123");
 
         assertTrue(foundUser);
@@ -55,7 +55,7 @@ public class UserRepositoryTests {
 
     @Test
     void itShouldNotFindUserWithEmailAndPassword() {
-        Boolean foundUser = usersRepository.existsByEmailAndPassword("not-existing@mail.com",
+        Boolean foundUser = userRepository.existsByEmailAndPassword("not-existing@mail.com",
                 "notExists123");
 
         assertFalse(foundUser);
@@ -63,7 +63,7 @@ public class UserRepositoryTests {
 
     @Test
     void itShouldFindUserWithEmail() {
-        Optional<Users> foundUser = usersRepository.findByEmail("john.doe@example.com");
+        Optional<User> foundUser = userRepository.findByEmail("john.doe@example.com");
 
         assertNotNull(foundUser);
         assertThat(foundUser).isPresent();
@@ -74,7 +74,7 @@ public class UserRepositoryTests {
 
     @Test
     void itShouldNotFindUserWithEmail() {
-        Optional<Users> foundUser = usersRepository.findByEmail("notExisting@mail.com");
+        Optional<User> foundUser = userRepository.findByEmail("notExisting@mail.com");
 
         assertNotNull(foundUser);
         assertThat(foundUser).isNotPresent();

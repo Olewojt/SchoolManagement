@@ -1,7 +1,6 @@
 package com.school.management.schoolmanagment.model;
 
 import jakarta.persistence.*;
-import jdk.jfr.Timestamp;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Blob;
@@ -9,16 +8,14 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
 import static jakarta.persistence.EnumType.STRING;
-import static jakarta.persistence.FetchType.EAGER;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
-public class Tasks {
+public class Task {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -29,7 +26,7 @@ public class Tasks {
     @Enumerated(value = STRING)
     private TaskStatus status;
     @ManyToOne(fetch = LAZY)
-    private Users taskCreator;
+    private User taskCreator;
     private String feedback;
     @CreationTimestamp
     private Instant createdAt;
@@ -38,19 +35,19 @@ public class Tasks {
     private Integer grade;
     private Date gradedAt;
     @ManyToOne(fetch = LAZY)
-    private Subjects subject;
+    private Subject subject;
     @ManyToMany
     @JoinTable(name = "task_assigments",
             joinColumns = @JoinColumn(name = "task_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private final Set<Users> users = new HashSet<>();
+    private final Set<User> users = new HashSet<>();
 
-    public Tasks() {
+    public Task() {
     }
 
-    public Tasks(String title, String description, LocalDateTime deadline,
-                 TaskStatus status, Users taskCreator, String feedback, Instant createdAt,
-                 Blob attachment, Integer grade, Date gradedAt, Subjects subject) {
+    public Task(String title, String description, LocalDateTime deadline,
+                TaskStatus status, User taskCreator, String feedback, Instant createdAt,
+                Blob attachment, Integer grade, Date gradedAt, Subject subject) {
         this.title = title;
         this.description = description;
         this.deadline = deadline;
@@ -104,11 +101,11 @@ public class Tasks {
         this.status = status;
     }
 
-    public Users getTaskCreator() {
+    public User getTaskCreator() {
         return taskCreator;
     }
 
-    public void setTaskCreator(Users taskCreator) {
+    public void setTaskCreator(User taskCreator) {
         this.taskCreator = taskCreator;
     }
 
@@ -152,15 +149,15 @@ public class Tasks {
         this.gradedAt = gradedAt;
     }
 
-    public Subjects getSubject() {
+    public Subject getSubject() {
         return subject;
     }
 
-    public void setSubject(Subjects subject) {
+    public void setSubject(Subject subject) {
         this.subject = subject;
     }
 
-    public Set<Users> getUsers() {
+    public Set<User> getUsers() {
         return users;
     }
 }

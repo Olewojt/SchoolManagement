@@ -11,7 +11,7 @@ import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
-public class Users {
+public class User {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -23,46 +23,46 @@ public class Users {
     private PersonalInfo personalInfo;
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "role_id")
-    private Roles role;
+    private Role role;
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "class_id")
-    private SchoolClasses schoolClasses;
+    private SchoolClass schoolClass;
 
     // TODO: maybe to refactor
     @ManyToMany
     @JoinTable(name = "parent_children",
             joinColumns = @JoinColumn(name = "parent_id"),
             inverseJoinColumns = @JoinColumn(name = "child_id"))
-    private Set<Users> children;
+    private Set<User> children;
     @ManyToMany(mappedBy = "children")
-    private Set<Users> parents;
+    private Set<User> parents;
     @ManyToMany(mappedBy = "users", fetch = EAGER)
-    private final Set<Tasks> tasks = new HashSet<>();
+    private final Set<Task> tasks = new HashSet<>();
 
-    public Users() {
+    public User() {
     }
 
-    public Users(String email, String password, PersonalInfo personalInfo, Roles role, SchoolClasses schoolClasses) {
+    public User(String email, String password, PersonalInfo personalInfo, Role role, SchoolClass schoolClass) {
         this.email = email;
         this.password = password;
         this.personalInfo = personalInfo;
         this.role = role;
-        this.schoolClasses = schoolClasses;
+        this.schoolClass = schoolClass;
     }
 
-    public void addTask (Tasks task) {
+    public void addTask (Task task) {
         this.tasks.add(task);
         task.getUsers().add(this);
     }
 
-    public void addChild(Users child) {
+    public void addChild(User child) {
         if (child.getRole().getName().equals("Student")) {
             this.children.add(child);
             child.getParents().add(this);
         }
     }
 
-    public void removeChild(Users child) {
+    public void removeChild(User child) {
         if (child.getRole().getName().equals("Student")) {
             this.children.remove(child);
             child.getChildren().remove(this);
@@ -101,35 +101,35 @@ public class Users {
         this.personalInfo = personalInfo;
     }
 
-    public Roles getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(Roles role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
-    public SchoolClasses getSchoolClasses() {
-        return schoolClasses;
+    public SchoolClass getSchoolClasses() {
+        return schoolClass;
     }
 
-    public void setSchoolClasses(SchoolClasses schoolClass) {
-        this.schoolClasses = schoolClass;
+    public void setSchoolClasses(SchoolClass schoolClass) {
+        this.schoolClass = schoolClass;
     }
 
-    public Set<Users> getChildren() {
+    public Set<User> getChildren() {
         return children;
     }
 
-    public void setChildren(Set<Users> children) {
+    public void setChildren(Set<User> children) {
         this.children = children;
     }
 
-    public Set<Users> getParents() {
+    public Set<User> getParents() {
         return parents;
     }
 
-    public void setParents(Set<Users> parents) {
+    public void setParents(Set<User> parents) {
         this.parents = parents;
     }
 }

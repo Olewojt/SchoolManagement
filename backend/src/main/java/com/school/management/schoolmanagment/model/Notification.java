@@ -21,13 +21,13 @@ public class Notification {
     @CreationTimestamp
     private Instant createdAt;
     @ManyToOne(fetch = LAZY)
-    private Users user;
+    private User user;
     private Boolean isRead;
 
     public Notification() {
     }
 
-    public Notification(String content, Instant createdAt, Users user, Boolean isRead) {
+    public Notification(String content, Instant createdAt, User user, Boolean isRead) {
         this.content = content;
         this.createdAt = createdAt;
         this.user = user;
@@ -58,11 +58,11 @@ public class Notification {
         this.createdAt = createdAt;
     }
 
-    public Users getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(Users user) {
+    public void setUser(User user) {
         this.user = user;
     }
 

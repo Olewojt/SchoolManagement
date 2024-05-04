@@ -11,7 +11,7 @@ import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
-public class Reports {
+public class Report {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -22,13 +22,13 @@ public class Reports {
     private Instant createdAt;
     private String description;
     @ManyToOne(fetch = LAZY)
-    private Users user;
+    private User user;
     @Lob
     private Blob reportInPdf;
 
-    public Reports(){}
+    public Report(){}
 
-    public Reports(ReportType reportType, Instant createdAt, String description, Users user, Blob reportInPdf) {
+    public Report(ReportType reportType, Instant createdAt, String description, User user, Blob reportInPdf) {
         this.reportType = reportType;
         this.createdAt = createdAt;
         this.description = description;
@@ -68,11 +68,11 @@ public class Reports {
         this.description = description;
     }
 
-    public Users getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(Users user) {
+    public void setUser(User user) {
         this.user = user;
     }
 

@@ -1,7 +1,6 @@
 package com.school.management.schoolmanagment.model;
 
 import jakarta.persistence.*;
-import org.apache.catalina.User;
 
 import java.util.Date;
 
@@ -28,7 +27,7 @@ public class PersonalInfo {
 
     @OneToOne(fetch = LAZY, cascade = ALL,
             optional = false, mappedBy = "personalInfo")
-    private Users user;
+    private User user;
 
 
     public PersonalInfo() {
@@ -137,11 +136,11 @@ public class PersonalInfo {
         this.flatNumber = flatNumber;
     }
 
-    public Users getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(Users user) {
+    public void setUser(User user) {
         this.user = user;
     }
 }

@@ -2,7 +2,6 @@ package com.school.management.schoolmanagment.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -11,7 +10,7 @@ import java.time.Instant;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
-public class Grades {
+public class Grade {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -20,11 +19,11 @@ public class Grades {
     @CreationTimestamp
     private Instant createdAt;
 
-    public Grades() {
+    public Grade() {
 
     }
 
-    public Grades(Double grade, Instant createdAt) {
+    public Grade(Double grade, Instant createdAt) {
         this.grade = grade;
         this.createdAt = createdAt;
     }

@@ -9,21 +9,21 @@ import static jakarta.persistence.FetchType.EAGER;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
-public class SchoolClasses {
+public class SchoolClass {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
     private String name;
-    @OneToMany(mappedBy = "schoolClasses")
-    private final Set<Users> students = new HashSet<>();
+    @OneToMany(mappedBy = "schoolClass")
+    private final Set<User> students = new HashSet<>();
     @ManyToMany(fetch = EAGER)
     @JoinTable(name = "class_subjects",
             joinColumns = @JoinColumn(name = "class_id"),
             inverseJoinColumns = @JoinColumn(name = "subject_id"))
-    private final Set<Subjects> subjects = new HashSet<>();
+    private final Set<Subject> subjects = new HashSet<>();
 
-    public SchoolClasses() {
+    public SchoolClass() {
     }
 
     public Long getId() {
@@ -34,7 +34,7 @@ public class SchoolClasses {
         this.id = id;
     }
 
-    public SchoolClasses(String name) {
+    public SchoolClass(String name) {
         this.name = name;
     }
 
@@ -46,11 +46,11 @@ public class SchoolClasses {
         this.name = name;
     }
 
-    public Set<Users> getStudents() {
+    public Set<User> getStudents() {
         return students;
     }
 
-    public Set<Subjects> getSubjects() {
+    public Set<Subject> getSubjects() {
         return subjects;
     }
 }

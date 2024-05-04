@@ -5,24 +5,24 @@ import jakarta.persistence.*;
 import static jakarta.persistence.FetchType.EAGER;
 
 @Entity
-public class TeacherSubjectsInClasses {
+public class TeacherSubjectInClass {
 
     @EmbeddedId
     private TSICID id;
     @ManyToOne(fetch = EAGER)
     @MapsId("teacherId")
-    private Users teacher;
+    private User teacher;
     @ManyToOne(fetch = EAGER)
     @MapsId("subjectId")
-    private Subjects subject;
+    private Subject subject;
     @ManyToOne(fetch = EAGER)
     @MapsId("classId")
-    private SchoolClasses schoolClass;
+    private SchoolClass schoolClass;
 
-    public TeacherSubjectsInClasses() {
+    public TeacherSubjectInClass() {
     }
 
-    public TeacherSubjectsInClasses(Users teacher, Subjects subject, SchoolClasses schoolClass) {
+    public TeacherSubjectInClass(User teacher, Subject subject, SchoolClass schoolClass) {
         this.teacher = teacher;
         this.subject = subject;
         this.schoolClass = schoolClass;
@@ -33,27 +33,27 @@ public class TeacherSubjectsInClasses {
         return id;
     }
 
-    public Users getTeacher() {
+    public User getTeacher() {
         return teacher;
     }
 
-    public void setTeacher(Users teacher) {
+    public void setTeacher(User teacher) {
         this.teacher = teacher;
     }
 
-    public Subjects getSubject() {
+    public Subject getSubject() {
         return subject;
     }
 
-    public void setSubject(Subjects subject) {
+    public void setSubject(Subject subject) {
         this.subject = subject;
     }
 
-    public SchoolClasses getSchoolClass() {
+    public SchoolClass getSchoolClass() {
         return schoolClass;
     }
 
-    public void setSchoolClass(SchoolClasses schoolClass) {
+    public void setSchoolClass(SchoolClass schoolClass) {
         this.schoolClass = schoolClass;
     }
 }

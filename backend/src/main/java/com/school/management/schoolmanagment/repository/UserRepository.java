@@ -1,13 +1,13 @@
 package com.school.management.schoolmanagment.repository;
 
-import com.school.management.schoolmanagment.model.Users;
+import com.school.management.schoolmanagment.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface UsersRepository extends JpaRepository<Users, Long > {
-    Optional<Users> findByEmail(String email);
+public interface UserRepository extends JpaRepository<User, Long > {
+    Optional<User> findByEmail(String email);
     Boolean existsByEmailAndPassword(String email, String password);
 }
