@@ -100,8 +100,8 @@ public class DatabaseSeeder implements CommandLineRunner {
     }
 
     private void seedReports() {
-        Optional<User> optionalUsers = userRepository.findByEmail("john.doe@example.com");
-        User user = optionalUsers.get();
+        Optional<User> optionalUser = userRepository.findByEmail("john.doe@example.com");
+        User user = optionalUser.get();
         reportRepository.save(new Report(ReportType.FIRST_TYPE, Instant.now(), "Sample Report", user, null));
     }
 
