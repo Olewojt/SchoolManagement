@@ -3,7 +3,6 @@ package com.school.management.schoolmanagment.database;
 import com.school.management.schoolmanagment.model.*;
 import com.school.management.schoolmanagment.repository.*;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.scheduling.config.Task;
 import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -16,25 +15,25 @@ import java.util.*;
 public class DatabaseSeeder implements CommandLineRunner {
 
     @Autowired
-    private GradesRepository gradesRepository;
+    private GradeRepository gradeRepository;
     @Autowired
     private NotificationRepository notificationRepository;
     @Autowired
     private PersonalInfoRepository personalInfoRepository;
     @Autowired
-    private ReportsRepository reportsRepository;
+    private ReportRepository reportRepository;
     @Autowired
-    private RolesRepository rolesRepository;
+    private RoleRepository roleRepository;
     @Autowired
-    private SchoolClassesRepository schoolClassesRepository;
+    private SchoolClassRepository schoolClassRepository;
     @Autowired
-    private SubjectsRepository subjectsRepository;
+    private SubjectRepository subjectRepository;
     @Autowired
-    private TasksRepository tasksRepository;
+    private TaskRepository taskRepository;
     @Autowired
-    private TeacherSubjectsInClassesRepository teacherSubjectsInClassesRepository;
+    private TeacherSubjectInClassRepository teacherSubjectInClassRepository;
     @Autowired
-    private UsersRepository usersRepository;
+    private UserRepository userRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -51,79 +50,78 @@ public class DatabaseSeeder implements CommandLineRunner {
     }
 
     private void seedSchoolClasses() {
-        schoolClassesRepository.save(new SchoolClasses("5A"));
-        schoolClassesRepository.save(new SchoolClasses("8D"));
+        schoolClassRepository.save(new SchoolClass("5A"));
+        schoolClassRepository.save(new SchoolClass("8D"));
     }
 
     private void seedSubjects() {
-        Subjects pe = new Subjects("PE");
-        subjectsRepository.save(pe);
-        SchoolClasses s1 = schoolClassesRepository.findByName("5A");
+        Subject pe = new Subject("PE");
+        subjectRepository.save(pe);
+        SchoolClass s1 = schoolClassRepository.findByName("5A");
         pe.addClass(s1);
-        subjectsRepository.save(pe);
+        subjectRepository.save(pe);
 
-        Subjects religion = new Subjects("Religion");
-        subjectsRepository.save(religion);
-        SchoolClasses s2 = schoolClassesRepository.findByName("8D");
+        Subject religion = new Subject("Religion");
+        subjectRepository.save(religion);
+        SchoolClass s2 = schoolClassRepository.findByName("8D");
         pe.addClass(s2);
-        subjectsRepository.save(religion);
-        schoolClassesRepository.save(s2);
-        schoolClassesRepository.save(s1);
+        subjectRepository.save(religion);
+        schoolClassRepository.save(s2);
+        schoolClassRepository.save(s1);
     }
 
 
     private void seedGrades() {
-        gradesRepository.save(new Grades(2.0, Instant.now()));
-        gradesRepository.save(new Grades(3.0, Instant.now()));
-        gradesRepository.save(new Grades(4.5, Instant.now()));
-        gradesRepository.save(new Grades(4.0, Instant.now()));
-        gradesRepository.save(new Grades(4.0, Instant.now()));
+        gradeRepository.save(new Grade(2.0, Instant.now()));
+        gradeRepository.save(new Grade(3.0, Instant.now()));
+        gradeRepository.save(new Grade(4.5, Instant.now()));
+        gradeRepository.save(new Grade(4.0, Instant.now()));
+        gradeRepository.save(new Grade(4.0, Instant.now()));
     }
 
 
     private void seedRoles() {
-        rolesRepository.save(new Roles("Student"));
-        rolesRepository.save(new Roles("Teacher"));
-        rolesRepository.save(new Roles("Administrator"));
+        roleRepository.save(new Role("Student"));
+        roleRepository.save(new Role("Teacher"));
+        roleRepository.save(new Role("Administrator"));
     }
 
     private void seedUsersPersonalInfo() {
-        PersonalInfo pi = new PersonalInfo("John", "Doe", "12345678901", "1234567890", new Date(), "USA", "New York", "Main St", "42", "24");
-        personalInfoRepository.save(pi);
-        Users user = new Users("john.doe@example.com", "password123", pi, rolesRepository.findByName("Student"), null);
-        usersRepository.save(user);
+        PersonalInfo pi = new PersonalInfo("John", "Doe", "12345678901", "1234567890", LocalDate.now(), "USA", "New York", "Main St", "42", "24");
+        User user = new User("john.doe@example.com", "password123", pi, roleRepository.findByName("Student").get(), null);
+        userRepository.save(user);
     }
 
 
     private void seedNotifications() {
-        Optional<Users> byEmail = usersRepository.findByEmail("john.doe@example.com");
-        Users user = byEmail.get();
+        Optional<User> byEmail = userRepository.findByEmail("john.doe@example.com");
+        User user = byEmail.get();
         notificationRepository.save(new Notification("Welcome to our platform", Instant.now(), user, false));
     }
 
     private void seedReports() {
-        Optional<Users> optionalUsers = usersRepository.findByEmail("john.doe@example.com");
-        Users user = optionalUsers.get();
-        reportsRepository.save(new Reports(ReportType.FIRST_TYPE, Instant.now(), "Sample Report", user, null));
+        Optional<User> optionalUser = userRepository.findByEmail("john.doe@example.com");
+        User user = optionalUser.get();
+        reportRepository.save(new Report(ReportType.FIRST_TYPE, Instant.now(), "Sample Report", user, null));
     }
 
     private void seedTasks() {
-        Users taskCreator = usersRepository.findById(1L).get();
-        Tasks tasks= new Tasks("Rozprawka o misce", "Wykonac rozprawke na temat miski w bojlerze", LocalDateTime.now(), TaskStatus.FIRST_STATUS, taskCreator, null, Instant.now(), null, null, null, subjectsRepository.findById(1L).get());
-        tasksRepository.save(tasks);
-        Users user = usersRepository.findById(1L).get();
-        user.addTask(tasks);
-        usersRepository.save(user);
-        
+        User taskCreator = userRepository.findById(1L).get();
+        Task task = new Task("Rozprawka o misce", "Wykonac rozprawke na temat miski w bojlerze", LocalDateTime.now(), TaskStatus.FIRST_STATUS, taskCreator, null, Instant.now(), null, null, null, subjectRepository.findById(1L).get());
+        taskRepository.save(task);
+        User user = userRepository.findById(1L).get();
+        user.addTask(task);
+        userRepository.save(user);
+
     }
 
 
     private void seedTeacherSubjectsInClasses() {
-        Optional<Users> byEmail = usersRepository.findByEmail("john.doe@example.com");
-        Users teacher = byEmail.get();
-        Subjects subject = subjectsRepository.findByName("Religion");
-        SchoolClasses class1 = schoolClassesRepository.findByName("5A");
-        TeacherSubjectsInClasses tsic = new TeacherSubjectsInClasses(teacher, subject, class1);
-        teacherSubjectsInClassesRepository.save(tsic);
+        Optional<User> byEmail = userRepository.findByEmail("john.doe@example.com");
+        User teacher = byEmail.get();
+        Subject subject = subjectRepository.findByName("Religion");
+        SchoolClass class1 = schoolClassRepository.findByName("5A");
+        TeacherSubjectInClass tsic = new TeacherSubjectInClass(teacher, subject, class1);
+        teacherSubjectInClassRepository.save(tsic);
     }
 }
