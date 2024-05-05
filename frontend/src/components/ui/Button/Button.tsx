@@ -1,9 +1,8 @@
-import {MouseEventHandler} from "react";
 import classes from "./Button.module.scss"
 
 interface ButtonProps {
     children: string,
-    onClick?: MouseEventHandler,
+    onClick?: any,
     type: "button" | "submit" | "reset" | undefined
     className?: string
 }

@@ -10,15 +10,6 @@ const colors = {
     'grade_1': getComputedStyle(document.documentElement).getPropertyValue('--grade-card-bg-1')
 }
 
-export const data = [
-    ["Grade", "Amount"],
-    ["5", 4],
-    ["4", 5],
-    ["3", 5],
-    ["2", 4],
-    ["1", 2],
-];
-
 export const options = {
     title: "Grades",
     backgroundColor: "transparent",
@@ -46,14 +37,36 @@ export const options = {
         colors.grade_3,
         colors.grade_2,
         colors.grade_1,
-    ]
+    ],
 };
 
-const PieChart = () => {
+export interface GradeDict {
+    [key: string]: number;
+    "5": number,
+    "4": number,
+    "3": number,
+    "2": number,
+    "1": number,
+}
+
+export interface ChartProps {
+    data: GradeDict;
+}
+
+const PieChart = (props: ChartProps) => {
+     const gradesData = [
+        ["Grade", "Amount"],
+        ["5", props.data["5"]],
+        ["4", props.data["4"]],
+        ["3", props.data["3"]],
+        ["2", props.data["2"]],
+        ["1", props.data["1"]],
+    ];
+
     return (
         <Chart
             chartType="PieChart"
-            data={data}
+            data={gradesData}
             options={options}
             width={"100%"}
             height={"100%"}
