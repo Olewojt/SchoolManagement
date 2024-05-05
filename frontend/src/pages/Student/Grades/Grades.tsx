@@ -9,15 +9,17 @@ const StudentGrades = () => {
 
     return (
         <main className={classes.home}>
-            {gradesData.map((subjectData, subjectIndex) => (
-                <Header key={subjectIndex} value={subjectData.subject} className={classes.navbar}>
-                    <div className={classes.grades}>
-                        {subjectData.grades.map((gradeInfo, gradeIndex) => (
-                            <GradeCard key={gradeIndex} grade={gradeInfo.grade} date={gradeInfo.date}></GradeCard>
-                        ))}
-                    </div>
-                </Header>
-            ))}
+            <div className={classes.content}>
+                {gradesData.map((subjectData, subjectIndex) => (
+                    <Header key={subjectIndex} value={subjectData.subject} className={classes.navbar}>
+                        <div className={classes.grades}>
+                            {subjectData.grades.map((gradeInfo, gradeIndex) => (
+                                <GradeCard key={gradeIndex} grade={gradeInfo.grade} date={gradeInfo.date}></GradeCard>
+                            ))}
+                        </div>
+                    </Header>
+                ))}
+            </div>
         </main>
     );
 }

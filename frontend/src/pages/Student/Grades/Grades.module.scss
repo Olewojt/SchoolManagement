@@ -9,8 +9,14 @@
   background-color: var(--color-primary);
 }
 
+.content {
+  height: 100vh;
+
+  overflow: scroll;
+}
+
 .navbar {
-  width: 70%;
+  width: 90%;
   margin-left: 2rem;
   margin-top: 1rem;
 }
