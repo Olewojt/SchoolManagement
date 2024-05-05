@@ -1,5 +1,6 @@
 package com.school.management.schoolmanagment.repository;
 
+import com.school.management.schoolmanagment.dto.GradeInfoDTO;
 import com.school.management.schoolmanagment.model.Subject;
 import com.school.management.schoolmanagment.model.Task;
 import com.school.management.schoolmanagment.model.TaskStatus;
@@ -23,4 +24,7 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     List<Task> findByStatus(TaskStatus status);
     @Query(value = "SELECT t FROM Task t JOIN t.users u WHERE u.id = :userId")
     List<Task> findTasksAssignedToUser(@Param("userId") Long userId);
+
+    @Query("SELECT new com.school.management.schoolmanagment.dto.GradeInfoDTO(t.grade, t.subject.name, t.gradedAt) FROM Task t JOIN t.users u WHERE u.id = :userId")
+    List<GradeInfoDTO> findGradesForUser(@Param("userId") Long userId);
 }

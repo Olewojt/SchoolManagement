@@ -1,5 +1,6 @@
 package com.school.management.schoolmanagment.service;
 
+import com.school.management.schoolmanagment.dto.GradeInfoDTO;
 import com.school.management.schoolmanagment.model.Task;
 import com.school.management.schoolmanagment.repository.TaskRepository;
 import com.school.management.schoolmanagment.repository.UserRepository;
@@ -23,5 +24,9 @@ public class TaskService {
         }
 
         throw new RuntimeException("User with ID does not exist!");
+    }
+
+    public List<GradeInfoDTO> getGradesForUser(Long userId) {
+        return taskRepository.findGradesForUser(userId);
     }
 }
