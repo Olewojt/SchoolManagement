@@ -2,7 +2,7 @@ spring:
   application:
     name: school-management
   datasource:
-    url: jdbc:mysql://localhost/school
+    url: jdbc:mysql://localhost:3306/school?createDatabaseIfNotExist=true
     username: root
     password:
     driver-class-name: com.mysql.cj.jdbc.Driver
