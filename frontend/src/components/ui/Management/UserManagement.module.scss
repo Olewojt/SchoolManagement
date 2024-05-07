@@ -11,7 +11,18 @@
 
   background-color: var(--color-transparent);
 
+  .buttonOn {
+    background-color: var(--color-third);
+  }
+
+  .editButton {
+    padding: 0.2rem;
+    width: 50%;
+    text-align: center;
+  }
+
   .filters {
+    z-index: 11;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -33,6 +44,7 @@
   }
 
   .table_container {
+    z-index: 10;
     width: 100%;
     height: 50vh;
 
@@ -41,22 +53,19 @@
     table {
       table-layout: fixed;
 
-      width: 100%;
+      width: 100vw;
 
       color: var(--color-main-font);
+
+      thead {
+        position: sticky;
+        top: 0;
+      }
 
       th {
         padding: 0.5rem;
 
         background-color: var(--color-fourth);
-
-        &:first-child {
-          border-top-left-radius: 1rem;
-        }
-
-        &:last-child {
-          border-top-right-radius: 1rem;
-        }
       }
 
       tr {
@@ -70,6 +79,12 @@
 
         text-align: center;
         font-weight: 500;
+
+        overflow-wrap: break-word;
+      }
+
+      input {
+        width: 98%;
       }
     }
   }
