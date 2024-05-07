@@ -6,6 +6,7 @@ import Button from "ui/Button/Button.tsx";
 
 import {Logo} from "assets/icons/Icon.tsx";
 import {useNavigate} from "react-router-dom";
+import axiosClient from "../../axios-client.tsx";
 import {useDispatch} from "react-redux";
 import {setLoggedInUser} from "state/auth/authSlice.tsx";
 
@@ -35,6 +36,16 @@ const Login: React.FC = () => {
             || (form.name === "teacher" && form.password === "teacher")) {
             dispatch(setLoggedInUser(form.name));
             navigate("/home", {replace: true});
+            const payload = {
+                email: "dsadas@mail.com",
+                password: "dsadsacxzx",
+                personalInfoDTO: null
+            };
+            axiosClient.post('/register', payload)
+                .then(r => console.log(r))
+                .catch(err => {
+                    console.log(err)
+                })
         } else {
             setError(true)
         }
@@ -54,7 +65,7 @@ const Login: React.FC = () => {
                 </h1> {/*TODO: do testow, bedzie trzeba i tak reduxa ogarnac*/}
             </div>
             <aside className={classes.login__aside}>
-               <Logo className={classes.logo}/>
+                <Logo className={classes.logo}/>
                 <div className={`${classes["login__form"]} ${anime && classes["login__form--anime"]}`}>
                     <h1 className={classes.header}>Sign in</h1>
                     {error && <p className={classes.error}>Error (taki do poprawy)</p>}
