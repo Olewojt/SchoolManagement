@@ -1,4 +1,4 @@
-import React, { DragEvent, FC } from "react";
+import React, {DragEvent, FC} from "react";
 import TaskCard from "ui/Card/TaskCard/TaskCard.tsx";
 import DropIndicator from "layouts/TaskBoard/DropIndicator.tsx";
 import AddCard from "layouts/TaskBoard/AddCard.tsx";
@@ -12,7 +12,7 @@ interface ColumnProps {
     setCards: React.Dispatch<React.SetStateAction<Task[]>>;
 }
 
-const Column: FC<ColumnProps> = ({ title, column, cards, setCards }) => {
+const Column: FC<ColumnProps> = ({title, column, cards, setCards}) => {
     const handleDragStart = (e: DragEvent<HTMLDivElement>, card: Task): void => {
         e.dataTransfer.setData("cardId", card.id);
     };
@@ -49,7 +49,7 @@ const Column: FC<ColumnProps> = ({ title, column, cards, setCards }) => {
                 const offset = e.clientY - (box.top + DISTANCE_OFFSET);
 
                 if (offset < 0 && offset > closest.offset) {
-                    return { offset: offset, element: child };
+                    return {offset: offset, element: child};
                 } else {
                     return closest;
                 }
@@ -76,7 +76,7 @@ const Column: FC<ColumnProps> = ({ title, column, cards, setCards }) => {
 
         const cardId = e.dataTransfer.getData("cardId");
         const indicators = getIndicators();
-        const { element } = getNearestIndicator(e, indicators);
+        const {element} = getNearestIndicator(e, indicators);
 
         const before = (element as HTMLElement).dataset.before || "-1";
         if (before !== cardId) {
@@ -86,7 +86,7 @@ const Column: FC<ColumnProps> = ({ title, column, cards, setCards }) => {
 
             if (!cardToTransfer) return;
 
-            cardToTransfer = { ...cardToTransfer, column };
+            cardToTransfer = {...cardToTransfer, column};
 
             copy = copy.filter((c) => c.id !== cardId);
 
@@ -119,18 +119,23 @@ const Column: FC<ColumnProps> = ({ title, column, cards, setCards }) => {
                 onDrop={handleDragEnd}
                 className={classes.column__items}
             >
-                {filteredCards.map((c) => (
-                    <TaskCard
-                        key={c.id} {...c}
-                        title={c.title}
-                        subject={c.subject}
-                        date={c.date}
-                        members={c.members}
-                        description={c.description}
-                        handleDragStart={handleDragStart}
-                    />
-                ))}
-                <DropIndicator beforeId="-1" column={column} />
+                {filteredCards
+                    .filter((c) => c.isSelected)
+                    .map((c) => (
+                        <TaskCard
+                            key={c.id}
+                            {...c}
+                            title={c.title}
+                            subject={c.subject}
+                            date={c.date}
+                            members={c.members}
+                            description={c.description}
+                            handleDragStart={handleDragStart}
+                        />
+                    ))
+                }
+
+                <DropIndicator beforeId="-1" column={column}/>
                 <AddCard column={column} setCards={setCards}/>
             </div>
         </div>

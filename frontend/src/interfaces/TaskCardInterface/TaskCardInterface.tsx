@@ -10,9 +10,12 @@ interface TaskCardInterface {
 
     id: string;
     column: string;
-    handleDragStart: (e: DragEvent<HTMLDivElement>, data: TaskCardInterface) => void;
+    handleDragStart?: (e: DragEvent<HTMLDivElement>, data: TaskCardInterface) => void;
 
     onClick?: MouseEventHandler;
+
+    style?: any;
+    isSelected: boolean;
 }
 
 type Member = {
