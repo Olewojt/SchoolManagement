@@ -260,3 +260,14 @@ export const DocIcon = () => {
         </svg>
     )
 }
+
+export const SendIcon = () => {
+    return (
+        <svg width="29" height="26" viewBox="0 0 29 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M27.2705 1.74406L2.17186 4.79654L10.6957 12.6497L14.7253 23.6974L27.2705 1.74406Z" stroke="#3A4651"
+                  strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M10.7794 12.7004L15.4911 9.56997" stroke="#3A4651" strokeWidth="3" strokeLinecap="round"
+                  strokeLinejoin="round"/>
+        </svg>
+    )
+}

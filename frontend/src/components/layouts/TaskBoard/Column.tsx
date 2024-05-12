@@ -1,5 +1,5 @@
 import { DragEvent, FC } from "react";
-import TaskCard from "ui/Card/TaskCard.tsx";
+import TaskCard from "ui/Card/TaskCard/TaskCard.tsx";
 import DropIndicator from "layouts/TaskBoard/DropIndicator.tsx";
 import AddCard from "layouts/TaskBoard/AddCard.tsx";
 import classes from "./Column.module.scss";
@@ -123,7 +123,7 @@ const Column: FC<ColumnProps> = ({ title, column, cards, setCards }) => {
                 className={classes.column__items}
             >
                 {filteredCards.map((c: any) => {
-                    return <TaskCard key={c.id} {...c} handleDragStart={handleDragStart} members={exampleMembers} />;
+                    return <TaskCard key={c.id} {...c} handleDragStart={handleDragStart} members={DUMMY_VALUE.members} description={DUMMY_VALUE.description} date={DUMMY_VALUE.date}/>;
                 })}
                 <DropIndicator beforeId="-1" column={column} />
                 <AddCard column={column} setCards={setCards}/>
@@ -134,36 +134,40 @@ const Column: FC<ColumnProps> = ({ title, column, cards, setCards }) => {
 
 export default Column;
 
-
-const exampleMembers = [
-    {
-        profileImg: ProfileImg,
-        name: "Dejwid Jaasper",
-        lider: true
-    },
-    {
-        profileImg: ProfileImg,
-        name: "Miśkaaaa",
-        lider: false
-    },
-    {
-        profileImg: ProfileImg,
-        name: "Ryszard",
-        lider: false
-    },
-    {
-        profileImg: ProfileImg,
-        name: "Goha Goha 3 złote",
-        lider: false
-    },
-    {
-        profileImg: ProfileImg,
-        name: "Marcinek",
-        lider: false
-    },
-    {
-        profileImg: ProfileImg,
-        name: "aha",
-        lider: false
-    }
-];
+const currentDate = new Date();
+const DUMMY_VALUE = {
+    description: "Pewnego dnia, mały Wojtek znalazł w stawie skaczkę wykałaczkę. Była mała, pomarańczowa i miała wesołe, krzykliwe piórka. Wojtek był zachwycony! Postanowił zabrać ją do domu. Nazwał ją Kaczorem Wykałaczorem. Razem spędzali dni na przygodach: pływali po kałużach, zbierali kamyki i słuchali szumu drzew. Kaczor Wykałaczor stał się dla Wojtka najlepszym przyjacielem. Każdego wieczoru usypiali razem, snując marzenia o kolejnych wspólnych przygodach. Ich przyjaźń była jak magiczna opowieść, która trwała wiecznie ",
+    members: [
+        {
+            profileImg: ProfileImg,
+            name: "Dejwid Jaasper",
+            lider: true
+        },
+        {
+            profileImg: ProfileImg,
+            name: "Miśkaaaa",
+            lider: false
+        },
+        {
+            profileImg: ProfileImg,
+            name: "Ryszard",
+            lider: false
+        },
+        {
+            profileImg: ProfileImg,
+            name: "Goha Goha 3 złote",
+            lider: false
+        },
+        {
+            profileImg: ProfileImg,
+            name: "Marcinek",
+            lider: false
+        },
+        {
+            profileImg: ProfileImg,
+            name: "aha",
+            lider: false
+        }
+    ],
+    date: currentDate
+};
