@@ -1,0 +1,68 @@
+@keyframes contentOpacity {
+  0%, 50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.open-card {
+  z-index: 5;
+  animation: contentOpacity .8s ease-in-out;
+
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  font-size: 1rem;
+
+  &__container {
+    position: relative;
+    height: 100%;
+
+    display: grid;
+    grid-template-columns: 351px 1fr;
+  }
+
+  &__blank {
+  }
+  &__btn {
+    background-color: var(--color-primary);
+    border-radius: 100vw;
+    z-index: 100;
+    padding: 0;
+
+    display: flex;
+    box-shadow: var(--shadow-main);
+
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 1rem;
+  }
+
+}
+
+.send-btn {
+  position: absolute;
+  right: 0;
+  bottom: 3%;
+  margin: 2.5rem;
+}
+
+.content {
+  position: relative;
+  width: 80%;
+
+  display: grid;
+  grid-template-columns: (1fr, 1fr);
+  grid-template-rows: repeat(5, auto);
+
+  margin: 1rem 2rem;
+
+  color: var(--color-main-font);
+}

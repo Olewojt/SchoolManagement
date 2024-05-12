@@ -7,7 +7,7 @@ interface InputProps {
     name?: string,
     value?: string
 
-    onChange: (e: ChangeEvent<HTMLInputElement>) => void,
+    onChange?: (e: ChangeEvent<HTMLInputElement>) => void,
     className?: string
 }
 

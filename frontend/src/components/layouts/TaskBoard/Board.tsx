@@ -132,14 +132,6 @@ const DEFAULT_CARDS = [
             }
         ]
     },
-    {title: "Postmortem for outage", id: "6", column: "todo", subject: "Incident Management", date: "2024-03-25"},
-    {
-        title: "Sync with product on Q3 roadmap",
-        id: "7",
-        column: "todo",
-        subject: "Project Management",
-        date: "2024-03-26"
-    },
 
     // DONE
     {
