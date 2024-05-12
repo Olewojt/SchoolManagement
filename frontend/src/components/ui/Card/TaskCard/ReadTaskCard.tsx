@@ -17,11 +17,11 @@ const ReadTaskCard = (props: TaskCardInterface) => {
                             <h2>{props.subject}</h2>
                         </div>
                         <div className={classes["open-card__info-text"]}>
-                            <h2>SUBJECT:</h2>
+                            <h2>DUE DATE:</h2>
                             <h2>{props.date}</h2>
                         </div>
                         <div className={classes["open-card__info-text"]}>
-                            <h2>SUBJECT:</h2>
+                            <h2>DATE?:</h2>
                             <h2>{props.date}</h2>
                         </div>
                     </div>

@@ -10,7 +10,7 @@ interface TaskCardInterface {
 
     id: string;
     column: string;
-    handleDragStart: (e: DragEvent<HTMLDivElement>, data: { title: string, id: string, column: string }) => void;
+    handleDragStart: (e: DragEvent<HTMLDivElement>, data: TaskCardInterface) => void;
 
     onClick?: MouseEventHandler;
 }
