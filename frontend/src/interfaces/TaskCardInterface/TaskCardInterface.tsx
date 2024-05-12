@@ -15,7 +15,7 @@ interface TaskCardInterface {
     onClick?: MouseEventHandler;
 
     style?: any;
-    isSelected: boolean;
+    isSelected?: boolean;
 }
 
 type Member = {

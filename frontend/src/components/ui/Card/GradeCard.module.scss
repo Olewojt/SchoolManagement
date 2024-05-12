@@ -10,7 +10,14 @@
   justify-content: center;
   box-shadow: var(--shadow-main);
   color: var(--color-main-font);;
-  margin: 10px;
+  margin: 2rem .5rem 0 .5rem;
+  position: relative;
+
+  &__new {
+    position: absolute;
+    top: -1.12rem;
+    right: .5rem;
+  }
 }
 .line {
   width: 80%;

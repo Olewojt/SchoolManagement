@@ -5,48 +5,60 @@ export interface DummyGrades {
 
 export const DUMMY_GRADES = [
     {
-        subject: "Mathematics",
-        grades: [
-            {grade: 5, date: new Date(Date.now())},
-            {grade: 4, date: new Date(Date.now())}
+        "subject": "Physics",
+        "grades": [
+            {"grade": 4, "date": "2024-04-10"},
+            {"grade": 3, "date": "2024-04-25"},
+            {"grade": 5, "date": "2024-05-08"}
         ]
     },
     {
-        subject: "Physics",
-        grades: [
-            {grade: 5, date: new Date(Date.now())},
-            {grade: 3, date: new Date(Date.now())}
+        "subject": "Religion",
+        "grades": [
+            {"grade": 1, "date": "2024-03-28"},
+            {"grade": 2, "date": "2024-04-15"}
         ]
     },
     {
-        subject: "Religion",
-        grades: [
-            {grade: 1, date: new Date(Date.now())},
-            {grade: 2, date: new Date(Date.now())}
+        "subject": "History",
+        "grades": [
+            {"grade": 3, "date": "2024-05-02"},
+            {"grade": 4, "date": "2024-05-10"}
         ]
     },
     {
-        subject: "History",
-        grades: []
+        "subject": "Geography",
+        "grades": [
+            {"grade": 5, "date": "2024-04-15"},
+            {"grade": 3, "date": "2024-04-30"}
+        ]
     },
     {
-        subject: "Geography",
-        grades: []
+        "subject": "Chemistry",
+        "grades": [
+            {"grade": 4, "date": "2024-04-19"},
+            {"grade": 5, "date": "2024-05-05"}
+        ]
     },
     {
-        subject: "Chemistry",
-        grades: []
+        "subject": "Biology",
+        "grades": [
+            {"grade": 4, "date": "2024-04-25"},
+            {"grade": 3, "date": "2024-05-12"}
+        ]
     },
     {
-        subject: "Biology",
-        grades: []
+        "subject": "Art",
+        "grades": [
+            {"grade": 5, "date": "2024-05-06"},
+            {"grade": 4, "date": "2024-05-11"}
+        ]
     },
     {
-        subject: "Art",
-        grades: []
-    },
-    {
-        subject: "English",
-        grades: []
-    },
-];
+        "subject": "English",
+        "grades": [
+            {"grade": 4, "date": "2024-05-10"},
+            {"grade": 5, "date": "2024-05-12"}
+        ]
+    }
+]
