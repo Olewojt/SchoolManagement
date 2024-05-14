@@ -1,9 +1,10 @@
 import {configureStore} from '@reduxjs/toolkit';
-import loginReducer from './auth/authSlice';
-
+import gradeReducer from "./grades/gradeSlice.tsx"
+import loginReducer from "state/auth/authSlice.tsx";
 export const store = configureStore({
     reducer: {
-        login: loginReducer,
+        grade: gradeReducer,
+        login: loginReducer
     },
 });
 

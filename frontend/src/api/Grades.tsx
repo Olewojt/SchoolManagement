@@ -1,6 +1,34 @@
+import { useDispatch } from "react-redux";
+import { addGrade } from "state/grades/gradeSlice";
+import {useEffect} from "react";
+
+//TODO: Narazie jest to wywoływane w <Home/>, ale przy pobieraniu z axiosa i używaniu async trzeba sprawdzić czy można bez tego exporta ;D
+const Grades = () => {
+    const dispatch = useDispatch();
+
+    const saveGrades = () => {
+        DUMMY_GRADES.forEach(gradeData => {
+            dispatch(addGrade(gradeData));
+        });
+    };
+
+    useEffect(() => {
+        saveGrades();
+    }, []);
+
+    return null;
+}
+
+export default Grades;
+
+interface Grade {
+    subject: string;
+    grade: number;
+    date: string;
+}
 export interface DummyGrades {
     subject: string;
-    grades: { grade: number; date: Date }[];
+    grades: Grade[];
 }
 
 export const DUMMY_GRADES = [
@@ -51,7 +79,7 @@ export const DUMMY_GRADES = [
         "subject": "Art",
         "grades": [
             {"grade": 5, "date": "2024-05-06"},
-            {"grade": 4, "date": "2024-05-11"}
+            {"grade": 4, "date": "2024-05-13"}
         ]
     },
     {
