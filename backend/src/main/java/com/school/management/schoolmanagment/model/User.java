@@ -1,6 +1,8 @@
 package com.school.management.schoolmanagment.model;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import java.util.HashSet;
@@ -52,7 +54,7 @@ public class User {
         this.schoolClass = schoolClass;
     }
 
-    public void addTask (Task task) {
+    public void addTask(Task task) {
         this.tasks.add(task);
         task.getUsers().add(this);
     }

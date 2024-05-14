@@ -2,14 +2,15 @@ package com.school.management.schoolmanagment.database;
 
 import com.school.management.schoolmanagment.model.*;
 import com.school.management.schoolmanagment.repository.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Date;
+import java.util.Optional;
 
 @Component
 public class DatabaseSeeder implements CommandLineRunner {
@@ -109,11 +110,13 @@ public class DatabaseSeeder implements CommandLineRunner {
 
     private void seedTasks() {
         User taskCreator = userRepository.findById(1L).get();
-        Task task = new Task("Rozprawka o misce", "Wykonac rozprawke na temat miski w bojlerze", LocalDateTime.now(), TaskStatus.FIRST_STATUS, taskCreator, null, Instant.now(), null, null, null, subjectRepository.findById(1L).get());
+        Task task = new Task("Rozprawka o misce", "Wykonac rozprawke na temat miski w bojlerze",
+                LocalDateTime.now(), TaskStatus.FIRST_STATUS, taskCreator, null, Instant.now(),
+                null, 1, new Date(), subjectRepository.findById(1L).get());
         taskRepository.save(task);
         User user = userRepository.findById(1L).get();
         user.addTask(task);
-        userRepository.save(user);
+        taskRepository.save(task);
     }
 
 

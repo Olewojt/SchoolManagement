@@ -2,11 +2,11 @@ package com.school.management.schoolmanagment.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
-
 public class GradeInfoDTO {
     private Integer grade;
     private String subjectName;
