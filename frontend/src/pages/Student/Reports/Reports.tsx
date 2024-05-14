@@ -1,17 +1,17 @@
-import classes from "./Reports.module.scss"
+import classes from "./Reports.module.scss";
 import SelectOptions, {Subject} from "forms/SelectOptions.tsx";
 import PieChart, {GradeDict} from "ui/Charts/PieChart.tsx";
-import SelectDate from "forms/SelectDate.tsx";
+import SelectDate, {currentDate} from "forms/SelectDate.tsx";
 import {DUMMY_GRADES, DummyGrades} from "api/Grades.tsx";
-import {useState} from "react";
+import React, {useEffect, useState} from "react";
 
 interface InitialState {
-    [key: string]: boolean
+    [key: string]: boolean;
 }
 
 function generateInitialState(subjects: Subject[]): InitialState {
     const initialState: { [key: string]: boolean } = {};
-    subjects.forEach(subject => {
+    subjects.forEach((subject) => {
         initialState[subject.name] = true;
     });
     return initialState;
@@ -19,13 +19,11 @@ function generateInitialState(subjects: Subject[]): InitialState {
 
 function getSubjects(dummyGrades: DummyGrades[]): Subject[] {
     const subjects: Subject[] = [];
-
     for (const grade of dummyGrades) {
         subjects.push({
             name: grade.subject,
         });
     }
-
     return subjects;
 }
 
@@ -48,41 +46,76 @@ function getGradesCount(dummyGrades: DummyGrades[]): GradeDict {
     return sampleGrades;
 }
 
-// Absolutnie nie korzystalem z Chatu GPT.
-// Łotasiet
 const StudentReports = () => {
-
-    const subjects = getSubjects(DUMMY_GRADES);
-    const initialState = generateInitialState(subjects)
+    const initialState = generateInitialState(getSubjects(DUMMY_GRADES));
+    const grades = getGradesCount(DUMMY_GRADES);
 
     const [selectedSubjects, setSelectedSubjects] = useState<InitialState>(initialState);
-    const [sampleGrades, setSampleGrades] = useState<GradeDict>(getGradesCount(DUMMY_GRADES));
+    const [sampleGrades, setSampleGrades] = useState<GradeDict>(grades);
+    const [fromDate, setFromDate] = useState(currentDate());
+    const [toDate, setToDate] = useState(currentDate());
+
+    // Filter grades when selectedSubjects or date range changes
+    useEffect(() => {
+        const filteredGrades = filterGrades();
+        const newSampleGrades = getGradesCount(filteredGrades);
+        setSampleGrades(newSampleGrades);
+    }, [selectedSubjects, fromDate, toDate]);
 
     const onCheckboxChange = (subject: string) => {
-        // Create a copy of the current selectedSubjects state
-        const newSelectedSubjects = { ...selectedSubjects };
+        setSelectedSubjects((prevState) => ({
+            ...prevState,
+            [subject]: !prevState[subject],
+        }));
+    };
 
-        // Toggle the checkbox state for the subject
-        newSelectedSubjects[subject] = !newSelectedSubjects[subject];
+    const handleFromDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setFromDate(event.target.value);
+    };
 
-        // Update the state with the new selectedSubjects
-        setSelectedSubjects(newSelectedSubjects);
+    const handleToDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setToDate(event.target.value);
+    };
 
-        // Filter DUMMY_GRADES based on selected subjects
-        const filteredGrades = DUMMY_GRADES.filter(grade => newSelectedSubjects[grade.subject]);
+    const filterGrades = (): DummyGrades[] => {
+        console.log(DUMMY_GRADES);
+        return DUMMY_GRADES.map((grade) => ({
+            ...grade,
+            grades: grade.grades.filter((specificGrade) => {
+                const from = new Date(fromDate);
+                from.setHours(0, 0, 0, 0); // Set time to midnight
 
-        // Recalculate grades count based on filtered grades
-        const newSampleGrades = getGradesCount(filteredGrades);
+                const to = new Date(toDate);
+                to.setHours(23, 59, 59, 999); // Set time to 23:59:59
 
-        // Update the state with the new sampleGrades
-        setSampleGrades(newSampleGrades);
+                const current = new Date(specificGrade.date);
+
+                console.log(current >= from && current <= to);
+
+                return current >= from && current <= to;
+            })
+        })).filter((grade) => {
+            const isSelected = selectedSubjects[grade.subject];
+            return isSelected && grade.grades.length > 0;
+        });
     };
 
     return (
         <main className={classes.content}>
             <div className={classes.filters}>
-                <SelectOptions name={"Subject"} options={subjects} onCheckboxChange={onCheckboxChange} checkedItems={selectedSubjects}/>
-                <SelectDate name={"Date"} />
+                <SelectOptions
+                    name={"Subject"}
+                    options={getSubjects(DUMMY_GRADES)}
+                    onCheckboxChange={onCheckboxChange}
+                    checkedItems={selectedSubjects}
+                />
+                <SelectDate
+                    name={"Date"}
+                    fromDate={fromDate}
+                    toDate={toDate}
+                    handleFromDateChange={handleFromDateChange}
+                    handleToDateChange={handleToDateChange}
+                />
             </div>
 
             <div className={classes.charts}>
@@ -90,6 +123,6 @@ const StudentReports = () => {
             </div>
         </main>
     );
-}
+};
 
 export default StudentReports;

@@ -1,9 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-interface Grade {
-    grade: number;
-    date: string;
-}
+import {Grade} from "api/Grades.tsx";
 
 interface GradeSlice {
     subject: string;
@@ -15,7 +11,7 @@ const initialState: GradeSlice = {
     grades: [
         {
             grade: 2,
-            date: "2024-02-02",
+            date: new Date("2024-02-02")
         }
     ]
 }

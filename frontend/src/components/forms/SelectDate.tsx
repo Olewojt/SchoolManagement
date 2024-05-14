@@ -6,40 +6,34 @@ import classes from './SelectDate.module.scss';
 
 interface SelectProps {
     name: string;
+    fromDate: string;
+    toDate: string;
+    handleFromDateChange: React.ChangeEventHandler;
+    handleToDateChange: React.ChangeEventHandler;
     className?: string
+}
+export function currentDate() {
+    const date = new Date();
+    const year = date.getFullYear();
+    let month: string | number = date.getMonth() + 1;
+    let day: string | number = date.getDate();
+
+    if (month < 10) {
+        month = '0' + month;
+    }
+    if (day < 10) {
+        day = '0' + day;
+    }
+
+    return `${year}-${month}-${day}`;
 }
 
 const SelectDate: React.FC<SelectProps> = (props: SelectProps) => {
-    const currentDate = () => {
-        const date = new Date();
-        const year = date.getFullYear();
-        let month: string | number = date.getMonth() + 1;
-        let day: string | number = date.getDate();
-
-        if (month < 10) {
-            month = '0' + month;
-        }
-        if (day < 10) {
-            day = '0' + day;
-        }
-
-        return `${year}-${month}-${day}`;
-    }
 
     const [isExpanded, setIsExpanded] = useState(false);
-    const [fromDate, setFromDate] = useState(currentDate());
-    const [toDate, setToDate] = useState(currentDate());
 
     const toggleExpansion = () => {
         setIsExpanded(prev => !prev);
-    }
-
-    const handleFromDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setFromDate(event.target.value);
-    }
-
-    const handleToDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setToDate(event.target.value);
     }
 
     return (
@@ -51,9 +45,19 @@ const SelectDate: React.FC<SelectProps> = (props: SelectProps) => {
             {isExpanded && (
                 <div className={`${baseClasses.expanded__content} ${classes.expanded__content}`}>
                     <label>Od: </label>
-                    <input type="date" name="from" value={fromDate} onChange={handleFromDateChange} max={currentDate()}></input>
+                    <input
+                        type="date"
+                        name="from"
+                        value={props.fromDate}
+                        onChange={props.handleFromDateChange}
+                        max={currentDate()}></input>
                     <label>Do: </label>
-                    <input type="date" name="to" value={toDate} onChange={handleToDateChange} max={currentDate()}></input>
+                    <input
+                        type="date"
+                        name="to"
+                        value={props.toDate}
+                        onChange={props.handleToDateChange}
+                        max={currentDate()}></input>
                 </div>
             )}
         </div>

@@ -1,5 +1,4 @@
 import classes from "./Home.module.scss"
-import Notifications from "ui/Notifications/Notifications.tsx";
 import LastGradeCard from "ui/Card/LastGradeCard/LastGradeCard.tsx";
 import Grades from "api/Grades.tsx";
 
