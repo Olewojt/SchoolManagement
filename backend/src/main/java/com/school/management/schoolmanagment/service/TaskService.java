@@ -27,6 +27,12 @@ public class TaskService {
     }
 
     public List<GradeInfoDTO> getGradesForUser(Long userId) {
-        return taskRepository.findGradesForUser(userId);
+        boolean isUserExists = userRepository.existsById(userId);
+
+        if (isUserExists) {
+            return taskRepository.findGradesForUser(userId);
+        }
+
+        throw new RuntimeException("User with ID does not exist!");
     }
 }

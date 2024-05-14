@@ -25,6 +25,8 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     @Query(value = "SELECT t FROM Task t JOIN t.users u WHERE u.id = :userId", nativeQuery = true)
     List<Task> findTasksAssignedToUser(@Param("userId") Long userId);
 
-    @Query(value = "SELECT new com.school.management.schoolmanagment.dto.GradeInfoDTO(t.grade, t.subject.name, t.gradedAt) FROM Task t JOIN t.users u WHERE u.id = :userId", nativeQuery = true)
+
+    @Query("SELECT t.grade, s.name, t.gradedAt FROM Task t JOIN t.subject s JOIN t.users u WHERE u.id = :userId")
     List<GradeInfoDTO> findGradesForUser(@Param("userId") Long userId);
+
 }

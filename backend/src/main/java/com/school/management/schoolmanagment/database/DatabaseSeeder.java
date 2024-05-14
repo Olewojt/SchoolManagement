@@ -47,6 +47,8 @@ public class DatabaseSeeder implements CommandLineRunner {
         //seedTasks();
         seedTeacherSubjectsInClasses();
         seedTasks();
+
+        System.out.println(taskRepository.findGradesForUser(1L));
     }
 
     private void seedSchoolClasses() {
