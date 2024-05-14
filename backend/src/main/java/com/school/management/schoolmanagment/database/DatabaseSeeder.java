@@ -114,7 +114,6 @@ public class DatabaseSeeder implements CommandLineRunner {
         User user = userRepository.findById(1L).get();
         user.addTask(task);
         userRepository.save(user);
-
     }
 
 

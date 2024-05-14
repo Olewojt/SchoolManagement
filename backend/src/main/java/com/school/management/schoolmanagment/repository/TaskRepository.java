@@ -17,14 +17,19 @@ import java.util.Set;
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
     List<Task> findByGrade(Integer grade);
-    List<Task> findByTaskCreator(User taskCreator);
-    List<Task> findByUsersIn(Set<User> users);
-    List<Task> findBySubject(Subject subject);
-    List<Task> findByDeadline(LocalDateTime deadline);
-    List<Task> findByStatus(TaskStatus status);
-    @Query(value = "SELECT t FROM Task t JOIN t.users u WHERE u.id = :userId", nativeQuery = true)
-    List<Task> findTasksAssignedToUser(@Param("userId") Long userId);
 
+    List<Task> findByTaskCreator(User taskCreator);
+
+    List<Task> findByUsersIn(Set<User> users);
+
+    List<Task> findBySubject(Subject subject);
+
+    List<Task> findByDeadline(LocalDateTime deadline);
+
+    List<Task> findByStatus(TaskStatus status);
+
+    @Query(value = "SELECT t.users FROM Task t JOIN t.users u WHERE u.id = :userId")
+    List<Task> findTasksAssignedToUser(@Param("userId") Long userId);
 
     @Query("SELECT t.grade, s.name, t.gradedAt FROM Task t JOIN t.subject s JOIN t.users u WHERE u.id = :userId")
     List<GradeInfoDTO> findGradesForUser(@Param("userId") Long userId);
