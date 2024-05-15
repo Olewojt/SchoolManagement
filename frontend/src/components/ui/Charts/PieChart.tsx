@@ -10,7 +10,7 @@ const colors = {
     'grade_1': getComputedStyle(document.documentElement).getPropertyValue('--grade-card-bg-1')
 }
 
-export const options = {
+const options = {
     title: "Grades",
     backgroundColor: "transparent",
     chartArea: {
@@ -54,7 +54,8 @@ export interface ChartProps {
 }
 
 const PieChart = (props: ChartProps) => {
-     const gradesData = [
+    const noDataToDisplay = ["5", "4", "3", "2", "1"].every(key => props.data[key] === 0);
+    const gradesData = [
         ["Grade", "Amount"],
         ["5", props.data["5"]],
         ["4", props.data["4"]],
@@ -62,6 +63,9 @@ const PieChart = (props: ChartProps) => {
         ["2", props.data["2"]],
         ["1", props.data["1"]],
     ];
+
+    if (noDataToDisplay) options.title = "No grades to display \nfor given filters"
+    else options.title = "Grades"
 
     return (
         <Chart
