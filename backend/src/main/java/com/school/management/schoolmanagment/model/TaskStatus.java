@@ -4,5 +4,6 @@ public enum TaskStatus {
 
     // TODO: idk statusese
     FIRST_STATUS,
-    SECOND_STATUS
+    SECOND_STATUS,
+    THIRD_STATUS
 }

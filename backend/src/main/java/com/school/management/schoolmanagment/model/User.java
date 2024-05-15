@@ -40,9 +40,9 @@ public class User {
     @JoinTable(name = "parent_children",
             joinColumns = @JoinColumn(name = "parent_id"),
             inverseJoinColumns = @JoinColumn(name = "child_id"))
-    private Set<User> children;
+    private Set<User> children = new HashSet<>();
     @ManyToMany(mappedBy = "children")
-    private Set<User> parents;
+    private Set<User> parents = new HashSet<>();
     @ManyToMany(mappedBy = "users", fetch = EAGER)
     private final Set<Task> tasks = new HashSet<>();
 
