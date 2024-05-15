@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import expand from 'assets/icons/expand.svg'
 import collapse from 'assets/icons/collapse.svg'
-import baseClasses from './SelectOptions.module.scss';
+import baseClasses from './Select.module.scss';
 import classes from './SelectDate.module.scss';
 
 interface SelectProps {

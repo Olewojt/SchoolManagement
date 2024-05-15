@@ -31,5 +31,27 @@
     border-radius: 0.5rem;
 
     background-color: var(--color-transparent-select);
+
+    &__element {
+      margin: 0.1rem;
+
+      border-radius: 0.2rem;
+
+      background-color: var(--color-secondary);
+      color: white;
+
+      &:hover {
+        background-color: var(--color-third);
+      }
+
+      > label {
+        display: flex;
+        justify-content: space-between;
+        gap: 0.5rem;
+        padding: 0.5rem;
+
+        user-select: none;
+      }
+    }
   }
 }

@@ -1,0 +1,24 @@
+.content {
+  display: flex;
+  flex-direction: column;
+
+  padding: 2rem;
+
+  background-color: var(--color-primary);
+}
+
+.filters {
+  display: flex;
+  justify-content: start;
+  gap: 2rem;
+  width: 70%;
+
+  margin-bottom: 1rem;
+}
+
+.charts {
+  background-color: #00000026;
+  border-radius: 2rem;
+  width: 30rem;
+  height: 30rem;
+}
