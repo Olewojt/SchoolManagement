@@ -6,6 +6,7 @@ import {DUMMY_TEACHERS, DummyTeacher} from "api/Teachers.tsx";
 import {DUMMY_STUDENTS, DummyStudent} from "api/Students.tsx";
 import {SetStateAction, useState} from "react";
 import Input from "forms/Input.tsx";
+import SelectOption from "forms/SelectOption.tsx";
 
 const UserManagement = () => {
 
@@ -13,6 +14,7 @@ const UserManagement = () => {
     const [currentTab, setCurrentTab] = useState('TEACHERS'); // State to track current tab
     const [editMode, setEditMode] = useState(false); // State to track edit mode
     const [editedRow, setEditedRow] = useState(-1); // Track the currently edited row
+    const [selectedClass, setSelectedClass] = useState("-"); // Track the currently selected class
     const handleEditRow = (row: number) => {
         setEditedRow(row);
     }
@@ -22,6 +24,7 @@ const UserManagement = () => {
     }
 
     const editModeChange = (mode: boolean) => {
+        setSelectedClass("-");
         setEditedRow(-1);
         setEditMode(mode);
     }
@@ -29,6 +32,10 @@ const UserManagement = () => {
     const onSearchInput = (event: { target: { value: SetStateAction<string>; }; }) => {
         setSearchQuery(event.target.value);
     }
+
+    const handleClassChange = (selected: string) => {
+        setSelectedClass(selected);
+    };
 
     const DUMMY_SUBJECTS = [
         {name: "History"},
@@ -136,14 +143,25 @@ const UserManagement = () => {
 
                                 {currentTab === "TEACHERS" &&
                                     <>
-                                        <td colSpan={4}>{item.subject}</td>
-                                        <td colSpan={4}>{item.class || "-"}</td>
+                                        <td colSpan={4}>{(item as DummyTeacher).subject || "-"}</td>
+                                        <td colSpan={4}>
+                                            {editMode && editedRow == item.id
+                                                ?
+                                                <SelectOption
+                                                    options={["-", "5C", "2A"]}
+                                                    name="Class"
+                                                    onOptionChange={handleClassChange}
+                                                    selected={selectedClass == "-" ? item.class || "-" : selectedClass}
+                                                    className={classes.class_selection}/>
+                                                : (item as DummyTeacher).class || "-"
+                                            }
+                                        </td>
                                     </>
                                 }
 
                                 {currentTab === "STUDENTS" &&
                                     <>
-                                        <td colSpan={4}>{item.class}</td>
+                                        <td colSpan={4}>{(item as DummyStudent).class}</td>
                                         <td colSpan={4}>{item.pesel}</td>
                                         <td colSpan={4}>{item.country}</td>
                                         <td colSpan={4}>{item.city}</td>

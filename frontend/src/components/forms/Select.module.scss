@@ -1,4 +1,5 @@
 .select {
+  position: relative;
 
   &__content {
     display: flex;
@@ -23,7 +24,7 @@
   height: auto;
 
   &__content {
-    z-index: 1;
+    z-index: 15;
     position: absolute;
     transform: translateY(0.8rem);
 

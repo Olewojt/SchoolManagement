@@ -3,7 +3,7 @@ export interface DummyTeacher {
     id: number;
     name: string;
     surname: string;
-    subject: string;
+    subject: string | null;
     class: string | null;
     email: string;
 }
