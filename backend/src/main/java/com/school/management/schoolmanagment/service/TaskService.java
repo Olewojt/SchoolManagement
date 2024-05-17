@@ -6,6 +6,9 @@ import com.school.management.schoolmanagment.model.Task;
 import com.school.management.schoolmanagment.repository.TaskRepository;
 import com.school.management.schoolmanagment.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,23 +22,28 @@ public class TaskService {
     private final GradeInfoDTOMapper gradeInfoDTOMapper;
 
     public List<Task> findTasksAssignedToUser(Long userId) {
-        boolean isUserExists = userRepository.existsById(userId);
+        validateUserAccess(userId);
 
-        if (isUserExists) {
-            return taskRepository.findTasksAssignedToUser(userId);
-        }
-
-        throw new RuntimeException("User with ID does not exist!");
+        return taskRepository.findTasksAssignedToUser(userId);
     }
 
+
     public List<GradeInfoDTO> getGradesForUser(Long userId) {
-        boolean isUserExists = userRepository.existsById(userId);
+        validateUserAccess(userId);
 
-        if (isUserExists) {
-            List<Task> tasks = taskRepository.findGradesForUser(userId);
-            return gradeInfoDTOMapper.mapToGradeInfoDTO(tasks);
-        }
+        List<Task> tasks = taskRepository.findGradesForUser(userId);
+        return gradeInfoDTOMapper.mapToGradeInfoDTO(tasks);
+    }
 
-        throw new RuntimeException("User with ID does not exist!");
+    private void validateUserAccess(Long userId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUsername = authentication.getName();
+        userRepository.findById(userId).ifPresentOrElse(user -> {
+            if (!user.getEmail().equals(currentUsername)) {
+                throw new AccessDeniedException("Unauthorized access");
+            }
+        }, () -> {
+            throw new AccessDeniedException("Unauthorized access");
+        });
     }
 }
