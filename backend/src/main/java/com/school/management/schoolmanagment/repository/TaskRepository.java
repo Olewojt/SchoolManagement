@@ -31,7 +31,7 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     @Query(value = "SELECT t FROM Task t JOIN t.users u WHERE u.id = :userId")
     List<Task> findTasksAssignedToUser(@Param("userId") Long userId);
 
-    @Query("SELECT t FROM Task t JOIN t.subject s JOIN t.users u WHERE u.id = :userId")
+    @Query("SELECT t FROM Task t JOIN t.subject s JOIN t.users u WHERE u.id = :userId AND t.grade IS NOT NULL")
     List<Task> findGradesForUser(@Param("userId") Long userId);
 
 }
