@@ -1,6 +1,8 @@
 package com.school.management.schoolmanagment.model;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,9 +15,9 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import static jakarta.persistence.EnumType.STRING;
-import static jakarta.persistence.FetchType.LAZY;
-import static jakarta.persistence.GenerationType.IDENTITY;
+import static javax.persistence.EnumType.STRING;
+import static javax.persistence.FetchType.LAZY;
+import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @NoArgsConstructor
@@ -31,6 +33,7 @@ public class Task {
     private LocalDateTime deadline;
     @Enumerated(value = STRING)
     private TaskStatus status;
+    @JsonIgnore
     @ManyToOne(fetch = LAZY)
     private User taskCreator;
     private String feedback;
@@ -40,12 +43,14 @@ public class Task {
     private Blob attachment;
     private Integer grade;
     private Date gradedAt;
+    @JsonIgnore
     @ManyToOne(fetch = LAZY)
     private Subject subject;
     @ManyToMany
     @JoinTable(name = "task_assigments",
             joinColumns = @JoinColumn(name = "task_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
+    @JsonIgnore
     private final Set<User> users = new HashSet<>();
 
     public Task(String title, String description, LocalDateTime deadline,
