@@ -1,5 +1,6 @@
 package com.school.management.schoolmanagment.database;
 
+import com.school.management.schoolmanagment.mapper.SubjectGradesDTOMapper;
 import com.school.management.schoolmanagment.model.*;
 import com.school.management.schoolmanagment.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
+
 
 @Component
 public class DatabaseSeeder implements CommandLineRunner {
@@ -210,6 +215,50 @@ public class DatabaseSeeder implements CommandLineRunner {
         createTasksForStudent("emma.jones@example.com", math, science, history, pe, art, taskCreator, allStudents);
         createTasksForStudent("david.wilson@example.com", math, science, history, pe, art, taskCreator, allStudents);
         createTasksForStudent("sophia.taylor@example.com", math, science, history, pe, art, taskCreator, allStudents);
+
+        Task task1 = new Task("Math Homework", "Complete exercises 1-10 on page 50", LocalDateTime.now().plusDays(7), TaskStatus.FIRST_STATUS, taskCreator, null, Instant.now(), null, null, null, math);
+        Task task2 = new Task("Science Project", "Prepare a presentation on the solar system", LocalDateTime.now().plusDays(14), TaskStatus.FIRST_STATUS, taskCreator, null, Instant.now(), null, 3, new Date(), science);
+        Task task3 = new Task("Math Test", "Study chapters 1-3 for the test", LocalDateTime.now().plusDays(3), TaskStatus.THIRD_STATUS, taskCreator, null, Instant.now(), null, 2, new Date(), math);
+        Task task4 = new Task("Science Experiment", "Conduct the experiment on plant growth", LocalDateTime.now().plusDays(10), TaskStatus.SECOND_STATUS, taskCreator, null, Instant.now(), null, 1, new Date(), science);
+        Task task5 = new Task("Math Quiz", "Solve the quiz questions in the workbook", LocalDateTime.now().plusDays(5), TaskStatus.THIRD_STATUS, taskCreator, null, Instant.now(), null, 5, new Date(), math);
+        Task task6 = new Task("Math Quiz", "Solve the quiz questions in the workbook", LocalDateTime.now().plusDays(5), TaskStatus.THIRD_STATUS, taskCreator, null, Instant.now(), null, 5, new Date(), math);
+        Task task7 = new Task("Math Quiz", "Solve the quiz questions in the workbook", LocalDateTime.now().plusDays(5), TaskStatus.THIRD_STATUS, taskCreator, null, Instant.now(), null, 5, new Date(), math);
+        Task task8 = new Task("Math Quiz", "Solve the quiz questions in the workbook", LocalDateTime.now().plusDays(5), TaskStatus.THIRD_STATUS, taskCreator, null, Instant.now(), null, 5, new Date(), math);
+        Task task9 = new Task("Math Quiz", "Solve the quiz questions in the workbook", LocalDateTime.now().plusDays(5), TaskStatus.THIRD_STATUS, taskCreator, null, Instant.now(), null, 5, new Date(), math);
+        Task task10 = new Task("Math Quiz", "Solve the quiz questions in the workbook", LocalDateTime.now().plusDays(5), TaskStatus.THIRD_STATUS, taskCreator, null, Instant.now(), null, 5, new Date(), math);
+
+        taskRepository.save(task1);
+        taskRepository.save(task2);
+        taskRepository.save(task3);
+        taskRepository.save(task4);
+        taskRepository.save(task5);
+        taskRepository.save(task6);
+        taskRepository.save(task7);
+        taskRepository.save(task8);
+        taskRepository.save(task9);
+        taskRepository.save(task10);
+
+        User student1 = userRepository.findByEmail("john.doe@example.com").orElseThrow();
+        User student2 = userRepository.findByEmail("jane.smith@example.com").orElseThrow();
+
+        student1.addTask(task1);
+        student1.addTask(task2);
+        student1.addTask(task5);
+        student1.addTask(task7);
+        student1.addTask(task8);
+        student1.addTask(task10);
+        student1.addTask(task9);
+
+        student2.addTask(task3);
+        student2.addTask(task4);
+        student2.addTask(task5);
+        student2.addTask(task6);
+        student2.addTask(task1);
+
+        userRepository.save(student1);
+        userRepository.save(student2);
+
+        System.out.println(new SubjectGradesDTOMapper().mapToSubjectGradesDTO(List.of(task4, task5, task6, task7, task8, task9)));
     }
 
     private void createTasksForStudent(String email, Subject math, Subject science, Subject history, Subject pe, Subject art, User taskCreator, List<User> allStudents) {

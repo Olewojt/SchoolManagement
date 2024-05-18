@@ -1,7 +1,9 @@
 package com.school.management.schoolmanagment.service;
 
 import com.school.management.schoolmanagment.dto.GradeInfoDTO;
+import com.school.management.schoolmanagment.dto.SubjectGradesDTO;
 import com.school.management.schoolmanagment.mapper.GradeInfoDTOMapper;
+import com.school.management.schoolmanagment.mapper.SubjectGradesDTOMapper;
 import com.school.management.schoolmanagment.model.Task;
 import com.school.management.schoolmanagment.repository.TaskRepository;
 import com.school.management.schoolmanagment.repository.UserRepository;
@@ -33,6 +35,13 @@ public class TaskService {
 
         List<Task> tasks = taskRepository.findGradesForUser(userId);
         return gradeInfoDTOMapper.mapToGradeInfoDTO(tasks);
+    }
+
+    public List<SubjectGradesDTO> getStudentSubjectGrades(Long userId) {
+        validateUserAccess(userId);
+
+        List<Task> tasks = taskRepository.findGradesForUser(userId);
+        return SubjectGradesDTOMapper.mapToSubjectGradesDTO(tasks);
     }
 
     private void validateUserAccess(Long userId) {
