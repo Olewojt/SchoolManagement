@@ -14,7 +14,7 @@ import {RootState} from "state/store.tsx";
 import TeacherReports from "pages/Teacher/Reports/Reports.tsx";
 
 function App() {
-    const user = useSelector((state: RootState) => state.login.loggedInUser);
+    const user = useSelector((state: RootState) => state.login);
 
     return (
         <HashRouter>
@@ -24,7 +24,7 @@ function App() {
                         <Route index element={<Login/>}/>
                         <Route path="reset" element={<Reset/>}/>
                     </Route>
-                    {user === "admin" &&
+                    {user.role === "admin" &&
                         <Route element={<LayoutMain/>}>
                             <Route path="home" element={<StudentHome/>}/>
                             <Route path="config" element={<Configuration/>}/>
@@ -33,7 +33,7 @@ function App() {
                             <Route path="manage" element={<PrincipalManage/>}/>
                         </Route>
                     }
-                    {user === "student" &&
+                    {user.role === "student" &&
                         <Route element={<LayoutMain/>}>
                             <Route path="home" element={<StudentHome/>}/>
                             <Route path="config" element={<Configuration/>}/>
@@ -42,7 +42,7 @@ function App() {
                             <Route path="reports" element={<StudentReports/>}/>
                         </Route>
                     }
-                    {user === "teacher" &&
+                    {user.role === "teacher" &&
                         <Route element={<LayoutMain/>}>
                             <Route path="home" element={<StudentHome/>}/>
                             <Route path="config" element={<Configuration/>}/>
@@ -51,7 +51,7 @@ function App() {
                             <Route path="reports" element={<TeacherReports/>}/>
                         </Route>
                     }
-                    {user === "parent" &&
+                    {user.role === "parent" &&
                     <Route element={<LayoutMain/>}>
                         <Route path="home" element={<StudentHome/>}/>
                         <Route path="config" element={<Configuration/>}/>

@@ -34,15 +34,25 @@ const Login: React.FC = () => {
         if ((form.name === "admin" && form.password === "admin")
             || (form.name === "student" && form.password === "student")
             || (form.name === "teacher" && form.password === "teacher")) {
-            dispatch(setLoggedInUser(form.name));
+
+            dispatch(setLoggedInUser({
+                id: 1,
+                role: form.name
+            }));
+
             navigate("/home", {replace: true});
             const payload = {
-                email: "dsadas@mail.com",
-                password: "dsadsacxzx",
-                personalInfoDTO: null
+                email: "john.doe@example.com",
+                password: "password123"
             };
-            axiosClient.post('/register', payload)
-                .then(r => console.log(r))
+            axiosClient.post('/login', payload)
+                .then(r => {
+                    localStorage.setItem("BEARER_TOKEN", r.headers.authorization);
+                    dispatch(setLoggedInUser({
+                        id: 1,
+                        role: form.name,
+                    }));
+                })
                 .catch(err => {
                     console.log(err)
                 })

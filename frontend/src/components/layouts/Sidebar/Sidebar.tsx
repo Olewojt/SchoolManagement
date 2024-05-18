@@ -9,17 +9,17 @@ import {useSelector} from "react-redux";
 import {RootState} from "state/store.tsx";
 
 const Sidebar = () => {
-    const user = useSelector((state: RootState) => state.login.loggedInUser);
-    const isStudent: boolean = (user == "student");
-    const isAdmin: boolean = (user == "admin");
-    const isTeacher: boolean = (user == "teacher");
-    const isParent: boolean = (user == "parent");
+    const user = useSelector((state: RootState) => state.login);
+    const isStudent: boolean = (user.role == "student");
+    const isAdmin: boolean = (user.role == "admin");
+    const isTeacher: boolean = (user.role == "teacher");
+    const isParent: boolean = (user.role == "parent");
 
     return (
         <aside className={classes.sidebar}>
             <div className={classes.sidebar__title}>
                 <LogoShort className={classes.logo}/>
-                <h1>Logged as {user}</h1>
+                <h1>Logged as {user.role}</h1>
             </div>
             <div className={classes.sidebar__bookmarks}>
                 <Bookmark to="/home" svgIcon={<HomeIcon/>}>Home</Bookmark>

@@ -1,11 +1,34 @@
 import classes from "pages/Student/Grades/Grades.module.scss";
 import Header from "ui/Header/Header.tsx";
 import GradeCard from "ui/Card/GradeCard.tsx";
-import { useState } from "react";
-import { DUMMY_GRADES } from "api/Grades.tsx";
+import {useEffect, useState} from "react";
+import {DUMMY_GRADES, DummyGrades, GradeAPI} from "api/Grades.tsx";
+import {useSelector} from "react-redux";
+import {RootState} from "state/store.tsx";
+import {getUserGrades} from "@/axios-client.tsx";
+
+function convertToDummyGrades(grades: GradeAPI[]): DummyGrades[] {
+
+}
 
 const StudentGrades = () => {
-    const [gradesData] = useState(DUMMY_GRADES);
+    const user = useSelector((state: RootState) => state.login);
+
+    const [gradesData, setGradesData] = useState([]);
+
+    useEffect(() => {
+        if (user) {
+            getUserGrades(user.id)
+                .then(data => {
+                    console.log('User grades:', data);
+
+                    const grades = convertToDummyGrades(data);
+                })
+                .catch(error => {
+                    console.error('Error fetching user grades:', error);
+                });
+        }
+    }, [user]);
 
     return (
         <main className={classes.home}>
