@@ -38,7 +38,8 @@ public class TaskService {
     }
 
     public List<SubjectGradesDTO> getStudentSubjectGrades(Long userId) {
-        validateUserAccess(userId);
+        //to nauczyciel pobiera a nie sam student dla siebie
+        // validateUserAccess(userId);
 
         List<Task> tasks = taskRepository.findGradesForUser(userId);
         return SubjectGradesDTOMapper.mapToSubjectGradesDTO(tasks);
