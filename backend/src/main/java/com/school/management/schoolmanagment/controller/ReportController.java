@@ -9,14 +9,13 @@ import com.school.management.schoolmanagment.service.ReportService;
 import com.school.management.schoolmanagment.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.bind.annotation.*;
 import org.example.AverageGradesReport;
 import org.example.SubjectReportForTeacher;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -35,6 +34,14 @@ public class ReportController {
     @GetMapping("/subjectReport/{classId}/{subjectId}")
     public String subjectReportForTeacher(@PathVariable Long classId, @PathVariable Long subjectId) {
         return reportService.subjectReportForTeacher(classId, subjectId);
+    }
+
+    @GetMapping("/teacherReport/{teacherId}")
+    public String teacherReportForAdmin(
+            @PathVariable Long teacherId,
+            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+        return reportService.teacherReport(teacherId, startDate, endDate);
     }
 
 

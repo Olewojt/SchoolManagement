@@ -13,6 +13,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 
 @Service
@@ -56,4 +59,17 @@ public class TaskService {
             throw new AccessDeniedException("Unauthorized access");
         });
     }
+
+    public int countTasksForTeacherAndSubject(Long teacherId, Long id, LocalDate startDate, LocalDate endDate) {
+        Instant startInstant = startDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
+        Instant endInstant = endDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
+        return taskRepository.countTasksForTeacherAndSubject(teacherId, id, startInstant, endInstant);
+    }
+
+    public int countGradedTasksForTeacherAndSubject(Long teacherId, Long id, LocalDate startDate, LocalDate endDate) {
+        Instant startInstant = startDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
+        Instant endInstant = endDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
+        return taskRepository.countGradedTasksForTeacherAndSubject(teacherId, id, startInstant, endInstant);
+    }
+
 }
