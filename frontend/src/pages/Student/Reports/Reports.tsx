@@ -1,12 +1,13 @@
 import classes from "./Reports.module.scss";
-import SelectOptions, { Subject } from "forms/SelectOptions.tsx";
-import PieChart, { GradeDict } from "ui/Charts/PieChart.tsx";
-import SelectDate, { currentDate } from "forms/SelectDate.tsx";
-import { getUserGrades } from "src/axios-client.tsx";
-import { GradeAPI } from "api/Grades.tsx";
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "state/store.tsx";
+import SelectOptions, {Subject} from "forms/SelectOptions.tsx";
+import PieChart, {GradeDict} from "ui/Charts/PieChart.tsx";
+import SelectDate, {currentDate} from "forms/SelectDate.tsx";
+import {exportStudentGrades, getUserGrades} from "src/axios-client.tsx";
+import {GradeAPI} from "api/Grades.tsx";
+import React, {useEffect, useState} from "react";
+import {useSelector} from "react-redux";
+import {RootState} from "state/store.tsx";
+import Button from "ui/Button/Button.tsx";
 
 const initialGradesDict: GradeDict = {
     "5": 0,
@@ -69,6 +70,7 @@ const StudentReports = () => {
     const [selectedSubjects, setSelectedSubjects] = useState<SubjectSelectionState>({});
     // Grades prepared for PieChart module
     const [studentGrades, setStudentGrades] = useState<GradeDict>(initialGradesDict);
+    const [exportState, setExportState] = useState<string>("Export");
 
     const [fromDate, setFromDate] = useState(currentDate());
     const [toDate, setToDate] = useState(currentDate());
@@ -134,6 +136,48 @@ const StudentReports = () => {
         });
     };
 
+    const resetFilters = () => {
+        setSelectedSubjects(generateSubjectSelectionStates(subjects));
+        setToDate(currentDate());
+        setFromDate(currentDate());
+    }
+
+    function displayExportState(state: string) {
+        setExportState(state);
+
+        setTimeout(() => {
+            setExportState("Export");
+
+        }, 2000);
+    }
+
+    const exportRequest = () => {
+        setExportState("Exporting...");
+
+        exportStudentGrades(user.id)
+            .then(data => {
+                console.log('Export request response', data);
+
+                displayExportState("Exported!")
+            })
+            .catch(error => {
+                console.error('Error requesting student grades report', error);
+
+                displayExportState("Export failure!");
+            });
+    }
+
+    const getExportButtonClass = () => {
+        switch (exportState) {
+            case "Exported!":
+                return classes.export_success;
+            case "Export failure!":
+                return classes.export_failure;
+            default:
+                return "";
+        }
+    }
+
     return (
         <main className={classes.content}>
             <div className={classes.filters}>
@@ -154,6 +198,11 @@ const StudentReports = () => {
 
             <div className={classes.charts}>
                 <PieChart data={studentGrades} />
+            </div>
+
+            <div className={classes.buttons}>
+                <Button type={"button"} children={exportState} className={getExportButtonClass()} onClick={exportRequest}/>
+                <Button type={"button"} children={"Clear"} onClick={resetFilters}/>
             </div>
         </main>
     );

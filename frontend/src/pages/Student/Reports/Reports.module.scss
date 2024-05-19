@@ -22,3 +22,24 @@
   width: 30rem;
   height: 30rem;
 }
+
+.buttons {
+  display: flex;
+  justify-content: start;
+  gap: 2rem;
+  width: 70%;
+
+  margin-top: 1rem;
+
+  button {
+    background-color: var(--color-secondary);
+  }
+}
+
+.export_failure {
+  background-color: #d50000 !important;
+}
+
+.export_success {
+  background-color: #47DC4D !important;
+}
