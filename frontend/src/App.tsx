@@ -46,7 +46,6 @@ function App() {
                         <Route element={<LayoutMain/>}>
                             <Route path="home" element={<StudentHome/>}/>
                             <Route path="config" element={<Configuration/>}/>
-                            <Route path="grades" element={<StudentGrades/>}/>
                             <Route path="tasks" element={<StudentTasks/>}/>
                             <Route path="reports" element={<TeacherReports/>}/>
                         </Route>

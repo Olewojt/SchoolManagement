@@ -2,14 +2,13 @@ import { useEffect, useState } from "react";
 import Column from "layouts/TaskBoard/Column.tsx";
 import classes from "./Board.module.scss";
 import Task from "@/interfaces/TaskCardInterface/TaskCardInterface.tsx";
-
-import SelectOptions, {Subject} from "forms/SelectOptions.tsx";
+import SelectOptions from "forms/SelectOptions.tsx";
 import {DEFAULT_CARDS} from "api/Task.tsx";
 
-function getSubjects(cards: Task[]): Subject[] {
+function getSubjects(cards: Task[]): string[] {
     const subjectsSet = new Set<string>();
     cards.forEach(card => subjectsSet.add(card.subject));
-    return Array.from(subjectsSet).map(subject => ({ name: subject }));
+    return Array.from(subjectsSet);
 }
 
 const Board = () => {

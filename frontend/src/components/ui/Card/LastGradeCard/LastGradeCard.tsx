@@ -24,7 +24,7 @@ const LastGradeCard = () => {
                 <h3 className={classes["card__header"]}>Last grade</h3>
                 <h1 className={classes["card__grade"]}>{lastGrade.grade}</h1>
                 <h3 className={classes["card__subject"]}>{lastSubject}</h3>
-                <h3 className={classes["card__date"]}>{lastGrade.date.toString()}</h3>
+                <h3 className={classes["card__date"]}>{lastGrade.gradedAt.toString()}</h3>
             </div>
         </section>
     );

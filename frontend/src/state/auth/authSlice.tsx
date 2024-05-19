@@ -5,6 +5,8 @@ interface User {
     role: string
 }
 
+
+
 const initialState: User = {
     id: 1,
     role: "student",

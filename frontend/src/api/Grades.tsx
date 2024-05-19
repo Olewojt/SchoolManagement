@@ -28,69 +28,69 @@ export interface GradeAPI {
 }
 export interface Grade {
     grade: number;
-    date: Date;
+    gradedAt: Date;
 }
-export interface DummyGrades {
-    subject: string;
+export interface SubjectsGrades {
+    subjectName: string;
     grades: Grade[];
 }
 
-export const DUMMY_GRADES: DummyGrades[] = [
+export const DUMMY_GRADES: SubjectsGrades[] = [
     {
-        "subject": "Physics",
+        "subjectName": "Physics",
         "grades": [
-            {"grade": 4, "date": new Date("2024-04-10")},
-            {"grade": 3, "date": new Date("2024-04-25")},
-            {"grade": 5, "date": new Date("2024-05-08")}
+            {"grade": 4, "gradedAt": new Date("2024-04-10")},
+            {"grade": 3, "gradedAt": new Date("2024-04-25")},
+            {"grade": 5, "gradedAt": new Date("2024-05-08")}
         ]
     },
     {
-        "subject": "Religion",
+        "subjectName": "Religion",
         "grades": [
-            {"grade": 1, "date": new Date("2024-03-28")},
-            {"grade": 2, "date": new Date("2024-04-15")}
+            {"grade": 1, "gradedAt": new Date("2024-03-28")},
+            {"grade": 2, "gradedAt": new Date("2024-04-15")}
         ]
     },
     {
-        "subject": "History",
+        "subjectName": "History",
         "grades": [
-            {"grade": 3, "date": new Date("2024-05-02")},
-            {"grade": 4, "date": new Date("2024-05-10")}
+            {"grade": 3, "gradedAt": new Date("2024-05-02")},
+            {"grade": 4, "gradedAt": new Date("2024-05-10")}
         ]
     },
     {
-        "subject": "Geography",
+        "subjectName": "Geography",
         "grades": [
-            {"grade": 5, "date": new Date("2024-04-15")},
-            {"grade": 3, "date": new Date("2024-04-30")}
+            {"grade": 5, "gradedAt": new Date("2024-04-15")},
+            {"grade": 3, "gradedAt": new Date("2024-04-30")}
         ]
     },
     {
-        "subject": "Chemistry",
+        "subjectName": "Chemistry",
         "grades": [
-            {"grade": 4, "date": new Date("2024-04-19")},
-            {"grade": 5, "date": new Date("2024-05-05")}
+            {"grade": 4, "gradedAt": new Date("2024-04-19")},
+            {"grade": 5, "gradedAt": new Date("2024-05-05")}
         ]
     },
     {
-        "subject": "Biology",
+        "subjectName": "Biology",
         "grades": [
-            {"grade": 4, "date": new Date("2024-04-25")},
-            {"grade": 3, "date": new Date("2024-05-12")}
+            {"grade": 4, "gradedAt": new Date("2024-04-25")},
+            {"grade": 3, "gradedAt": new Date("2024-05-12")}
         ]
     },
     {
-        "subject": "Art",
+        "subjectName": "Art",
         "grades": [
-            {"grade": 5, "date": new Date("2024-05-06")},
-            {"grade": 4, "date": new Date("2024-05-11")}
+            {"grade": 5, "gradedAt": new Date("2024-05-06")},
+            {"grade": 4, "gradedAt": new Date("2024-05-11")}
         ]
     },
     {
-        "subject": "English",
+        "subjectName": "English",
         "grades": [
-            {"grade": 4, "date": new Date("2024-05-10")},
-            {"grade": 5, "date": new Date("2024-05-12")}
+            {"grade": 4, "gradedAt": new Date("2024-05-10")},
+            {"grade": 5, "gradedAt": new Date("2024-05-12")}
         ]
     }
 ]

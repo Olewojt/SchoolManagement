@@ -4,12 +4,8 @@ import collapse from 'assets/icons/collapse.svg'
 import baseClasses from './Select.module.scss';
 import classes from './SelectOptions.module.scss'
 
-export interface Subject {
-    name: string
-}
-
 interface SelectProps {
-    options: Array<Subject>;
+    options: Array<string>;
     name: string;
     checkedItems: { [key: string]: boolean };
     onCheckboxChange: (name: string) => void;
@@ -32,15 +28,15 @@ const SelectOptions: React.FC<SelectProps> = (props: SelectProps) => {
             {isExpanded && (
                 <div className={`${baseClasses.expanded__content} ${classes.expanded__content}`}>
                     {
-                        props.options.map( (entry: Subject, index) =>
+                        props.options.map( (entry: string, index) =>
                             <div className={baseClasses.expanded__content__element} key={index}>
                                 <label>
-                                    {entry.name}
+                                    {entry}
                                     <input
                                         type="checkbox"
-                                        checked={props.checkedItems[entry.name] || false}
-                                        onChange={() => props.onCheckboxChange(entry.name)}
-                                        name={entry.name}
+                                        checked={props.checkedItems[entry] || false}
+                                        onChange={() => props.onCheckboxChange(entry)}
+                                        name={entry}
                                     />
                                 </label>
                             </div>

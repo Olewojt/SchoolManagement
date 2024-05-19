@@ -1,4 +1,5 @@
 import axios, {AxiosInstance, AxiosRequestConfig, AxiosResponse} from "axios";
+import {SubjectsGrades} from "api/Grades.tsx";
 
 const axiosClient: AxiosInstance = axios.create({
     baseURL: "http://localhost:8080",
@@ -23,15 +24,9 @@ axiosClient.interceptors.response.use((response) => {
     throw error
 })
 
-interface StudentGrades {
-    "grade": number,
-    "subjectName": string,
-    "gradedAt": string
-}
-
-export async function getUserGrades(userId: number): Promise<StudentGrades[]> {
+export async function getUserGrades(userId: number): Promise<SubjectsGrades[]> {
     try {
-        const response: AxiosResponse<StudentGrades[], AxiosRequestConfig> = await axiosClient.get<StudentGrades[]>(`/api/v1/tasks/grades/${userId}`);
+        const response: AxiosResponse<SubjectsGrades[], AxiosRequestConfig> = await axiosClient.get<SubjectsGrades[]>(`/api/v1/tasks/subjects/grades/${userId}`);
         // Handle the response as needed
         return response.data;
     } catch (error) {

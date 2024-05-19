@@ -4,10 +4,6 @@ import collapse from 'assets/icons/collapse.svg';
 import baseClasses from './Select.module.scss';
 import classes from './SelectOption.module.scss';
 
-export interface Subject {
-    name: string;
-}
-
 interface SelectProps {
     options: Array<string>;
     name: string;

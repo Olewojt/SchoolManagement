@@ -24,7 +24,7 @@ const Sidebar = () => {
             <div className={classes.sidebar__bookmarks}>
                 <Bookmark to="/home" svgIcon={<HomeIcon/>}>Home</Bookmark>
                 { (isStudent || isTeacher) && <Bookmark to="/tasks" svgIcon={<TasksIcon/>}>Tasks</Bookmark>}
-                { (isStudent || isTeacher || isParent) && <Bookmark to="/grades" svgIcon={<NotesIcon/>}>Grades</Bookmark>}
+                { (isStudent || isParent) && <Bookmark to="/grades" svgIcon={<NotesIcon/>}>Grades</Bookmark>}
                 { isAdmin && <Bookmark to="/manage" svgIcon={<ManageIcon/>}>Manage</Bookmark>}
                 <Bookmark to="/reports" svgIcon={<ReportIcon/>}>Reports</Bookmark>
             </div>

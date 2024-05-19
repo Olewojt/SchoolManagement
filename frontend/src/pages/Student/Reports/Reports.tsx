@@ -1,48 +1,41 @@
 import classes from "./Reports.module.scss";
-import SelectOptions, {Subject} from "forms/SelectOptions.tsx";
+import SelectOptions from "forms/SelectOptions.tsx";
 import PieChart, {GradeDict} from "ui/Charts/PieChart.tsx";
 import SelectDate, {currentDate} from "forms/SelectDate.tsx";
 import {exportStudentGrades, getUserGrades} from "src/axios-client.tsx";
-import {GradeAPI} from "api/Grades.tsx";
+import {SubjectsGrades} from "api/Grades.tsx";
 import React, {useEffect, useState} from "react";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "state/store.tsx";
 import Button from "ui/Button/Button.tsx";
-
-const initialGradesDict: GradeDict = {
-    "5": 0,
-    "4": 0,
-    "3": 0,
-    "2": 0,
-    "1": 0,
-};
+import {addGrades} from "state/grades/studentGradesSlice.tsx";
 
 interface SubjectSelectionState {
     [key: string]: boolean;
 }
 
 // Generate initial state of selected subjects
-function generateSubjectSelectionStates(subjects: Subject[]): SubjectSelectionState {
+function generateSubjectSelectionStates(subjects: string[]): SubjectSelectionState {
     const initialState: { [key: string]: boolean } = {};
     subjects.forEach((subject) => {
-        initialState[subject.name] = true;
+        initialState[subject] = true;
     });
     return initialState;
 }
 
 // Extract subjects from response
-function getSubjects(grades: GradeAPI[]): Subject[] {
-    const subjectsSet = new Set<string>();
+function getSubjects(grades: SubjectsGrades[]): string[] {
+    const subjects: string[] = []
 
-    for (const grade of grades) {
-        subjectsSet.add(grade.subjectName);
-    }
+    grades.forEach( (item) => {
+        subjects.push(item.subjectName)
+    })
 
-    return Array.from(subjectsSet).map(subjectName => ({ name: subjectName }));
+    return subjects;
 }
 
 // Get distinct grades count to pass to PieChart module
-function getGradesCount(grades: GradeAPI[]): GradeDict {
+function getGradesCount(grades: SubjectsGrades[]): GradeDict {
     const sampleGrades: GradeDict = {
         "5": 0,
         "4": 0,
@@ -51,9 +44,11 @@ function getGradesCount(grades: GradeAPI[]): GradeDict {
         "1": 0,
     };
 
-    for (const grade of grades) {
-        const gradeKey = grade.grade.toString();
-        sampleGrades[gradeKey]++;
+    for (const subject of grades) {
+        for (const grade of subject.grades) {
+            const gradeKey = grade.grade.toString();
+            sampleGrades[gradeKey]++;
+        }
     }
 
     return sampleGrades;
@@ -61,49 +56,55 @@ function getGradesCount(grades: GradeAPI[]): GradeDict {
 
 const StudentReports = () => {
     const user = useSelector((state: RootState) => state.login);
+    const grades = useSelector((state: RootState) => state.studentGrades.grades);
+    // const grades = DUMMY_GRADES
+    const dispatch = useDispatch();
 
-    // Grades API response
-    const [studentGradesResponse, setStudentGradesResponse] = useState<GradeAPI[]>([]);
     // Subjects extracted from response
-    const [subjects, setSubjects] = useState<Subject[]>([]);
+    const [subjects, setSubjects] = useState<string[]>(getSubjects(grades));
     // Subjects selected in filter
-    const [selectedSubjects, setSelectedSubjects] = useState<SubjectSelectionState>({});
+    const [selectedSubjects, setSelectedSubjects] = useState<SubjectSelectionState>(generateSubjectSelectionStates(getSubjects(grades)));
     // Grades prepared for PieChart module
-    const [studentGrades, setStudentGrades] = useState<GradeDict>(initialGradesDict);
+    const [studentGrades, setStudentGrades] = useState<GradeDict>(getGradesCount(grades));
+    // State of export
     const [exportState, setExportState] = useState<string>("Export");
-
     const [fromDate, setFromDate] = useState(currentDate());
     const [toDate, setToDate] = useState(currentDate());
 
+    const [loading, setLoading] = useState<boolean>(true);
+
     useEffect(() => {
+        setLoading(true);
         if (user) {
             getUserGrades(user.id)
                 .then(data => {
                     console.log('User grades:', data);
 
-                    const fetchedSubjects = getSubjects(data);
-                    const subjectSelectionStates = generateSubjectSelectionStates(fetchedSubjects);
-                    const gradesCount = getGradesCount(data);
+                    dispatch(addGrades(data))
 
-                    setStudentGradesResponse(data);
-                    setSubjects(fetchedSubjects);
-                    setSelectedSubjects(subjectSelectionStates);
-                    setStudentGrades(gradesCount);
+                    setLoading(false);
                 })
                 .catch(error => {
                     console.error('Error fetching user grades:', error);
+                    setLoading(true)
                 });
         }
     }, [user]);
 
+    useEffect(() => {
+        setSubjects(getSubjects(grades));
+        setSelectedSubjects(generateSubjectSelectionStates(getSubjects(grades)));
+        setStudentGrades(getGradesCount(grades));
+    }, [loading]);
+
     // Filter grades when selectedSubjects or date range changes
     useEffect(() => {
-        if (studentGradesResponse.length > 0) {
+        if (grades.length > 0) {
             const filteredGrades = filterGrades();
             const newGrades = getGradesCount(filteredGrades);
             setStudentGrades(newGrades);
         }
-    }, [selectedSubjects, fromDate, toDate, studentGradesResponse]);
+    }, [selectedSubjects, fromDate, toDate, grades]);
 
     const onCheckboxChange = (subject: string) => {
         setSelectedSubjects((prevState) => ({
@@ -120,20 +121,28 @@ const StudentReports = () => {
         setToDate(event.target.value);
     };
 
-    const filterGrades = (): GradeAPI[] => {
+    const filterGrades = (): SubjectsGrades[] => {
         const from = new Date(fromDate);
         from.setHours(0, 0, 0, 0); // Set time to midnight
 
         const to = new Date(toDate);
         to.setHours(23, 59, 59, 999); // Set time to 23:59:59
 
-        return studentGradesResponse.filter((grade) => {
-            const current = new Date(grade.gradedAt);
-            const isWithinDateRange = current >= from && current <= to;
-            const isSelectedSubject = selectedSubjects[grade.subjectName];
+        return grades
+            .filter((subject) => selectedSubjects[subject.subjectName]) // Filter by selected subjects
+            .map((subject) => {
+                // Filter grades within date range
+                const filteredGrades = subject.grades.filter((grade) => {
+                    const current = new Date(grade.gradedAt);
+                    return current >= from && current <= to;
+                });
 
-            return isWithinDateRange && isSelectedSubject;
-        });
+                return {
+                    ...subject,
+                    grades: filteredGrades
+                };
+            })
+            .filter((subject) => subject.grades.length > 0); // Remove subjects with no grades in range
     };
 
     const resetFilters = () => {
