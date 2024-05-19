@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {Grade} from "api/Grades.tsx";
 
-interface GradeSlice {
+export interface GradeSlice {
     subject: string;
     grades: Grade[];
 }
