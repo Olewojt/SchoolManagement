@@ -5,7 +5,6 @@ import com.school.management.schoolmanagment.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -39,9 +38,10 @@ public class JWTUtils {
     private String createToken(Map<String, Object> claims, String subject) {
         User user = userRepository.findByEmail(subject).orElseThrow();
         return Jwts.builder().setClaims(claims).setSubject(subject).setId(user.getId().toString())
-            .setIssuedAt(new Date(System.currentTimeMillis()))
-            .setExpiration(new Date(System.currentTimeMillis() + TimeUnit.HOURS.toMillis(expirationHours)))
-            .signWith(SignatureAlgorithm.HS256, secretKey).compact();
+                .claim("Role", user.getRole().getName())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + TimeUnit.HOURS.toMillis(expirationHours)))
+                .signWith(SignatureAlgorithm.HS256, secretKey).compact();
     }
 
     public boolean validateToken(String token, UserDetails userDetails) {

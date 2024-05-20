@@ -11,4 +11,6 @@ public interface PersonalInfoDTOMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "user", ignore = true)
     PersonalInfo mapToPersonalInfo(PersonalInfoDTO personalInfoDTO);
+
+    PersonalInfoDTO mapToPersonalInfoDTO(PersonalInfo personalInfo);
 }
