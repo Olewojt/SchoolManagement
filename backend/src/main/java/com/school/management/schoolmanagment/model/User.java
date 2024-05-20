@@ -28,7 +28,7 @@ public class User {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "personal_id")
     private PersonalInfo personalInfo;
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne(fetch = EAGER)
     @JoinColumn(name = "role_id")
     private Role role;
     @ManyToOne(fetch = LAZY)
