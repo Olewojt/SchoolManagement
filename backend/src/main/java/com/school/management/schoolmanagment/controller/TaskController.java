@@ -2,6 +2,7 @@ package com.school.management.schoolmanagment.controller;
 
 import com.school.management.schoolmanagment.dto.GradeInfoDTO;
 import com.school.management.schoolmanagment.dto.SubjectGradesDTO;
+import com.school.management.schoolmanagment.dto.TaskDTO;
 import com.school.management.schoolmanagment.model.Task;
 import com.school.management.schoolmanagment.service.TaskService;
 import lombok.RequiredArgsConstructor;
@@ -33,5 +34,10 @@ public class TaskController {
     @GetMapping("/subjects/grades/{userId}")
     public ResponseEntity<List<SubjectGradesDTO>> getStudentSubjectGrades(@PathVariable Long userId) {
         return ResponseEntity.ok(taskService.getStudentSubjectGrades(userId));
+    }
+
+    @GetMapping("/assigned/info/{userId}")
+    public ResponseEntity<List<TaskDTO>> getTasksInfoAssignedToUser(@PathVariable Long userId) {
+        return ResponseEntity.ok(taskService.getTasksInfoAssignedToUser(userId));
     }
 }

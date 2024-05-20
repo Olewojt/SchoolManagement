@@ -2,6 +2,7 @@ package com.school.management.schoolmanagment.service;
 
 import com.school.management.schoolmanagment.dto.GradeInfoDTO;
 import com.school.management.schoolmanagment.dto.SubjectGradesDTO;
+import com.school.management.schoolmanagment.dto.TaskDTO;
 import com.school.management.schoolmanagment.mapper.GradeInfoDTOMapper;
 import com.school.management.schoolmanagment.mapper.SubjectGradesDTOMapper;
 import com.school.management.schoolmanagment.model.Task;
@@ -17,6 +18,8 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
+
+import static com.school.management.schoolmanagment.mapper.TaskDTOMapper.mapToTaskDTO;
 
 @Service
 @RequiredArgsConstructor
@@ -72,4 +75,9 @@ public class TaskService {
         return taskRepository.countGradedTasksForTeacherAndSubject(teacherId, id, startInstant, endInstant);
     }
 
+    public List<TaskDTO> getTasksInfoAssignedToUser(Long userId) {
+        List<Task> tasksAssignedToUser = findTasksAssignedToUser(userId);
+
+        return mapToTaskDTO(tasksAssignedToUser);
+    }
 }
