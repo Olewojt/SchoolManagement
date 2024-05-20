@@ -12,6 +12,7 @@ import PrincipalManage from "pages/Principal/Manage/Manage.tsx";
 import {useSelector} from "react-redux";
 import {RootState} from "state/store.tsx";
 import TeacherReports from "pages/Teacher/Reports/Reports.tsx";
+import PrincipalReports from "pages/Principal/Reports/Reports.tsx";
 
 function App() {
     const user = useSelector((state: RootState) => state.login);
@@ -29,7 +30,7 @@ function App() {
                             <Route path="home" element={<StudentHome/>}/>
                             <Route path="config" element={<Configuration/>}/>
                             <Route path="tasks" element={<StudentTasks/>}/>
-                            <Route path="reports" element={<StudentReports/>}/>
+                            <Route path="reports" element={<PrincipalReports/>}/>
                             <Route path="manage" element={<PrincipalManage/>}/>
                         </Route>
                     }

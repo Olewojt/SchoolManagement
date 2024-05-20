@@ -42,9 +42,27 @@ const Login: React.FC = () => {
 
             navigate("/home", {replace: true});
             const payload = {
-                email: "john.doe@example.com",
+                email: "david.wilson@example.com", // student
                 password: "password123"
             };
+
+            switch (form.name) {
+                case "admin":
+                    payload.email = "emily.clark@example.com"
+                    break
+
+                case "teacher":
+                    payload.email = "bob.brown@example.com"
+                    break
+
+                case "student":
+                    payload.email = "david.wilson@example.com"
+                    break
+
+                default:
+                    payload.email = "bob.brown@example.com"
+            }
+
             axiosClient.post('/login', payload)
                 .then(r => {
                     localStorage.setItem("BEARER_TOKEN", r.headers.authorization);

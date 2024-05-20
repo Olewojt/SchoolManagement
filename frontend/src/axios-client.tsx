@@ -48,4 +48,38 @@ export async function exportStudentGrades(userId: number): Promise<string> {
     }
 }
 
+export async function exportSubjectClassGrades(classId: number, subjectId: number): Promise<string> {
+    try {
+        const response: AxiosResponse<string, AxiosRequestConfig> = await axiosClient.get<string>(`/api/v1/reports/subjectReport/${classId}/${subjectId}`);
+        // Handle the response as needed
+        return response.data;
+    } catch (error) {
+        // Handle the error as needed
+        console.error('Error requesting subject class grades report', error);
+        throw error;
+    }
+}
+
+export async function exportTeacherTasks(teacherId: number, startDate: Date, endDate: Date): Promise<string> {
+    try {
+        const response: AxiosResponse<string, AxiosRequestConfig> =
+            await axiosClient.get<string>(
+                `/api/v1/reports/teacherReport/${teacherId}`,
+                {
+                    params: {
+                        startDate: startDate.toISOString().split('T')[0],
+                        endDate: endDate.toISOString().split('T')[0]
+                    }
+                }
+            );
+
+        // Handle the response as needed
+        return response.data;
+    } catch (error) {
+        // Handle the error as needed
+        console.error('Error requesting teacher report', error);
+        throw error;
+    }
+}
+
 export default axiosClient

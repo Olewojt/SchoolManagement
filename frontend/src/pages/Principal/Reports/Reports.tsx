@@ -6,7 +6,7 @@ import React, {useEffect, useState} from "react";
 import SelectOption from "forms/SelectOption.tsx";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "state/store.tsx";
-import {exportSubjectClassGrades, getUserGrades} from "@/axios-client.tsx";
+import {exportTeacherTasks, getUserGrades} from "@/axios-client.tsx";
 import {addGrades} from "state/grades/studentGradesSlice.tsx";
 import Button from "ui/Button/Button.tsx";
 
@@ -41,7 +41,7 @@ function getGradesCount(grades: SubjectsGrades[]): GradeDict {
     return sampleGrades;
 }
 
-const TeacherReports = () => {
+const PrincipalReports = () => {
     const user = useSelector((state: RootState) => state.login);
     const grades = useSelector((state: RootState) => state.studentGrades.grades);
     // const grades = DUMMY_GRADES
@@ -143,7 +143,7 @@ const TeacherReports = () => {
     const exportRequest = () => {
         setExportState("Exporting...");
 
-        exportSubjectClassGrades(user.id, 1)
+        exportTeacherTasks(8, new Date("2024-01-01"), new Date("2024-12-30"))
             .then(data => {
                 console.log('Export request response', data);
 
@@ -204,4 +204,4 @@ const TeacherReports = () => {
     );
 };
 
-export default TeacherReports;
+export default PrincipalReports;
