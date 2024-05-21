@@ -284,3 +284,21 @@ export const NewIcon = () => {
         </svg>
     )
 }
+
+export const CollapseIcon = () => {
+    return (<svg width="27" height="21" viewBox="0 0 27 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path opacity="0.8"
+                  d="M11.8285 1.54425C12.6185 0.341807 14.3815 0.34181 15.1715 1.54425L25.754 17.6518C26.6277 18.9818 25.6737 20.75 24.0824 20.75H2.91756C1.32626 20.75 0.372273 18.9818 1.24603 17.6518L11.8285 1.54425Z"
+                  fill="#FFD6FF"/>
+        </svg>
+    )
+}
+
+export const ExpandIcon = () => {
+    return (<svg width="27" height="21" viewBox="0 0 27 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path opacity="0.8"
+                  d="M15.1715 19.9558C14.3815 21.1582 12.6185 21.1582 11.8285 19.9558L1.24603 3.84817C0.372272 2.51822 1.32627 0.75 2.91756 0.75L24.0824 0.75C25.6737 0.75 26.6277 2.51822 25.754 3.84817L15.1715 19.9558Z"
+                  fill="#FFD6FF"/>
+        </svg>
+    )
+}

@@ -40,12 +40,12 @@ const TaskCard = (props: TaskCardInterface) => {
             {/*TODO: będzie można tutaj coś kombinwować z nowym komponenetem dla Studenta/Nauczyciela*/}
             {active
                 &&
-                <ReadTaskCard title={props.title} subject={props.subject} date={formattedDate} members={props.members}
-                              description={props.description} id={props.id} column={props.column}
-                              handleDragStart={props.handleDragStart} onClick={handleActive}/>
-                // <UploadTaskCard title={props.title} subject={props.subject} date={formattedDate} members={props.members}
-                //                 description={props.description} id={props.id} column={props.column}
-                //                 handleDragStart={props.handleDragStart} onClick={handleActive}/>
+                // <ReadTaskCard title={props.title} subject={props.subject} date={formattedDate} members={props.members}
+                //               description={props.description} id={props.id} column={props.column}
+                //               handleDragStart={props.handleDragStart} onClick={handleActive}/>
+                <UploadTaskCard title={props.title} subject={props.subject} date={formattedDate} members={props.members}
+                                description={props.description} id={props.id} column={props.column}
+                                handleDragStart={props.handleDragStart} onClick={handleActive}/>
             }
         </>
     );
