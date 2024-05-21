@@ -43,7 +43,7 @@ const Sidebar = () => {
                 <Bookmark to="/reports" svgIcon={<ReportIcon/>}>Reports</Bookmark>
             </div>
             <div className={classes.sidebar__profile}>
-                <Bookmark to="/" svgIcon={<LogoutIcon/>} onClick={onLogoutHandler}>Logout</Bookmark>
+                <Bookmark to="/" canActive={false} svgIcon={<LogoutIcon/>} onClick={onLogoutHandler}>Logout</Bookmark>
                 {isStudent && <ProfileBookmark src={ProfileStudent} to="/config">David Jasper</ProfileBookmark>}
                 {isAdmin && <ProfileBookmark src={ProfileAdmin} to="/config">Cat</ProfileBookmark>}
                 {isTeacher && <ProfileBookmark src={ProfileTeacher} to="/config">Mr. Smith</ProfileBookmark>}

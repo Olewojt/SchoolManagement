@@ -17,7 +17,6 @@ $noactive: true;
   border-radius: 50px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
 
-  transform: translateX(-70%);
 
   span {
     margin: 0 2rem;
@@ -39,7 +38,7 @@ $noactive: true;
   }
 
   &__active {
-    transform: translateX(55%);
+    transform: translateX(50%);
     transition: all .5s ease-in-out;
   }
 }
