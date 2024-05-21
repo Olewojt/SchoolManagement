@@ -6,7 +6,7 @@ import Button from "ui/Button/Button.tsx";
 
 import {Logo} from "assets/icons/Icon.tsx";
 import {useNavigate} from "react-router-dom";
-import axiosClient from "../../axios-client.tsx";
+import {login} from "../../axios-client.tsx";
 import {useDispatch} from "react-redux";
 import {setLoggedInUser} from "state/auth/authSlice.tsx";
 
@@ -15,6 +15,7 @@ const Login: React.FC = () => {
         name: "",
         password: ""
     })
+
     const [anime, setAnime] = useState(false)
     const [error, setError] = useState(false)
 
@@ -28,27 +29,22 @@ const Login: React.FC = () => {
             [e.target.name]: e.target.value
         })
     }
-    const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+
+    const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+
+        const payload = {
+            email: form.name,
+            password: form.password
+        }
 
         if ((form.name === "admin" && form.password === "admin")
             || (form.name === "student" && form.password === "student")
             || (form.name === "teacher" && form.password === "teacher")) {
 
-            dispatch(setLoggedInUser({
-                id: 1,
-                role: form.name
-            }));
-
-            navigate("/home", {replace: true});
-            const payload = {
-                email: "david.wilson@example.com", // student
-                password: "password123"
-            };
-
             switch (form.name) {
                 case "admin":
-                    payload.email = "emily.clark@example.com"
+                    payload.email = "admin@example.com"
                     break
 
                 case "teacher":
@@ -60,22 +56,17 @@ const Login: React.FC = () => {
                     break
 
                 default:
-                    payload.email = "bob.brown@example.com"
+                    payload.email = "admin@example.com"
             }
 
-            axiosClient.post('/login', payload)
-                .then(r => {
-                    localStorage.setItem("BEARER_TOKEN", r.headers.authorization);
-                    dispatch(setLoggedInUser({
-                        id: 1,
-                        role: form.name,
-                    }));
-                })
-                .catch(err => {
-                    console.log(err)
-                })
-        } else {
-            setError(true)
+            payload.password = "password123"
+        }
+
+        try {
+            const userData = await login(payload);
+            dispatch(setLoggedInUser(userData));
+        } catch (error) {
+            setError(true);
         }
     }
 
@@ -89,7 +80,7 @@ const Login: React.FC = () => {
     return (
         <div className={classes.login}>
             <div className={classes.login__background}>
-                <h1 style={{background: "rgba(0, 0, 0, 0.7)"}}>Login: admin<br/> Password: admin
+                <h1 style={{background: "rgba(0, 0, 0, 0.7)"}}>Login: admin@example.com<br/> Password: password123
                 </h1> {/*TODO: do testow, bedzie trzeba i tak reduxa ogarnac*/}
             </div>
             <aside className={classes.login__aside}>

@@ -1,7 +1,7 @@
 import {HashRouter, Route, Routes} from "react-router-dom";
 import './App.css'
 import StudentHome from "pages/Student/Home/Home.tsx";
-import Layout, {LayoutMain, LayoutAuth} from "layouts/Layout.tsx";
+import Layout, {LayoutAuth, LayoutMain} from "layouts/Layout.tsx";
 import Login from "pages/Login/Login.tsx";
 import Reset from "pages/Login/Reset.tsx";
 import Configuration from "pages/Configuration/Configuration.tsx";
@@ -13,47 +13,62 @@ import {useSelector} from "react-redux";
 import {RootState} from "state/store.tsx";
 import TeacherReports from "pages/Teacher/Reports/Reports.tsx";
 import PrincipalReports from "pages/Principal/Reports/Reports.tsx";
+import {ADMIN, PARENT, STUDENT, TEACHER} from "utilitiesconstants.tsx/";
+import {useEffect, useState} from "react";
+import {getAuthToken} from "@/axios-client.tsx";
 
 function App() {
     const user = useSelector((state: RootState) => state.login);
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+
+    useEffect(() => {
+        const token = getAuthToken();
+        if (token !== null) {
+            setIsAuthenticated(true);
+        } else {
+            setIsAuthenticated(false);
+        }
+    }, [user]);
 
     return (
         <HashRouter>
             <Routes>
                 <Route path="/" element={<Layout/>}>
-                    <Route element={<LayoutAuth/>}>
-                        <Route index element={<Login/>}/>
-                        <Route path="reset" element={<Reset/>}/>
-                    </Route>
-                    {user.role === "admin" &&
+                    { !isAuthenticated &&
+                        <Route element={<LayoutAuth/>}>
+                            <Route index element={<Login/>}/>
+                            <Route path="reset" element={<Reset/>}/>
+                        </Route>
+                    }
+                    {user.role === ADMIN && isAuthenticated &&
                         <Route element={<LayoutMain/>}>
-                            <Route path="home" element={<StudentHome/>}/>
+                            <Route index element={<StudentHome/>}/>
                             <Route path="config" element={<Configuration/>}/>
                             <Route path="tasks" element={<StudentTasks/>}/>
                             <Route path="reports" element={<PrincipalReports/>}/>
                             <Route path="manage" element={<PrincipalManage/>}/>
                         </Route>
                     }
-                    {user.role === "student" &&
+                    {user.role === STUDENT && isAuthenticated &&
                         <Route element={<LayoutMain/>}>
-                            <Route path="home" element={<StudentHome/>}/>
+                            <Route index element={<StudentHome/>}/>
                             <Route path="config" element={<Configuration/>}/>
                             <Route path="grades" element={<StudentGrades/>}/>
                             <Route path="tasks" element={<StudentTasks/>}/>
                             <Route path="reports" element={<StudentReports/>}/>
                         </Route>
                     }
-                    {user.role === "teacher" &&
+                    {user.role === TEACHER && isAuthenticated &&
                         <Route element={<LayoutMain/>}>
-                            <Route path="home" element={<StudentHome/>}/>
+                            <Route index element={<StudentHome/>}/>
                             <Route path="config" element={<Configuration/>}/>
                             <Route path="tasks" element={<StudentTasks/>}/>
                             <Route path="reports" element={<TeacherReports/>}/>
                         </Route>
                     }
-                    {user.role === "parent" &&
+                    {user.role === PARENT && isAuthenticated &&
                     <Route element={<LayoutMain/>}>
-                        <Route path="home" element={<StudentHome/>}/>
+                        <Route index element={<StudentHome/>}/>
                         <Route path="config" element={<Configuration/>}/>
                         <Route path="grades" element={<StudentGrades/>}/>
                         <Route path="tasks" element={<StudentTasks/>}/>

@@ -1,5 +1,6 @@
 import axios, {AxiosInstance, AxiosRequestConfig, AxiosResponse} from "axios";
 import {SubjectsGrades} from "api/Grades.tsx";
+import {jwtDecode} from "jwt-decode";
 
 const axiosClient: AxiosInstance = axios.create({
     baseURL: "http://localhost:8080",
@@ -18,11 +19,19 @@ axiosClient.interceptors.response.use((response) => {
     const {response} = error
 
     if (response.status === 401) {
-        localStorage.removeItem('BEARER_TOKEN')
+        removeToken()
     }
 
     throw error
 })
+
+export const getAuthToken = () => {
+    return window.localStorage.getItem("BEARER_TOKEN")
+}
+
+export function removeToken() {
+    window.localStorage.removeItem("BEARER_TOKEN");
+}
 
 export async function getUserGrades(userId: number): Promise<SubjectsGrades[]> {
     try {
@@ -78,6 +87,37 @@ export async function exportTeacherTasks(teacherId: number, startDate: Date, end
     } catch (error) {
         // Handle the error as needed
         console.error('Error requesting teacher report', error);
+        throw error;
+    }
+}
+
+export function decodeUserData(token: string) {
+    interface DecodedToken {
+        jti: number;
+        Role: string;
+        // Add any other properties your token might have
+    }
+
+    const decoded = jwtDecode<DecodedToken>(token);
+
+    const userData = {
+        id: decoded.jti,
+        role: decoded.Role // Access the Role attribute from the decoded token
+    };
+
+    return userData
+}
+
+export async function login(payload: {email: string, password: string}) {
+    try {
+        const response = await axiosClient.post('/login', payload);
+        const token = response.headers.authorization;
+        localStorage.setItem("BEARER_TOKEN", token);
+
+        return decodeUserData(token);
+    } catch (error) {
+        // Handle the error as needed
+        console.error('Error logging in', error);
         throw error;
     }
 }
