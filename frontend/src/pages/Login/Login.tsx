@@ -6,9 +6,10 @@ import Button from "ui/Button/Button.tsx";
 
 import {Logo} from "assets/icons/Icon.tsx";
 import {useNavigate} from "react-router-dom";
-import {login} from "../../axios-client.tsx";
+import {getUserData, login} from "../../axios-client.tsx";
 import {useDispatch} from "react-redux";
 import {setLoggedInUser} from "state/auth/authSlice.tsx";
+import {setUserData} from "state/user/userDataSlice.tsx";
 
 const Login: React.FC = () => {
     const [form, setForm] = useState({
@@ -63,8 +64,12 @@ const Login: React.FC = () => {
         }
 
         try {
-            const userData = await login(payload);
-            dispatch(setLoggedInUser(userData));
+            const user = await login(payload);
+            dispatch(setLoggedInUser(user));
+
+            const userData = await getUserData(user.id);
+            dispatch(setUserData(userData));
+
         } catch (error) {
             setError(true);
         }

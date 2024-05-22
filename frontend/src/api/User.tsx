@@ -1,22 +1,39 @@
-export interface DummyStudent {
+export interface User {
     id: number,
-    name: string,
-    surname: string,
-    pesel: string,
-    email: string,
-    country: string,
-    city: string,
-    street: string,
-    home_num: string,
-    flat_num: string | null,
-    class: string
+    role: string,
+    email: string
 }
 
-export const DUMMY_STUDENTS: DummyStudent[] = [
+export interface UserData {
+    firstName: string | null,
+    lastName: string | null,
+    pesel: string | null,
+    country: string | null,
+    city: string | null,
+    street: string | null,
+    home_num: string | null,
+    flat_num: string | null,
+}
+
+export const defaultUserData: UserData = {
+    firstName: null,
+    lastName: null,
+    pesel: null,
+    country: null,
+    city: null,
+    street: null,
+    home_num: null,
+    flat_num: null
+};
+
+type FullUser = User & UserData & {class: string | null};
+
+export const DUMMY_STUDENTS: FullUser[] = [
     {
         id: 1,
-        name: "John",
-        surname: "Smith",
+        role: "Student",
+        firstName: "John",
+        lastName: "Smith",
         pesel: "12345678901",
         email: "JSmith@example.com",
         country: "USA",
@@ -28,8 +45,9 @@ export const DUMMY_STUDENTS: DummyStudent[] = [
     },
     {
         id: 2,
-        name: "Emily",
-        surname: "Johnson",
+        role: "Student",
+        firstName: "Emily",
+        lastName: "Johnson",
         pesel: "23456789012",
         email: "EJohnson@example.com",
         country: "USA",
@@ -41,8 +59,9 @@ export const DUMMY_STUDENTS: DummyStudent[] = [
     },
     {
         id: 3,
-        name: "Michael",
-        surname: "Brown",
+        role: "Student",
+        firstName: "Michael",
+        lastName: "Brown",
         pesel: "34567890123",
         email: "MBrown@example.com",
         country: "USA",
@@ -54,8 +73,9 @@ export const DUMMY_STUDENTS: DummyStudent[] = [
     },
     {
         id: 4,
-        name: "Sarah",
-        surname: "Davis",
+        role: "Student",
+        firstName: "Sarah",
+        lastName: "Davis",
         pesel: "45678901234",
         email: "SDavis@example.com",
         country: "USA",
@@ -67,8 +87,9 @@ export const DUMMY_STUDENTS: DummyStudent[] = [
     },
     {
         id: 5,
-        name: "David",
-        surname: "Martinez",
+        role: "Student",
+        firstName: "David",
+        lastName: "Martinez",
         pesel: "56789012345",
         email: "DMartinez@example.com",
         country: "USA",
@@ -80,8 +101,9 @@ export const DUMMY_STUDENTS: DummyStudent[] = [
     },
     {
         id: 6,
-        name: "Jennifer",
-        surname: "Anderson",
+        role: "Student",
+        firstName: "Jennifer",
+        lastName: "Anderson",
         pesel: "67890123456",
         email: "JAnderson@example.com",
         country: "USA",
@@ -93,8 +115,9 @@ export const DUMMY_STUDENTS: DummyStudent[] = [
     },
     {
         id: 7,
-        name: "Robert",
-        surname: "Wilson",
+        role: "Student",
+        firstName: "Robert",
+        lastName: "Wilson",
         pesel: "78901234567",
         email: "RWilson@example.com",
         country: "USA",
@@ -106,8 +129,9 @@ export const DUMMY_STUDENTS: DummyStudent[] = [
     },
     {
         id: 8,
-        name: "Jessica",
-        surname: "Taylor",
+        role: "Student",
+        firstName: "Jessica",
+        lastName: "Taylor",
         pesel: "89012345678",
         email: "JTaylor@example.com",
         country: "USA",
@@ -119,8 +143,9 @@ export const DUMMY_STUDENTS: DummyStudent[] = [
     },
     {
         id: 9,
-        name: "Kevin",
-        surname: "Thompson",
+        role: "Student",
+        firstName: "Kevin",
+        lastName: "Thompson",
         pesel: "90123456789",
         email: "KThompson@example.com",
         country: "USA",
@@ -132,8 +157,9 @@ export const DUMMY_STUDENTS: DummyStudent[] = [
     },
     {
         id: 10,
-        name: "Laura",
-        surname: "Garcia",
+        role: "Student",
+        firstName: "Laura",
+        lastName: "Garcia",
         pesel: "01234567890",
         email: "LGarcia@example.com",
         country: "USA",
@@ -145,8 +171,9 @@ export const DUMMY_STUDENTS: DummyStudent[] = [
     },
     {
         id: 11,
-        name: "Andrew",
-        surname: "Hernandez",
+        role: "Student",
+        firstName: "Andrew",
+        lastName: "Hernandez",
         pesel: "11234567890",
         email: "AHernandez@example.com",
         country: "USA",
@@ -158,8 +185,9 @@ export const DUMMY_STUDENTS: DummyStudent[] = [
     },
     {
         id: 12,
-        name: "Michelle",
-        surname: "Young",
+        role: "Student",
+        firstName: "Michelle",
+        lastName: "Young",
         pesel: "21234567890",
         email: "MYoung@example.com",
         country: "USA",
@@ -171,8 +199,9 @@ export const DUMMY_STUDENTS: DummyStudent[] = [
     },
     {
         id: 13,
-        name: "James",
-        surname: "Lee",
+        role: "Student",
+        firstName: "James",
+        lastName: "Lee",
         pesel: "31234567890",
         email: "JLee@example.com",
         country: "USA",
@@ -184,8 +213,9 @@ export const DUMMY_STUDENTS: DummyStudent[] = [
     },
     {
         id: 14,
-        name: "Sophia",
-        surname: "Kim",
+        role: "Student",
+        firstName: "Sophia",
+        lastName: "Kim",
         pesel: "41234567890",
         email: "SKim@example.com",
         country: "USA",
@@ -197,8 +227,9 @@ export const DUMMY_STUDENTS: DummyStudent[] = [
     },
     {
         id: 15,
-        name: "Daniel",
-        surname: "Nguyen",
+        role: "Student",
+        firstName: "Daniel",
+        lastName: "Nguyen",
         pesel: "51234567890",
         email: "DNguyen@example.com",
         country: "USA",
