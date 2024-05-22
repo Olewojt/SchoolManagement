@@ -1,0 +1,20 @@
+.last-task {
+  position: relative;
+  width: fit-content;
+
+  margin: 2rem;
+}
+
+.card {
+  background-color: var(--color-secondary);
+  width: 14rem;
+  border-radius: 30px;
+
+  position: relative;
+  padding: 1rem;
+  z-index: 10;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(5, auto);
+}

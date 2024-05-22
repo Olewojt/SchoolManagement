@@ -18,34 +18,46 @@ const ReadTaskCard = (props: TaskCardInterface) => {
         })
     }
 
-    const items = [1, 2, 3, 4, 5, 6, 7]
+    //const items = [1, 2, 3, 4, 5, 6, 7];
+    const items = [
+        { label: "Option 1", checked: false },
+        { label: "Option 2", checked: false },
+        { label: "Option 3", checked: false },
+        { label: "Option 3", checked: false },
+        { label: "Option 3", checked: false },
+        { label: "Option 3", checked: false },
+        { label: "Option 3", checked: false },
+        { label: "Option 3", checked: false },
+        { label: "Option 3", checked: false },
+    ];
 
     return (
         <div className={classes["open-card"]}>
             <form className={classes["open-card__container"]}>
                 <div className={classes["open-card__blank"]}></div>
                 <div className={classes["content"]}>
-                    <div className={classes["content__row-1"]}>
+                    <div className={classes["content__elem-1"]}>
                         <Input type={"text"} placeholder={"Task Name"} label={"TASK NAME"}/>
                         <Input type={"text"} placeholder={"Task Name"} label={"DUE DATE"}/>
-                        <Dropdown buttonText="Select Option" content={
-                            <>
-                                {items.map((item) => (
-                                    <DropdownItem key={item}>
-                                        {`Item ${item}`}
-                                    </DropdownItem>
-                                ))}
-                            </>
-                        }/>
+                        <Dropdown
+                            buttonText="Select Options"
+                            items={items}
+                            isCheckbox={true}
+                        />
+                        <Dropdown
+                            buttonText="Select Options"
+                            items={items.map(item => ({ label: item.label }))}
+                            isCheckbox={false}
+                        />
 
                     </div>
-                    <div className={classes["content__row-2"]}>
-                        {/* Dodajemy komponent Dropdown tutaj */}
-                    </div>
-                    <div className={classes["content__row-3"]}>
+                    <div className={classes["content__elem-2"]}>
 
                     </div>
-                    <div className={classes["content__row-4"]}>
+                    <div className={classes["content__elem-3"]}>
+
+                    </div>
+                    <div className={classes["content__elem-4"]}>
 
                     </div>
                 </div>
