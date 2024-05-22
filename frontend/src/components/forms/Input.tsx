@@ -9,12 +9,17 @@ interface InputProps {
 
     onChange?: (e: ChangeEvent<HTMLInputElement>) => void,
     className?: string
+
+    label?: string
 }
 
 const Input = (props: InputProps) => {
     return (
-        <input type={props.type} placeholder={props.placeholder}
-               onChange={props.onChange} className={`${classes.input} ${props.className}`} name={props.name}/>
+        <>
+            {props.label && <h2>{props.label}</h2>}
+            <input type={props.type} placeholder={props.placeholder}
+                   onChange={props.onChange} className={`${classes.input} ${props.className}`} name={props.name}/>
+        </>
     );
 }
 

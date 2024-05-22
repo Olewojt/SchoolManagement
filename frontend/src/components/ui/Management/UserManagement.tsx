@@ -3,7 +3,7 @@ import Search from "ui/Management/Search.tsx";
 import Button from "ui/Button/Button.tsx";
 import SelectOptions from "forms/SelectOptions.tsx";
 import {DUMMY_TEACHERS, DummyTeacher} from "api/Teachers.tsx";
-import {DUMMY_STUDENTS, DummyStudent} from "api/Students.tsx";
+import {DUMMY_STUDENTS, User} from "api/User.tsx";
 import {SetStateAction, useState} from "react";
 import Input from "forms/Input.tsx";
 import SelectOption from "forms/SelectOption.tsx";
@@ -37,15 +37,11 @@ const UserManagement = () => {
         setSelectedClass(selected);
     };
 
-    const DUMMY_SUBJECTS = [
-        {name: "History"},
-        {name: "Mathematics"},
-        {name: "Physics"},
-    ]
+    const DUMMY_SUBJECTS = ["History"]
 
     interface TabConfig {
         headers: string[];
-        data: DummyTeacher[] | DummyStudent[];
+        data: DummyTeacher[] | User[];
     }
 
     const tabConfig: { [key : string]: TabConfig } = {
@@ -161,7 +157,7 @@ const UserManagement = () => {
 
                                 {currentTab === "STUDENTS" &&
                                     <>
-                                        <td colSpan={4}>{(item as DummyStudent).class}</td>
+                                        <td colSpan={4}>{(item as User).class}</td>
                                         <td colSpan={4}>{item.pesel}</td>
                                         <td colSpan={4}>{item.country}</td>
                                         <td colSpan={4}>{item.city}</td>

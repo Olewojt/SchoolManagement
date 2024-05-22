@@ -25,7 +25,8 @@ const Sidebar = () => {
 
         dispatch(setLoggedInUser({
             id: 0,
-            role: GUEST
+            role: GUEST,
+            email: ""
         }))
     }
 
@@ -33,7 +34,7 @@ const Sidebar = () => {
         <aside className={classes.sidebar}>
             <div className={classes.sidebar__title}>
                 <LogoShort className={classes.logo}/>
-                <h1>Logged as {user.role}</h1>
+                <h1>{user.role}</h1>
             </div>
             <div className={classes.sidebar__bookmarks}>
                 <Bookmark to="/" svgIcon={<HomeIcon/>}>Home</Bookmark>
@@ -43,7 +44,7 @@ const Sidebar = () => {
                 <Bookmark to="/reports" svgIcon={<ReportIcon/>}>Reports</Bookmark>
             </div>
             <div className={classes.sidebar__profile}>
-                <Bookmark to="/" svgIcon={<LogoutIcon/>} onClick={onLogoutHandler}>Logout</Bookmark>
+                <Bookmark to="/" canActive={false} svgIcon={<LogoutIcon/>} onClick={onLogoutHandler}>Logout</Bookmark>
                 {isStudent && <ProfileBookmark src={ProfileStudent} to="/config">David Jasper</ProfileBookmark>}
                 {isAdmin && <ProfileBookmark src={ProfileAdmin} to="/config">Cat</ProfileBookmark>}
                 {isTeacher && <ProfileBookmark src={ProfileTeacher} to="/config">Mr. Smith</ProfileBookmark>}

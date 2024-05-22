@@ -1,6 +1,7 @@
 import axios, {AxiosInstance, AxiosRequestConfig, AxiosResponse} from "axios";
 import {SubjectsGrades} from "api/Grades.tsx";
 import {jwtDecode} from "jwt-decode";
+import {User} from "api/User.tsx";
 
 const axiosClient: AxiosInstance = axios.create({
     baseURL: "http://localhost:8080",
@@ -91,18 +92,20 @@ export async function exportTeacherTasks(teacherId: number, startDate: Date, end
     }
 }
 
-export function decodeUserData(token: string) {
+export function decodeUserToken(token: string) {
     interface DecodedToken {
-        jti: number;
-        Role: string;
+        jti: number; // id
+        Role: string; // role
+        sub: string; // email
         // Add any other properties your token might have
     }
 
     const decoded = jwtDecode<DecodedToken>(token);
 
-    const userData = {
+    const userData: User = {
         id: decoded.jti,
-        role: decoded.Role // Access the Role attribute from the decoded token
+        role: decoded.Role, // Access the Role attribute from the decoded token
+        email: decoded.sub
     };
 
     return userData
@@ -114,10 +117,22 @@ export async function login(payload: {email: string, password: string}) {
         const token = response.headers.authorization;
         localStorage.setItem("BEARER_TOKEN", token);
 
-        return decodeUserData(token);
+        return decodeUserToken(token);
     } catch (error) {
         // Handle the error as needed
         console.error('Error logging in', error);
+        throw error;
+    }
+}
+
+export async function getUserData(userId: number) {
+    try {
+        const response = await axiosClient.get(`/api/v1/users/personalInfo/${userId}`);
+
+        return response.data;
+    } catch (error) {
+        // Handle the error as needed
+        console.error('Error getting user data', error);
         throw error;
     }
 }
