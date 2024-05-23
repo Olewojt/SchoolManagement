@@ -11,12 +11,12 @@ import {addGrades} from "state/grades/studentGradesSlice.tsx";
 import {getUserGrades} from "api/User.tsx";
 import {exportStudentGrades} from "api/User.tsx";
 
-interface SubjectSelectionState {
+export interface SubjectSelectionState {
     [key: string]: boolean;
 }
 
 // Generate initial state of selected subjects
-function generateSubjectSelectionStates(subjects: string[]): SubjectSelectionState {
+export function generateSubjectSelectionStates(subjects: string[]): SubjectSelectionState {
     const initialState: { [key: string]: boolean } = {};
     subjects.forEach((subject) => {
         initialState[subject] = true;

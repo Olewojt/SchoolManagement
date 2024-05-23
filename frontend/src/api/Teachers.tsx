@@ -2,6 +2,23 @@ import {FullUser} from "api/User.tsx";
 import {AxiosRequestConfig, AxiosResponse} from "axios";
 import axiosClient from "@/axios-client.tsx";
 
+export interface ClassesSubjects {
+    className: string,
+    subjectNames: string[]
+}
+
+export async function getTeacherClassesSubjects(userId: number): Promise<ClassesSubjects[]> {
+    try {
+        const response: AxiosResponse<ClassesSubjects[], AxiosRequestConfig> = await axiosClient.get<ClassesSubjects[]>(`/api/v1/teachers/classes/subjects/${userId}`);
+        // Handle the response as needed
+        return response.data;
+    } catch (error) {
+        // Handle the error as needed
+        console.error('Error fetching user grades:', error);
+        throw error;
+    }
+}
+
 export async function exportSubjectClassGrades(classId: number, subjectId: number): Promise<string> {
     try {
         const response: AxiosResponse<string, AxiosRequestConfig> = await axiosClient.get<string>(`/api/v1/reports/subjectReport/${classId}/${subjectId}`);
