@@ -8,3 +8,18 @@
   gap: 1rem;
   padding: 2rem;
 }
+
+.account {
+  margin-top: 1rem;
+  padding: 1rem 0 1rem 0;
+  width: 40%;
+  border-radius: 2rem;
+  background-color: var(--color-transparent);
+
+  &__info {
+    padding-left: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+  }
+}

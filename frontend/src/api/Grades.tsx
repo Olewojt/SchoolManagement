@@ -21,11 +21,6 @@ const Grades = () => {
 
 export default Grades;
 
-export interface GradeAPI {
-    grade: number,
-    subjectName: string,
-    gradedAt: string
-}
 export interface Grade {
     grade: number;
     gradedAt: Date;

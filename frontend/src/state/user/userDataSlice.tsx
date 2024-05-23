@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {decodeUserToken, getUserData} from "@/axios-client.tsx";
-import {defaultUserData, UserData} from "api/User.tsx";
+import {decodeUserToken} from "@/axios-client.tsx";
+import {defaultUserData, getUserData, UserData} from "api/User.tsx";
 
 const token = localStorage.getItem("BEARER_TOKEN");
 
