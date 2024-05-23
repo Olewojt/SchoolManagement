@@ -4,19 +4,13 @@ import UploadInput from "forms/UploadInput/UploadInput.tsx";
 import Button from "ui/Button/Button.tsx";
 
 import TaskCardInterface from "@/interfaces/TaskCardInterface/TaskCardInterface.tsx";
-import {FormEvent, useState} from "react";
+import {FormEvent} from "react";
 
 const ReadTaskCard = (props: TaskCardInterface) => {
-    const [uploadedFiles, setUploadedFiles] = useState<{ name: string; size: number }[]>([]);
-
-    const handleFilesUploaded = (files: { name: string; size: number }[]) => {
-        setUploadedFiles(prevFiles => [...prevFiles, ...files]);
-    }
 
     const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log("Form submitted");
-        console.log("Uploaded files:", uploadedFiles);
     }
 
     return (
@@ -39,6 +33,7 @@ const ReadTaskCard = (props: TaskCardInterface) => {
                             <h2>{props.date}</h2>
                         </div>
                     </div>
+                    {/*Tutaj dodać jeszcze trzeba takie rzezczy typu descirpiotn dla props itp*/}
                     <textarea value={props.description} className={classes["open-card__description"]} disabled={true}/>
                     <div className={classes["open-card__members--title"]}>
                         <GroupIcon className={classes["open-card__icon"]}/>
@@ -53,7 +48,7 @@ const ReadTaskCard = (props: TaskCardInterface) => {
                         ))}
                     </div>
                     <div className={classes["open-card__upload-area"]}>
-                        <UploadInput onFilesUploaded={handleFilesUploaded}/>
+                        <UploadInput task={props.id} />
                     </div>
                 </div>
                 <button className={classes["open-card__btn"]} type="button" onClick={props.onClick}>

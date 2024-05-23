@@ -2,7 +2,7 @@ import {FC} from "react";
 import classes from "./Column.module.scss"
 
 interface DropInicatorProps {
-    beforeId: string,
+    beforeId: number,
     status: string
 }
 

@@ -1,6 +1,6 @@
 import TaskCardInterface from "@/interfaces/TaskCardInterface/TaskCardInterface.tsx";
 import ProfileImg from "assets/images/Profile_student.png";
-import {AxiosRequestConfig, AxiosResponse} from "axios";
+import axios, {AxiosRequestConfig, AxiosResponse} from "axios";
 import axiosClient from "@/axios-client.tsx";
 
 export async function getUserTasks(userId: number): Promise<TaskCardInterface[]> {
@@ -15,7 +15,8 @@ export async function getUserTasks(userId: number): Promise<TaskCardInterface[]>
     }
 }
 
-export const DEFAULT_CARDS : TaskCardInterface[] = [
+
+export const DEFAULT_CARDS: TaskCardInterface[] = [
     // ASSESSED
     {
         title: "Look into render bug in dashboard",

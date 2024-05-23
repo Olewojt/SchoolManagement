@@ -8,7 +8,7 @@ interface TaskCardInterface {
     members: Member[];
     description: string;
 
-    id: string;
+    id: number;
     status: string;
     handleDragStart?: (e: DragEvent<HTMLDivElement>, data: TaskCardInterface) => void;
 
