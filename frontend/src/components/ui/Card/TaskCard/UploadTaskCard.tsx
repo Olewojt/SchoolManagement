@@ -1,35 +1,41 @@
+import { useState, ChangeEvent } from "react";
 import classes from "./ReadTaskCard.module.scss";
-import {PlusIcon} from "assets/icons/Icon.tsx";
+import { PlusIcon } from "assets/icons/Icon.tsx";
 import Button from "ui/Button/Button.tsx";
 import TaskCardInterface from "@/interfaces/TaskCardInterface/TaskCardInterface.tsx";
-import {ChangeEvent, useState} from "react";
 import Input from "forms/Input.tsx";
 import Dropdown from "forms/Dropdown/Dropdown.tsx";
-import DropdownItem from "forms/Dropdown/DropdownItem.tsx";
 
 const ReadTaskCard = (props: TaskCardInterface) => {
-    const [form, setForm] = useState({})
+    const [form, setForm] = useState<{ [key: string]: string }>({});
+    const [selectedCheckboxItems, setSelectedCheckboxItems] = useState([
+        { label: "David Jasper", checked: false },
+        { label: "Maciej Złomży", checked: false },
+        { label: "Krzysztof Wykałaczka", checked: false },
+        { label: "Bartosz Psikuta", checked: false },
+        { label: "Option 5", checked: false },
+        { label: "Option 6", checked: false },
+        { label: "Option 7", checked: false },
+    ]);
+    const [selectedText, setSelectedText] = useState("Select Options");
 
-    //To się przyda pod inputy
+    // Handle form input changes
     const handleForm = (e: ChangeEvent<HTMLInputElement>) => {
         setForm({
             ...form,
-            [e.target.name]: e.target.value
-        })
-    }
+            [e.target.name]: e.target.value,
+        });
+    };
 
-    //const items = [1, 2, 3, 4, 5, 6, 7];
-    const items = [
-        { label: "Option 1", checked: false },
-        { label: "Option 2", checked: false },
-        { label: "Option 3", checked: false },
-        { label: "Option 3", checked: false },
-        { label: "Option 3", checked: false },
-        { label: "Option 3", checked: false },
-        { label: "Option 3", checked: false },
-        { label: "Option 3", checked: false },
-        { label: "Option 3", checked: false },
-    ];
+    // Handle checkbox selection changes
+    const handleCheckboxSelectionChange = (newItems: { label: string; checked: boolean }[]) => {
+        setSelectedCheckboxItems(newItems);
+    };
+
+    // Handle text selection changes
+    const handleTextSelectionChange = (selected: string) => {
+        setSelectedText(selected);
+    };
 
     return (
         <div className={classes["open-card"]}>
@@ -37,37 +43,53 @@ const ReadTaskCard = (props: TaskCardInterface) => {
                 <div className={classes["open-card__blank"]}></div>
                 <div className={classes["content"]}>
                     <div className={classes["content__elem-1"]}>
-                        <Input type={"text"} placeholder={"Task Name"} label={"TASK NAME"}/>
-                        <Input type={"text"} placeholder={"Task Name"} label={"DUE DATE"}/>
+                        <Input
+                            type={"text"}
+                            placeholder={"Task Name"}
+                            label={"TASK NAME"}
+                            name={"taskName"}
+                            onChange={handleForm}
+                        />
+                        <Input
+                            type={"text"}
+                            placeholder={"Due Date"}
+                            label={"DUE DATE"}
+                            name={"dueDate"}
+                            onChange={handleForm}
+                        />
                         <Dropdown
                             buttonText="Select Options"
-                            items={items}
+                            items={selectedCheckboxItems}
                             isCheckbox={true}
+                            onSelectionChange={handleCheckboxSelectionChange}
                         />
+                        <p>
+                            Selected Items:{" "}
+                            {selectedCheckboxItems.filter(item => item.checked).map(item => item.label).join(", ")}
+                        </p>
+
                         <Dropdown
-                            buttonText="Select Options"
-                            items={items.map(item => ({ label: item.label }))}
+                            buttonText={selectedText}
+                            items={selectedCheckboxItems.map(item => ({ label: item.label, checked: item.checked }))}
                             isCheckbox={false}
+                            onSelectionChange={handleTextSelectionChange}
                         />
 
+                        <p>Selected Text: {selectedText}</p>
                     </div>
-                    <div className={classes["content__elem-2"]}>
-
-                    </div>
-                    <div className={classes["content__elem-3"]}>
-
-                    </div>
-                    <div className={classes["content__elem-4"]}>
-
-                    </div>
+                    <div className={classes["content__elem-2"]}></div>
+                    <div className={classes["content__elem-3"]}></div>
+                    <div className={classes["content__elem-4"]}></div>
                 </div>
                 <button className={classes["open-card__btn"]} type="button" onClick={props.onClick}>
-                    <PlusIcon/>
+                    <PlusIcon />
                 </button>
-                <Button className={classes["send-btn"]} type="submit" children="Send task"></Button>
+                <Button className={classes["send-btn"]} type="submit">
+                    Send task
+                </Button>
             </form>
         </div>
-    )
-}
+    );
+};
 
 export default ReadTaskCard;
