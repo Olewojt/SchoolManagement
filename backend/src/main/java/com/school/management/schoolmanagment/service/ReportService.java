@@ -138,7 +138,4 @@ public class ReportService {
             throw new AccessDeniedException("Unauthorized access");
         }
     }
-
-
-
 }

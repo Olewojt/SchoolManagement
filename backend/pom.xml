@@ -81,13 +81,6 @@
 
 <!--		zaleznosc dla jara generowania raportow-->
 		<dependency>
-			<groupId>org.example</groupId>
-			<artifactId>iTextTest</artifactId>
-			<version>1.1-SNAPSHOT</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/libs/iTextTest-1.1-SNAPSHOT.jar</systemPath>
-		</dependency>
-		<dependency>
 			<groupId>com.itextpdf</groupId>
 			<artifactId>kernel</artifactId>
 			<version>8.0.4</version>
@@ -107,10 +100,14 @@
 			<artifactId>bouncy-castle-adapter</artifactId>
 			<version>8.0.4</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.example</groupId>
+			<artifactId>iTextTest</artifactId>
+			<version>1.1-SNAPSHOT</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/libs/iTextTest-1.0-SNAPSHOT.jar</systemPath>
+		</dependency>
 	</dependencies>
-
-
 
 	<build>
 		<plugins>
@@ -136,6 +133,13 @@
 							-Amapstruct.defaultComponentModel=spring
 						</compilerArg>
 					</compilerArgs>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<includeSystemScope>true</includeSystemScope>
 				</configuration>
 			</plugin>
 		</plugins>
