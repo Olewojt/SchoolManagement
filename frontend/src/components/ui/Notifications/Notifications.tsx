@@ -12,6 +12,7 @@ interface NotificationsProps {
 const Notifications: React.FC<NotificationsProps> = (props: NotificationsProps) => {
     return (
         <div className={`${classes.notifications} ${props.className}`}>
+            <img src="src/assets/images/duck.png" className={classes.duck} />
             <div className={classes.notifications__content}>
                 <h1>NOTIFICATIONS</h1>
                 <div className={classes.notifications__content__messages}>

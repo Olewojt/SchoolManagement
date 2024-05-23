@@ -7,12 +7,15 @@
 
 .card {
   background-color: var(--color-secondary);
-  width: 14rem;
+  width: 16rem;
+  height: 16rem;
   border-radius: 30px;
 
   position: relative;
   padding: 1rem;
   z-index: 10;
+
+  color: var(--color-main-font);
 
   &__header {
     font-weight: 200;
