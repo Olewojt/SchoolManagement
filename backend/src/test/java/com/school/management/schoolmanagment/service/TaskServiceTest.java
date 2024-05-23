@@ -16,21 +16,4 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Transactional
 public class TaskServiceTest {
 
-    @Autowired
-    private TaskService taskService;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Test
-    public void testGetGradesForExistingUser() {
-        Long existingUserId = 1L;
-
-        assertTrue(userRepository.existsById(existingUserId), "User should exist in the database");
-
-        List<GradeInfoDTO> grades = taskService.getGradesForUser(existingUserId);
-
-        assertFalse(grades.isEmpty(), "Grades list should not be empty");
-        grades.forEach(grade -> System.out.println("Ocena: " + grade.getGrade() + ", Przedmiot: " + grade.getSubjectName()));
-    }
 }

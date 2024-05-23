@@ -2,16 +2,17 @@ import classes from "./Home.module.scss"
 import LastGradeCard from "ui/Card/LastGradeCard/LastGradeCard.tsx";
 import Grades from "api/Grades.tsx";
 import LastTaskCard from "ui/Card/LastTaskCard/LastTaskCard.tsx";
+import Notifications from "ui/Notifications/Notifications.tsx";
 
 const StudentHome = () => {
-    return(
+    return (
         <main className={classes.home}>
-            {/*<Notific ations className={classes.notifications}></Notifications>*/}
+            <Notifications className={classes.notifications}></Notifications>
 
-            <LastGradeCard />
-            <Grades />
+            <LastGradeCard className={classes.grades}/>
+            <Grades/>
 
-            <LastTaskCard />
+            <LastTaskCard className={classes.tasks}/>
         </main>
     )
 }

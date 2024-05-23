@@ -4,6 +4,7 @@ import classes from "./Board.module.scss";
 import Task from "@/interfaces/TaskCardInterface/TaskCardInterface.tsx";
 import SelectOptions from "forms/SelectOptions.tsx";
 import {DEFAULT_CARDS} from "api/Task.tsx";
+import AddCard from "ui/Card/TaskCard/AddCard.tsx";
 
 function getSubjects(cards: Task[]): string[] {
     const subjectsSet = new Set<string>();
@@ -49,9 +50,10 @@ const Board = () => {
 
     return (
         <>
-            <div className={classes.filters}>
+            <div className={classes.headers}>
                 {/* SelectOptions component for selecting subjects */}
-                <SelectOptions name={"Subject"} options={subjects} onCheckboxChange={onSubjectChange} checkedItems={selectedSubjects}/>
+                <SelectOptions name={"Subject"} options={subjects} onCheckboxChange={onSubjectChange} checkedItems={selectedSubjects} className={classes.headers__select}/>
+                <AddCard />
             </div>
 
             <div className={classes.board}>

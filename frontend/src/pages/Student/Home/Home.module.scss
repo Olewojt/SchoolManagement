@@ -1,17 +1,40 @@
 .home {
-  background-color: var(--color-primary);
+  background: var(--img-birds-bg),  var(--color-primary);
   width: 100%;
   height: 100vh;
-
-  //to chwilowo do tworzenia kompo, pozniej gridzik
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  justify-items: center;
 }
 
-.notifications {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+@media only screen and (min-width: 1280px) {
+  .notifications {
+    grid-column: 1/2;
+    grid-row: 1/3;
+  }
 
-  width: 65%;
-  height: 100%;
+  .grades {
+    grid-column: 2/3;
+    align-self: end;
+  }
+
+  .tasks {
+    grid-column: 2/3;
+  }
+}
+
+@media only screen and (max-width: 1279px) {
+  .notifications {
+    grid-column: 1/3;
+    grid-row: 1/3;
+  }
+
+  .grades {
+    display: none;
+  }
+
+  .tasks {
+    display: none;
+  }
 }

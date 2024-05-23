@@ -1,9 +1,10 @@
 .notifications {
   color: var(--color-main-font);
+  position: relative;
 
   &__content {
     width: 40rem;
-    height: 80vh;
+    height: 70vh;
 
     position: relative;
     display: flex;
@@ -46,4 +47,10 @@
       user-select: none;
     }
   }
+}
+
+.duck {
+  position: absolute;
+  top: -9rem;
+  left: 0;
 }

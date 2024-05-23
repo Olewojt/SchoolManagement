@@ -1,11 +1,13 @@
 package com.school.management.schoolmanagment.service;
 
-import com.school.management.schoolmanagment.dto.GradeInfoDTO;
-import com.school.management.schoolmanagment.dto.SubjectGradesDTO;
-import com.school.management.schoolmanagment.dto.TaskDTO;
+import com.school.management.schoolmanagment.dto.*;
 import com.school.management.schoolmanagment.mapper.GradeInfoDTOMapper;
 import com.school.management.schoolmanagment.mapper.SubjectGradesDTOMapper;
+import com.school.management.schoolmanagment.model.Subject;
 import com.school.management.schoolmanagment.model.Task;
+import com.school.management.schoolmanagment.model.TaskStatus;
+import com.school.management.schoolmanagment.model.User;
+import com.school.management.schoolmanagment.repository.SubjectRepository;
 import com.school.management.schoolmanagment.repository.TaskRepository;
 import com.school.management.schoolmanagment.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,13 +15,18 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import static com.school.management.schoolmanagment.mapper.TaskDTOMapper.mapToTaskDTO;
+import static com.school.management.schoolmanagment.model.TaskStatus.DONE;
+import static com.school.management.schoolmanagment.model.TaskStatus.GRADED;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +35,7 @@ public class TaskService {
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
     private final GradeInfoDTOMapper gradeInfoDTOMapper;
+    private final SubjectRepository subjectRepository;
 
     public List<Task> findTasksAssignedToUser(Long userId) {
         validateUserAccess(userId);
@@ -79,5 +87,56 @@ public class TaskService {
         List<Task> tasksAssignedToUser = findTasksAssignedToUser(userId);
 
         return mapToTaskDTO(tasksAssignedToUser);
+    }
+
+    @Transactional
+    public void createTaskForStudents(TaskCreationDTO taskCreateDTO) {
+        Long taskCreatorId = taskCreateDTO.taskCreatorId();
+        User user = userRepository.findById(taskCreatorId)
+                .orElseThrow();
+
+        Subject subject = subjectRepository.findById(taskCreateDTO.subjectId())
+                .orElseThrow();
+
+
+        taskCreateDTO.taskMembersGroups().forEach(groupOfMembers -> {
+            Task task = new Task(taskCreateDTO.title(), taskCreateDTO.description(),
+                    taskCreateDTO.deadline(), user, subject);
+
+            groupOfMembers.forEach(member -> {
+                User foundMember = userRepository.findById(member.userId())
+                        .orElseThrow();
+                if (Objects.equals(foundMember.getSchoolClass().getId(), taskCreateDTO.schoolClassId())) {
+                    foundMember.addTask(task);
+                    userRepository.save(foundMember);
+                }
+            });
+
+            taskRepository.save(task);
+        });
+    }
+
+    public TaskDTO findTaskById(Long taskId) {
+        return mapToTaskDTO(taskRepository.findById(taskId).orElseThrow());
+    }
+
+    public void gradeTask(Long taskId, GradeTaskDTO gradeTaskDTO) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow();
+
+        task.setGrade(gradeTaskDTO.grade());
+        task.setGradedAt(new Date());
+        task.setFeedback(gradeTaskDTO.feedback());
+        task.setStatus(GRADED);
+
+        taskRepository.save(task);
+    }
+
+    public void markTaskAsDone(Long taskId) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow();
+
+        task.setStatus(DONE);
+        taskRepository.save(task);
     }
 }

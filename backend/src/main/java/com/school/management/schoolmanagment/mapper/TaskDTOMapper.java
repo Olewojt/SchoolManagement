@@ -17,4 +17,13 @@ public class TaskDTOMapper {
                                         member.getPersonalInfo().getLastName())).toList()))
                 .toList();
     }
+
+    public static TaskDTO mapToTaskDTO(Task task) {
+        return new TaskDTO(task.getId(), task.getTitle(), task.getDescription(),
+                task.getStatus().toString(), task.getSubject().getName(), task.getCreatedAt().toString(),
+                task.getUsers().stream()
+                        .map(member -> new UserDTO(member.getId(), member.getPersonalInfo().getFirstName(),
+                                member.getPersonalInfo().getLastName())).toList());
+    }
+
 }

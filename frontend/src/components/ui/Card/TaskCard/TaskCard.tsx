@@ -5,7 +5,6 @@ import DropIndicator from "layouts/TaskBoard/DropIndicator.tsx";
 
 import TaskCardInterface from "@/interfaces/TaskCardInterface/TaskCardInterface.tsx";
 import ReadTaskCard from "ui/Card/TaskCard/ReadTaskCard.tsx";
-import UploadTaskCard from "ui/Card/TaskCard/UploadTaskCard.tsx";
 
 
 const TaskCard = (props: TaskCardInterface) => {
@@ -23,8 +22,8 @@ const TaskCard = (props: TaskCardInterface) => {
     return (
         <>
             <DropIndicator beforeId={props.id} column={props.column}/>
-            <div draggable="true"
-                 onDragStart={(e) => props.handleDragStart(e, {title: props.title, id: props.id, column: props.column})}
+            <div //draggable="true"
+                 //onDragStart={(e) => props.handleDragStart(e, {title: props.title, id: props.id, column: props.column})}
                  className={classes.card}>
                 <GroupIcon className={classes.card__icon}/>
                 <h1 className={classes.card__title}>{props.title}</h1>
@@ -40,12 +39,12 @@ const TaskCard = (props: TaskCardInterface) => {
             {/*TODO: będzie można tutaj coś kombinwować z nowym komponenetem dla Studenta/Nauczyciela*/}
             {active
                 &&
-                // <ReadTaskCard title={props.title} subject={props.subject} date={formattedDate} members={props.members}
-                //               description={props.description} id={props.id} column={props.column}
-                //               handleDragStart={props.handleDragStart} onClick={handleActive}/>
-                <UploadTaskCard title={props.title} subject={props.subject} date={formattedDate} members={props.members}
-                                description={props.description} id={props.id} column={props.column}
-                                handleDragStart={props.handleDragStart} onClick={handleActive}/>
+                <ReadTaskCard title={props.title} subject={props.subject} date={formattedDate} members={props.members}
+                              description={props.description} id={props.id} column={props.column}
+                              handleDragStart={props.handleDragStart} onClick={handleActive}/>
+                // <UploadTaskCard title={props.title} subject={props.subject} date={formattedDate} members={props.members}
+                //                 description={props.description} id={props.id} column={props.column}
+                //                 handleDragStart={props.handleDragStart} onClick={handleActive}/>
             }
         </>
     );
