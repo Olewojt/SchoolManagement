@@ -3,12 +3,12 @@ import classes from "./Column.module.scss"
 
 interface DropInicatorProps {
     beforeId: string,
-    column: string
+    status: string
 }
 
-const DropIndicator: FC<DropInicatorProps> = ({beforeId, column}) => {
+const DropIndicator: FC<DropInicatorProps> = ({beforeId, status}) => {
     return (
-        <div className={classes.indicator} data-before={beforeId || "-1"} data-column={column}></div>
+        <div className={classes.indicator} data-before={beforeId || "-1"} data-column={status}></div>
     )
 }
 

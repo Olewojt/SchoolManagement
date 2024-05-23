@@ -6,12 +6,12 @@ import Task from "@/interfaces/TaskCardInterface/TaskCardInterface.tsx";
 
 interface ColumnProps {
     title: string;
-    column: string;
+    status: string;
     cards: Task[];
     setCards: React.Dispatch<React.SetStateAction<Task[]>>;
 }
 
-const Column: FC<ColumnProps> = ({title, column, cards}) => {
+const Column: FC<ColumnProps> = ({title, status, cards}) => {
     const handleDragStart = (e: DragEvent<HTMLDivElement>, card: Task): void => {
         e.dataTransfer.setData("cardId", card.id);
     };
@@ -63,7 +63,7 @@ const Column: FC<ColumnProps> = ({title, column, cards}) => {
     };
 
     const getIndicators = (): Element[] => {
-        return Array.from(document.querySelectorAll(`[data-column="${column}"]`));
+        return Array.from(document.querySelectorAll(`[data-column="${status}"]`));
     };
 
     // const handleDragLeave = (): void => {
@@ -104,7 +104,7 @@ const Column: FC<ColumnProps> = ({title, column, cards}) => {
     //     }
     // };
 
-    const filteredCards = cards.filter((c: Task) => c.column === column);
+    const filteredCards = cards.filter((c: Task) => c.status === status);
 
     return (
         <div className={classes.column}>
@@ -134,7 +134,7 @@ const Column: FC<ColumnProps> = ({title, column, cards}) => {
                     ))
                 }
 
-                <DropIndicator beforeId="-1" column={column}/>
+                <DropIndicator beforeId="-1" status={status}/>
             </div>
         </div>
     );

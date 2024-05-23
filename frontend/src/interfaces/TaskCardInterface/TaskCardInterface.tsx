@@ -9,7 +9,7 @@ interface TaskCardInterface {
     description: string;
 
     id: string;
-    column: string;
+    status: string;
     handleDragStart?: (e: DragEvent<HTMLDivElement>, data: TaskCardInterface) => void;
 
     onClick?: MouseEventHandler;
@@ -20,8 +20,8 @@ interface TaskCardInterface {
 
 type Member = {
     profileImg: string;
-    name: string;
-    lider: boolean;
+    firstName: string;
+    lastName: string;
 };
 
 export default TaskCardInterface;

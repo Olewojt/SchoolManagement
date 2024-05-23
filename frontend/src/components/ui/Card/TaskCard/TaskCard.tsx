@@ -21,7 +21,7 @@ const TaskCard = (props: TaskCardInterface) => {
 
     return (
         <>
-            <DropIndicator beforeId={props.id} column={props.column}/>
+            <DropIndicator beforeId={props.id} status={props.status}/>
             <div //draggable="true"
                  //onDragStart={(e) => props.handleDragStart(e, {title: props.title, id: props.id, column: props.column})}
                  className={classes.card}>
@@ -40,7 +40,7 @@ const TaskCard = (props: TaskCardInterface) => {
             {active
                 &&
                 <ReadTaskCard title={props.title} subject={props.subject} date={formattedDate} members={props.members}
-                              description={props.description} id={props.id} column={props.column}
+                              description={props.description} id={props.id} status={props.status}
                               handleDragStart={props.handleDragStart} onClick={handleActive}/>
                 // <UploadTaskCard title={props.title} subject={props.subject} date={formattedDate} members={props.members}
                 //                 description={props.description} id={props.id} column={props.column}

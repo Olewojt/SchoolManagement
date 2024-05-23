@@ -1,10 +1,24 @@
 import classes from "./ReadTaskCard.module.scss";
-import {CrownIcon, GroupIcon, PlusIcon} from "assets/icons/Icon.tsx";
+import {GroupIcon, PlusIcon} from "assets/icons/Icon.tsx";
 import UploadInput from "forms/UploadInput/UploadInput.tsx";
 import Button from "ui/Button/Button.tsx";
 
 import TaskCardInterface from "@/interfaces/TaskCardInterface/TaskCardInterface.tsx";
+import {FormEvent, useState} from "react";
+
 const ReadTaskCard = (props: TaskCardInterface) => {
+    const [uploadedFiles, setUploadedFiles] = useState<{ name: string; size: number }[]>([]);
+
+    const handleFilesUploaded = (files: { name: string; size: number }[]) => {
+        setUploadedFiles(prevFiles => [...prevFiles, ...files]);
+    }
+
+    const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        console.log("Form submitted");
+        console.log("Uploaded files:", uploadedFiles);
+    }
+
     return (
         <div className={classes["open-card"]}>
             <div className={classes["open-card__container"]}>
@@ -25,7 +39,6 @@ const ReadTaskCard = (props: TaskCardInterface) => {
                             <h2>{props.date}</h2>
                         </div>
                     </div>
-                    {/*Tutaj dodać jeszcze trzeba takie rzezczy typu descirpiotn dla props itp*/}
                     <textarea value={props.description} className={classes["open-card__description"]} disabled={true}/>
                     <div className={classes["open-card__members--title"]}>
                         <GroupIcon className={classes["open-card__icon"]}/>
@@ -34,23 +47,22 @@ const ReadTaskCard = (props: TaskCardInterface) => {
                     <div className={classes["open-card__members"]}>
                         {props.members.map((member, index) => (
                             <div key={index} className={classes["open-card__members--profile"]}>
-                                {member.lider &&
-                                    <CrownIcon className={classes["open-card__members--lider"]}/>}
-
-                                <img src={member.profileImg}/>
-                                <span>{member.name}</span>
+                                <img src="src/assets/images/Profile_student.png"/>
+                                <span>{member.firstName} {member.lastName}</span>
                             </div>
                         ))}
                     </div>
                     <div className={classes["open-card__upload-area"]}>
-                        <UploadInput/>
+                        <UploadInput onFilesUploaded={handleFilesUploaded}/>
                     </div>
                 </div>
                 <button className={classes["open-card__btn"]} type="button" onClick={props.onClick}>
                     <PlusIcon/>
                 </button>
-                <Button className={classes["send-btn"]} type="submit" children="Send task"></Button>
             </div>
+            <form onSubmit={onSubmit} className={classes["open-card__form"]}>
+                <Button className={classes["send-btn"]} type="submit">Send task</Button>
+            </form>
         </div>
     )
 }

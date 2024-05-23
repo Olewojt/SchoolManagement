@@ -2,12 +2,14 @@ import {configureStore} from '@reduxjs/toolkit';
 import gradeReducer from "./grades/gradeSlice.tsx"
 import loginReducer from "state/auth/authSlice.tsx";
 import studentGradesReducer from "./grades/studentGradesSlice.tsx";
+import studentTaskReducer from  "./tasks/tasksSlice.tsx"
 import userDataSlice from "state/user/userDataSlice.tsx";
 
 export const store = configureStore({
     reducer: {
         grade: gradeReducer,
         studentGrades: studentGradesReducer,
+        studentTasks: studentTaskReducer,
         login: loginReducer,
         userData: userDataSlice
     },

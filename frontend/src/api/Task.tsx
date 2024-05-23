@@ -1,5 +1,19 @@
 import TaskCardInterface from "@/interfaces/TaskCardInterface/TaskCardInterface.tsx";
 import ProfileImg from "assets/images/Profile_student.png";
+import {AxiosRequestConfig, AxiosResponse} from "axios";
+import axiosClient from "@/axios-client.tsx";
+
+export async function getUserTasks(userId: number): Promise<TaskCardInterface[]> {
+    try {
+        const response: AxiosResponse<TaskCardInterface[], AxiosRequestConfig> = await axiosClient.get<TaskCardInterface[]>(`/api/v1/tasks/assigned/info/${userId}`);
+        // Handle the response as needed
+        return response.data;
+    } catch (error) {
+        // Handle the error as needed
+        console.error('Error fetching user tasks:', error);
+        throw error;
+    }
+}
 
 export const DEFAULT_CARDS : TaskCardInterface[] = [
     // ASSESSED
@@ -13,13 +27,11 @@ export const DEFAULT_CARDS : TaskCardInterface[] = [
         members: [
             {
                 profileImg: ProfileImg,
-                name: "Dejwid Jaasper",
-                lider: true
+                name: "Dejwid Jaasper"
             },
             {
                 profileImg: ProfileImg,
-                name: "Marcinek",
-                lider: false
+                name: "Marcinek"
             }
         ]
     },
@@ -33,13 +45,11 @@ export const DEFAULT_CARDS : TaskCardInterface[] = [
         members: [
             {
                 profileImg: ProfileImg,
-                name: "Goha Goha 3 złote",
-                lider: false
+                name: "Goha Goha 3 złote"
             },
             {
                 profileImg: ProfileImg,
-                name: "Miśkaaaa",
-                lider: false
+                name: "Miśkaaaa"
             }
         ]
     },
@@ -53,13 +63,11 @@ export const DEFAULT_CARDS : TaskCardInterface[] = [
         members: [
             {
                 profileImg: ProfileImg,
-                name: "Ryszard",
-                lider: false
+                name: "Ryszard"
             },
             {
                 profileImg: ProfileImg,
-                name: "aha",
-                lider: false
+                name: "aha"
             }
         ]
     },
@@ -73,13 +81,11 @@ export const DEFAULT_CARDS : TaskCardInterface[] = [
         members: [
             {
                 profileImg: ProfileImg,
-                name: "Marcinek",
-                lider: false
+                name: "Marcinek"
             },
             {
                 profileImg: ProfileImg,
-                name: "Miśkaaaa",
-                lider: false
+                name: "Miśkaaaa"
             }
         ]
     },
@@ -93,13 +99,11 @@ export const DEFAULT_CARDS : TaskCardInterface[] = [
         members: [
             {
                 profileImg: ProfileImg,
-                name: "Goha Goha 3 złote",
-                lider: false
+                name: "Goha Goha 3 złote"
             },
             {
                 profileImg: ProfileImg,
-                name: "aha",
-                lider: false
+                name: "aha"
             }
         ]
     },
@@ -115,13 +119,11 @@ export const DEFAULT_CARDS : TaskCardInterface[] = [
         members: [
             {
                 profileImg: ProfileImg,
-                name: "Ryszard",
-                lider: false
+                name: "Ryszard"
             },
             {
                 profileImg: ProfileImg,
-                name: "Marcinek",
-                lider: false
+                name: "Marcinek"
             }
         ]
     },
@@ -135,13 +137,11 @@ export const DEFAULT_CARDS : TaskCardInterface[] = [
         members: [
             {
                 profileImg: ProfileImg,
-                name: "aha",
-                lider: false
+                name: "aha"
             },
             {
                 profileImg: ProfileImg,
-                name: "Dejwid Jaasper",
-                lider: true
+                name: "Dejwid Jaasper"
             }
         ]
     },
@@ -155,13 +155,11 @@ export const DEFAULT_CARDS : TaskCardInterface[] = [
         members: [
             {
                 profileImg: ProfileImg,
-                name: "Miśkaaaa",
-                lider: false
+                name: "Miśkaaaa"
             },
             {
                 profileImg: ProfileImg,
-                name: "Goha Goha 3 złote",
-                lider: false
+                name: "Goha Goha 3 złote"
             }
         ]
     },
@@ -176,13 +174,11 @@ export const DEFAULT_CARDS : TaskCardInterface[] = [
         members: [
             {
                 profileImg: ProfileImg,
-                name: "Marcinek",
-                lider: false
+                name: "Marcinek"
             },
             {
                 profileImg: ProfileImg,
-                name: "Miśkaaaa",
-                lider: false
+                name: "Miśkaaaa"
             }
         ]
     },
@@ -196,13 +192,11 @@ export const DEFAULT_CARDS : TaskCardInterface[] = [
         members: [
             {
                 profileImg: ProfileImg,
-                name: "Marcinek",
-                lider: false
+                name: "Marcinek"
             },
             {
                 profileImg: ProfileImg,
-                name: "Miśkaaaa",
-                lider: false
+                name: "Miśkaaaa"
             }
         ]
     }

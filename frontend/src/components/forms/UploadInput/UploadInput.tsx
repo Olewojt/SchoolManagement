@@ -1,8 +1,12 @@
-import classes from "./UploadInput.module.scss"
+import classes from "./UploadInput.module.scss";
 import {AttachmentIcon, CheckIcon, DocIcon} from "assets/icons/Icon.tsx";
-import {useRef, useState} from "react";
+import {useRef, useState, ChangeEvent} from "react";
 
-const UploadInput = () => {
+interface UploadInputProps {
+    onFilesUploaded: (files: { name: string; size: number }[]) => void;
+}
+
+const UploadInput = (props: UploadInputProps) => {
     const [files, setFiles] = useState<{ name: string; loading: number }[]>([]);
     const [uploadedFiles, setUploadedFiles] = useState<{ name: string; size: number }[]>([]);
     const [showProgress, setShowProgress] = useState<boolean>(false);
@@ -11,7 +15,8 @@ const UploadInput = () => {
     const handleFileInputClick = () => {
         fileInputRef.current?.click();
     }
-    const uploadedFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+
+    const uploadedFile = (event: ChangeEvent<HTMLInputElement>) => {
         const file: File | undefined = event.target.files?.[0];
         if (!file) return;
         const fileName = file.name.length > 12
@@ -23,9 +28,12 @@ const UploadInput = () => {
         setShowProgress(true);
         //Tutaj będzie dla axiosa https://www.youtube.com/watch?v=u31mCmwBFS8
         setUploadedFiles(prevUploadedFiles => [...prevUploadedFiles, {name: fileName, size: 69}]);
-        setFiles([])
-        setShowProgress(false)
+        setFiles([]);
+        setShowProgress(false);
+
+        props.onFilesUploaded([{name: fileName, size: 69}]);
     }
+
     return (
         <div className={classes.upload}>
             <div>
@@ -44,7 +52,7 @@ const UploadInput = () => {
                                         </div>
                                         <div className={classes["load__loading-bar"]}>
                                             <div className={classes.load__loading}
-                                                 style={{width: `${file.loading}`}}></div>
+                                                 style={{width: `${file.loading}%`}}></div>
                                         </div>
                                     </div>
                                 </div>
