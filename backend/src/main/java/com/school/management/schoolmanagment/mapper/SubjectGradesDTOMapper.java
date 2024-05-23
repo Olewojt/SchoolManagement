@@ -5,6 +5,7 @@ import com.school.management.schoolmanagment.dto.SubjectGradesDTO;
 import com.school.management.schoolmanagment.model.Task;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class SubjectGradesDTOMapper {
@@ -16,7 +17,9 @@ public class SubjectGradesDTOMapper {
                 .map(entry -> {
                     String subjectName = entry.getKey();
                     List<GradeDTO> subjectGrades = entry.getValue().stream()
-                            .map(task -> new GradeDTO(task.getGrade(), task.getGradedAt().toString()))
+                            .filter(task -> task.getGrade() != null)
+                            .map(task -> new GradeDTO(task.getGrade(),
+                                    Objects.requireNonNull(task.getGradedAt()).toString()))
                             .toList();
                     return new SubjectGradesDTO(subjectName, subjectGrades);
                 }).toList();

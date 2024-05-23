@@ -1,19 +1,16 @@
 package com.school.management.schoolmanagment.model;
 
-import javax.persistence.*;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.lang.Nullable;
 
-import java.sql.Blob;
+import javax.persistence.*;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static javax.persistence.EnumType.STRING;
 import static javax.persistence.FetchType.LAZY;
@@ -36,12 +33,13 @@ public class Task {
     @JsonIgnore
     @ManyToOne(fetch = LAZY)
     private User taskCreator;
+    @Nullable
     private String feedback;
     @CreationTimestamp
     private Instant createdAt;
-    @Lob
-    private Blob attachment;
+    @Nullable
     private Integer grade;
+    @Nullable
     private Date gradedAt;
     @JsonIgnore
     @ManyToOne(fetch = LAZY)
@@ -54,18 +52,15 @@ public class Task {
     private final Set<User> users = new HashSet<>();
 
     public Task(String title, String description, LocalDateTime deadline,
-                TaskStatus status, User taskCreator, String feedback, Instant createdAt,
-                Blob attachment, Integer grade, Date gradedAt, Subject subject) {
+                User taskCreator, Subject subject) {
         this.title = title;
         this.description = description;
         this.deadline = deadline;
-        this.status = status;
         this.taskCreator = taskCreator;
-        this.feedback = feedback;
-        this.createdAt = createdAt;
-        this.attachment = attachment;
-        this.grade = grade;
-        this.gradedAt= gradedAt;
+        this.feedback = null;
+        this.grade = null;
+        this.gradedAt = null;
         this.subject = subject;
+        this.status = TaskStatus.TO_DO;
     }
 }
