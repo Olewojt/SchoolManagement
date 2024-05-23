@@ -6,9 +6,10 @@ import React, {useEffect, useState} from "react";
 import SelectOption from "forms/SelectOption.tsx";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "state/store.tsx";
-import {exportSubjectClassGrades, getUserGrades} from "@/axios-client.tsx";
 import {addGrades} from "state/grades/studentGradesSlice.tsx";
 import Button from "ui/Button/Button.tsx";
+import {getUserGrades} from "api/User.tsx";
+import {exportSubjectClassGrades} from "api/Teachers.tsx";
 
 // Extract subjects from response
 function getSubjects(grades: SubjectsGrades[]): string[] {
@@ -50,7 +51,7 @@ const TeacherReports = () => {
     // Subjects extracted from response
     const [subjects, setSubjects] = useState<string[]>(getSubjects(grades));
     // Subjects selected in filter
-    const [selectedSubject, setSelectedSubject] = useState<string>("Math");
+    const [selectedSubject, setSelectedSubject] = useState<string>("-");
     // Grades prepared for PieChart module
     const [studentGrades, setStudentGrades] = useState<GradeDict>(getGradesCount(grades));
     // State of export
@@ -143,7 +144,7 @@ const TeacherReports = () => {
     const exportRequest = () => {
         setExportState("Exporting...");
 
-        exportSubjectClassGrades(user.id, 1)
+        exportSubjectClassGrades(1, 1)
             .then(data => {
                 console.log('Export request response', data);
 

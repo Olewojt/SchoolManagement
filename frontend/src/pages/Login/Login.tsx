@@ -6,7 +6,8 @@ import Button from "ui/Button/Button.tsx";
 
 import {Logo} from "assets/icons/Icon.tsx";
 import {useNavigate} from "react-router-dom";
-import {getUserData, login} from "../../axios-client.tsx";
+import {login} from "../../axios-client.tsx";
+import {getUserData} from "api/User.tsx";
 import {useDispatch} from "react-redux";
 import {setLoggedInUser} from "state/auth/authSlice.tsx";
 import {setUserData} from "state/user/userDataSlice.tsx";

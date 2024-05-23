@@ -4,7 +4,7 @@ import GradeCard from "ui/Card/GradeCard.tsx";
 import {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "state/store.tsx";
-import {getUserGrades} from "@/axios-client.tsx";
+import {getUserGrades} from "api/User.tsx";
 import {addGrades} from "state/grades/studentGradesSlice.tsx";
 
 const StudentGrades = () => {

@@ -2,8 +2,8 @@ import classes from "./UserManagement.module.scss"
 import Search from "ui/Management/Search.tsx";
 import Button from "ui/Button/Button.tsx";
 import SelectOptions from "forms/SelectOptions.tsx";
-import {DUMMY_TEACHERS, DummyTeacher} from "api/Teachers.tsx";
-import {DUMMY_STUDENTS, User} from "api/User.tsx";
+import {DUMMY_TEACHERS, Teacher} from "api/Teachers.tsx";
+import {DUMMY_STUDENTS, FullUser} from "api/User.tsx";
 import {SetStateAction, useState} from "react";
 import Input from "forms/Input.tsx";
 import SelectOption from "forms/SelectOption.tsx";
@@ -41,7 +41,7 @@ const UserManagement = () => {
 
     interface TabConfig {
         headers: string[];
-        data: DummyTeacher[] | User[];
+        data: FullUser[] | Teacher[];
     }
 
     const tabConfig: { [key : string]: TabConfig } = {
@@ -60,9 +60,12 @@ const UserManagement = () => {
     };
 
     const filteredData = tabConfig[currentTab].data.filter((item) => {
+        if (!item.firstName) item.firstName = "-";
+        if (!item.lastName) item.lastName = "-";
+
         return (
-            item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            item.surname.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            item.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            item.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
             item.email.toLowerCase().includes(searchQuery.toLowerCase())
         );
     });
@@ -100,80 +103,80 @@ const UserManagement = () => {
             <div className={classes.table_container}>
                 <table>
                     <thead>
-                        {currentTab && (
-                            <tr>
-                                {editMode && <th colSpan={2}>DELETE</th>}
-                                {tabConfig[currentTab].headers.map((header, index) => (
-                                    <th key={index} colSpan={4}>{header}</th>
-                                ))}
-                            </tr>
-                        )}
+                    {currentTab && (
+                        <tr>
+                            {editMode && <th colSpan={2}>DELETE</th>}
+                            {tabConfig[currentTab].headers.map((header, index) => (
+                                <th key={index} colSpan={4}>{header}</th>
+                            ))}
+                        </tr>
+                    )}
                     </thead>
 
                     <tbody>
-                        {currentTab && filteredData.map((item, index) => (
-                            <tr key={index} id={item.id.toString()}>
-                                {editMode && (
-                                    <td colSpan={2}>
-                                        <Button type="button" className={classes.editButton} onClick={() => handleEditRow(item.id)} children="✏️"/>
-                                        <Button type="button" className={classes.editButton} children="❌"/>
+                    {currentTab && filteredData.map((item, index) => (
+                        <tr key={index} id={item.id.toString()}>
+                            {editMode && (
+                                <td colSpan={2}>
+                                    <Button type="button" className={classes.editButton} onClick={() => handleEditRow(item.id)} children="✏️"/>
+                                    <Button type="button" className={classes.editButton} children="❌"/>
+                                </td>
+                            )}
+
+                            <td colSpan={4}>
+                                {editMode && editedRow == item.id
+                                    ? <Input type={"text"} placeholder={item.firstName ? item.firstName : "-"} onChange={() => {}}/>
+                                    : item.firstName}
+                            </td>
+                            <td colSpan={4}>
+                                {editMode && editedRow == item.id
+                                    ? <Input type={"text"} placeholder={item.lastName ? item.lastName : "-"} onChange={() => {}}/>
+                                    : item.lastName}
+                            </td>
+                            <td colSpan={4}>
+                                {editMode && editedRow == item.id
+                                    ? <Input type={"text"} placeholder={item.email} onChange={() => {}}/>
+                                    : item.email
+                                }
+                            </td>
+
+                            {currentTab === "TEACHERS" &&
+                                <>
+                                    <td colSpan={4}>{(item as Teacher).subject.length != 0 ? (item as Teacher).subject : "-"}</td>
+                                    <td colSpan={4}>
+                                        {editMode && editedRow == item.id
+                                            ?
+                                            <SelectOption
+                                                options={["-", "5C", "2A"]}
+                                                name="Class"
+                                                onOptionChange={handleClassChange}
+                                                selected={selectedClass == "-" ? item.class || "-" : selectedClass}
+                                                className={classes.class_selection}/>
+                                            : (item as Teacher).class || "-"
+                                        }
                                     </td>
-                                )}
+                                </>
+                            }
 
-                                <td colSpan={4}>
-                                    {editMode && editedRow == item.id
-                                        ? <Input type={"text"} placeholder={item.name} onChange={() => {}}/>
-                                        : item.name}
-                                </td>
-                                <td colSpan={4}>
-                                    {editMode && editedRow == item.id
-                                        ? <Input type={"text"} placeholder={item.surname} onChange={() => {}}/>
-                                        : item.surname}
-                                </td>
-                                <td colSpan={4}>
-                                    {editMode && editedRow == item.id
-                                        ? <Input type={"text"} placeholder={item.email} onChange={() => {}}/>
-                                        : item.email
-                                    }
-                                </td>
+                            {currentTab === "STUDENTS" &&
+                                <>
+                                    <td colSpan={4}>{(item as FullUser).class}</td>
+                                    <td colSpan={4}>{item.pesel}</td>
+                                    <td colSpan={4}>{item.country}</td>
+                                    <td colSpan={4}>{item.city}</td>
+                                    <td colSpan={4}>{item.street}</td>
+                                    <td colSpan={4}>{item.homeNumber}</td>
+                                    <td colSpan={4}>{item.flatNumber ? item.flatNumber : "-"}</td>
+                                </>
+                            }
 
-                                {currentTab === "TEACHERS" &&
-                                    <>
-                                        <td colSpan={4}>{(item as DummyTeacher).subject || "-"}</td>
-                                        <td colSpan={4}>
-                                            {editMode && editedRow == item.id
-                                                ?
-                                                <SelectOption
-                                                    options={["-", "5C", "2A"]}
-                                                    name="Class"
-                                                    onOptionChange={handleClassChange}
-                                                    selected={selectedClass == "-" ? item.class || "-" : selectedClass}
-                                                    className={classes.class_selection}/>
-                                                : (item as DummyTeacher).class || "-"
-                                            }
-                                        </td>
-                                    </>
-                                }
-
-                                {currentTab === "STUDENTS" &&
-                                    <>
-                                        <td colSpan={4}>{(item as User).class}</td>
-                                        <td colSpan={4}>{item.pesel}</td>
-                                        <td colSpan={4}>{item.country}</td>
-                                        <td colSpan={4}>{item.city}</td>
-                                        <td colSpan={4}>{item.street}</td>
-                                        <td colSpan={4}>{item.home_num || "-"}</td>
-                                        <td colSpan={4}>{item.flat_num || "-"}</td>
-                                    </>
-                                }
-
-                                {/*{currentTab === "PARENTS" &&*/}
-                                {/*    <>*/}
-                                {/*        */}
-                                {/*    </>*/}
-                                {/*}*/}
-                            </tr>
-                        ))}
+                            {/*{currentTab === "PARENTS" &&*/}
+                            {/*    <>*/}
+                            {/*        */}
+                            {/*    </>*/}
+                            {/*}*/}
+                        </tr>
+                    ))}
                     </tbody>
                 </table>
             </div>

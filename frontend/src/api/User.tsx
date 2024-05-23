@@ -1,3 +1,7 @@
+import {SubjectsGrades} from "api/Grades.tsx";
+import {AxiosRequestConfig, AxiosResponse} from "axios";
+import axiosClient from "@/axios-client.tsx";
+
 export interface User {
     id: number,
     role: string,
@@ -11,8 +15,8 @@ export interface UserData {
     country: string | null,
     city: string | null,
     street: string | null,
-    home_num: string | null,
-    flat_num: string | null,
+    homeNumber: string | null,
+    flatNumber: string | null,
 }
 
 export const defaultUserData: UserData = {
@@ -22,11 +26,47 @@ export const defaultUserData: UserData = {
     country: null,
     city: null,
     street: null,
-    home_num: null,
-    flat_num: null
+    homeNumber: null,
+    flatNumber: null
 };
 
-type FullUser = User & UserData & {class: string | null};
+export type FullUser = User & UserData & {class: string | null};
+
+export async function getUserData(userId: number) {
+    try {
+        const response = await axiosClient.get(`/api/v1/users/personalInfo/${userId}`);
+
+        return response.data;
+    } catch (error) {
+        // Handle the error as needed
+        console.error('Error getting user data', error);
+        throw error;
+    }
+}
+
+export async function getUserGrades(userId: number): Promise<SubjectsGrades[]> {
+    try {
+        const response: AxiosResponse<SubjectsGrades[], AxiosRequestConfig> = await axiosClient.get<SubjectsGrades[]>(`/api/v1/tasks/subjects/grades/${userId}`);
+        // Handle the response as needed
+        return response.data;
+    } catch (error) {
+        // Handle the error as needed
+        console.error('Error fetching user grades:', error);
+        throw error;
+    }
+}
+
+export async function exportStudentGrades(userId: number): Promise<string> {
+    try {
+        const response: AxiosResponse<string, AxiosRequestConfig> = await axiosClient.get<string>(`/api/v1/reports/studentReport/${userId}`);
+        // Handle the response as needed
+        return response.data;
+    } catch (error) {
+        // Handle the error as needed
+        console.error('Error requesting student grades report', error);
+        throw error;
+    }
+}
 
 export const DUMMY_STUDENTS: FullUser[] = [
     {
@@ -39,8 +79,8 @@ export const DUMMY_STUDENTS: FullUser[] = [
         country: "USA",
         city: "New York",
         street: "Broadway",
-        home_num: "123",
-        flat_num: null,
+        homeNumber: "123",
+        flatNumber: null,
         class: "5C"
     },
     {
@@ -53,8 +93,8 @@ export const DUMMY_STUDENTS: FullUser[] = [
         country: "USA",
         city: "Los Angeles",
         street: "Sunset Blvd",
-        home_num: "456",
-        flat_num: null,
+        homeNumber: "456",
+        flatNumber: null,
         class: "4B"
     },
     {
@@ -67,8 +107,8 @@ export const DUMMY_STUDENTS: FullUser[] = [
         country: "USA",
         city: "Chicago",
         street: "Lake Shore Dr",
-        home_num: "789",
-        flat_num: null,
+        homeNumber: "789",
+        flatNumber: null,
         class: "3A"
     },
     {
@@ -81,8 +121,8 @@ export const DUMMY_STUDENTS: FullUser[] = [
         country: "USA",
         city: "Houston",
         street: "Main St",
-        home_num: "1011",
-        flat_num: null,
+        homeNumber: "1011",
+        flatNumber: null,
         class: "2B"
     },
     {
@@ -95,8 +135,8 @@ export const DUMMY_STUDENTS: FullUser[] = [
         country: "USA",
         city: "San Francisco",
         street: "Market St",
-        home_num: "1213",
-        flat_num: null,
+        homeNumber: "1213",
+        flatNumber: null,
         class: "1A"
     },
     {
@@ -109,8 +149,8 @@ export const DUMMY_STUDENTS: FullUser[] = [
         country: "USA",
         city: "Miami",
         street: "Ocean Dr",
-        home_num: "1415",
-        flat_num: null,
+        homeNumber: "1415",
+        flatNumber: null,
         class: "6C"
     },
     {
@@ -123,8 +163,8 @@ export const DUMMY_STUDENTS: FullUser[] = [
         country: "USA",
         city: "Seattle",
         street: "Pike Pl",
-        home_num: "1617",
-        flat_num: null,
+        homeNumber: "1617",
+        flatNumber: null,
         class: "5A"
     },
     {
@@ -137,8 +177,8 @@ export const DUMMY_STUDENTS: FullUser[] = [
         country: "USA",
         city: "Boston",
         street: "Newbury St",
-        home_num: "1819",
-        flat_num: null,
+        homeNumber: "1819",
+        flatNumber: null,
         class: "4D"
     },
     {
@@ -151,8 +191,8 @@ export const DUMMY_STUDENTS: FullUser[] = [
         country: "USA",
         city: "Dallas",
         street: "Elm St",
-        home_num: "2021",
-        flat_num: null,
+        homeNumber: "2021",
+        flatNumber: null,
         class: "3B"
     },
     {
@@ -165,8 +205,8 @@ export const DUMMY_STUDENTS: FullUser[] = [
         country: "USA",
         city: "Philadelphia",
         street: "Market St",
-        home_num: "2223",
-        flat_num: null,
+        homeNumber: "2223",
+        flatNumber: null,
         class: "2C"
     },
     {
@@ -179,8 +219,8 @@ export const DUMMY_STUDENTS: FullUser[] = [
         country: "USA",
         city: "Phoenix",
         street: "Camelback Rd",
-        home_num: "2425",
-        flat_num: null,
+        homeNumber: "2425",
+        flatNumber: null,
         class: "1B"
     },
     {
@@ -193,8 +233,8 @@ export const DUMMY_STUDENTS: FullUser[] = [
         country: "USA",
         city: "Denver",
         street: "Colfax Ave",
-        home_num: "2627",
-        flat_num: null,
+        homeNumber: "2627",
+        flatNumber: null,
         class: "6A"
     },
     {
@@ -207,8 +247,8 @@ export const DUMMY_STUDENTS: FullUser[] = [
         country: "USA",
         city: "Las Vegas",
         street: "Las Vegas Blvd",
-        home_num: "2829",
-        flat_num: null,
+        homeNumber: "2829",
+        flatNumber: null,
         class: "5B"
     },
     {
@@ -221,8 +261,8 @@ export const DUMMY_STUDENTS: FullUser[] = [
         country: "USA",
         city: "Atlanta",
         street: "Peachtree St",
-        home_num: "3031",
-        flat_num: null,
+        homeNumber: "3031",
+        flatNumber: null,
         class: "4C"
     },
     {
@@ -235,8 +275,8 @@ export const DUMMY_STUDENTS: FullUser[] = [
         country: "USA",
         city: "Austin",
         street: "Congress Ave",
-        home_num: "3233",
-        flat_num: null,
+        homeNumber: "3233",
+        flatNumber: null,
         class: "3D"
     }
 ];

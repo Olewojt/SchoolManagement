@@ -3,11 +3,14 @@ import classes from './Configuration.module.scss'
 import {Toggle} from "forms/Toggle.tsx";
 import {useToggle} from "hooks/useToggle.tsx";
 import {useEffect} from "react";
+import {useSelector} from "react-redux";
+import {RootState} from "state/store.tsx";
 
 const Configuration = () => {
-    let isDarkLocalStorage = localStorage.getItem("isDark") === 'true'
-    let isNotifiedLocalStorage = localStorage.getItem("isNotified") === 'true'
-    let isAnimatedLocalStorage = localStorage.getItem("isAnimated") === 'true'
+    const userData = useSelector((state: RootState) => state.userData)
+    const isDarkLocalStorage = localStorage.getItem("isDark") === 'true'
+    const isNotifiedLocalStorage = localStorage.getItem("isNotified") === 'true'
+    const isAnimatedLocalStorage = localStorage.getItem("isAnimated") === 'true'
 
     const [isDark, toggleDarkMode] = useToggle(isDarkLocalStorage) //Taki nowy hook napisany. Jest w folderze hooks
     const [isNotified, toggleNotifications] = useToggle(isNotifiedLocalStorage)
@@ -34,7 +37,19 @@ const Configuration = () => {
 
     return (
         <main className={classes.home}>
-            <Header value={'Account'}></Header>
+            <Header value={'Account'}>
+                <div className={classes.account}>
+                    <div className={classes.account__info}>
+                        <h2>First Name: {userData.firstName ?? "N/A"}</h2>
+                        <h2>Last Name: {userData.lastName ?? "N/A"}</h2>
+                        <h2>City: {userData.city ?? "N/A"}</h2>
+                        <h2>Street: {userData.street ?? "N/A"}</h2>
+                        <h2>
+                            <strong>Address:</strong> {userData.homeNumber ?? "N/A"}{userData.flatNumber ? `/${userData.flatNumber}` : ""}
+                        </h2>
+                    </div>
+                </div>
+            </Header>
             <Header value={'Look & Feel'}>
                 <Toggle id={"dark-mode"} onChange={toggleDarkMode} checked={isDark} labelText={"Dark Mode"}></Toggle>
                 <Toggle id={"animations"} onChange={toggleAnimations} checked={isAnimated} labelText={"Animations"}></Toggle>

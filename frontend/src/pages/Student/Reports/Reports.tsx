@@ -2,13 +2,14 @@ import classes from "./Reports.module.scss";
 import SelectOptions from "forms/SelectOptions.tsx";
 import PieChart, {GradeDict} from "ui/Charts/PieChart.tsx";
 import SelectDate, {currentDate} from "forms/SelectDate.tsx";
-import {exportStudentGrades, getUserGrades} from "src/axios-client.tsx";
 import {SubjectsGrades} from "api/Grades.tsx";
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "state/store.tsx";
 import Button from "ui/Button/Button.tsx";
 import {addGrades} from "state/grades/studentGradesSlice.tsx";
+import {getUserGrades} from "api/User.tsx";
+import {exportStudentGrades} from "api/User.tsx";
 
 interface SubjectSelectionState {
     [key: string]: boolean;

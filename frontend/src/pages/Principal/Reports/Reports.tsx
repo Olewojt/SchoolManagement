@@ -6,9 +6,10 @@ import React, {useEffect, useState} from "react";
 import SelectOption from "forms/SelectOption.tsx";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "state/store.tsx";
-import {exportTeacherTasks, getUserGrades} from "@/axios-client.tsx";
 import {addGrades} from "state/grades/studentGradesSlice.tsx";
 import Button from "ui/Button/Button.tsx";
+import {getUserGrades} from "api/User.tsx";
+import {exportTeacherTasks} from "api/Teachers.tsx";
 
 // Extract subjects from response
 function getSubjects(grades: SubjectsGrades[]): string[] {
