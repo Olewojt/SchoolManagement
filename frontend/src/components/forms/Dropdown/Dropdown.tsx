@@ -9,9 +9,10 @@ interface DropdownProps {
     items: { label: ReactNode; checked?: boolean }[];
     isCheckbox?: boolean;
     onSelectionChange?: (selected: any) => void;
+    label?: string;
 }
 
-const Dropdown: React.FC<DropdownProps> = ({ buttonText, items, isCheckbox = false, onSelectionChange }) => {
+const Dropdown: React.FC<DropdownProps> = ({ buttonText, items, isCheckbox = false, onSelectionChange, label }) => {
     const [open, setOpen] = useState<boolean>(false);
     const [dropdownItems, setDropdownItems] = useState(items);
     const [searchValue, setSearchValue] = useState<string>("");
@@ -61,6 +62,7 @@ const Dropdown: React.FC<DropdownProps> = ({ buttonText, items, isCheckbox = fal
 
     return (
         <div ref={dropdownRef} className={classes.dropdown}>
+            {label && <h2>{label}</h2>}
             <DropdownButton ref={buttonRef} toggle={toggleDropdown} open={open}>
                 {buttonText}
             </DropdownButton>

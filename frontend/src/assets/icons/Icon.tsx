@@ -1,5 +1,5 @@
 interface IconProps {
-    className: string;
+    className?: string;
 }
 
 const SettingsIcon = () => {
@@ -295,10 +295,21 @@ export const CollapseIcon = () => {
 }
 
 export const ExpandIcon = (props: IconProps) => {
-    return (<svg  className={props.className} width="27" height="21" viewBox="0 0 27 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+    return (<svg className={props.className} width="27" height="21" viewBox="0 0 27 21" fill="none"
+                 xmlns="http://www.w3.org/2000/svg">
             <path opacity="0.8"
                   d="M15.1715 19.9558C14.3815 21.1582 12.6185 21.1582 11.8285 19.9558L1.24603 3.84817C0.372272 2.51822 1.32627 0.75 2.91756 0.75L24.0824 0.75C25.6737 0.75 26.6277 2.51822 25.754 3.84817L15.1715 19.9558Z"
                   fill="#FFD6FF"/>
+        </svg>
+    )
+}
+
+export const SingleIcon = () => {
+    return (<svg width="70" height="70" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="35" cy="23.3332" rx="11.6667" ry="11.6667" fill="#222222"/>
+            <path
+                d="M18.395 42.0894C19.5296 39.4522 22.1884 37.9165 25.0592 37.9165H44.9407C47.8116 37.9165 50.4703 39.4522 51.605 42.0894C53.199 45.7942 55.1879 51.5094 55.3984 57.3333C55.4183 57.8852 54.9689 58.3332 54.4166 58.3332H15.5833C15.031 58.3332 14.5816 57.8852 14.6016 57.3333C14.8121 51.5094 16.801 45.7942 18.395 42.0894Z"
+                fill="#222222"/>
         </svg>
     )
 }

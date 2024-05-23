@@ -30,6 +30,7 @@
 
   &__blank {
   }
+
   &__btn {
     background-color: var(--color-primary);
     border-radius: 100vw;
@@ -50,7 +51,7 @@
 .send-btn {
   position: absolute;
   right: 0;
-  bottom: 3%;
+  top: 7%;
   margin: 2.5rem;
 }
 
@@ -60,9 +61,80 @@
 
   display: grid;
   grid-template-columns: (1fr, 1fr);
-  grid-template-rows: repeat(5, auto);
+  grid-template-rows: auto auto 1fr 1fr;
 
   margin: 1rem 2rem;
 
   color: var(--color-main-font);
+
+  &__elem {
+    &--1 {
+      display: flex;
+      justify-content: space-between;
+      width: 40vw;
+      margin-bottom: 1rem;
+
+    }
+
+    &--2 {
+      display: flex;
+      justify-content: space-between;
+      width: 40vw;
+      margin-bottom: 1rem;
+      position: relative;
+
+      &::before {
+        content: "";
+        display: block;
+        position: absolute;
+        top: 0;
+        background-color: var(--color-main-font);
+        height: 1px;
+        width: 100%;
+      }
+    }
+
+    &--3 {
+      position: relative;
+
+      &::before {
+        content: "";
+        display: block;
+        position: absolute;
+        top: 0;
+        background-color: var(--color-main-font);
+        height: 1px;
+        width: 100%;
+      }
+    }
+
+    &--4 {
+      display: flex;
+      align-items: start;
+      justify-content: space-around;
+
+    }
+  }
+
+  &__textarea {
+    width: 100%;
+    max-height: 30vh;
+    height: 80%;
+  }
+
+  &__input {
+    width: 15rem;
+
+    &--1 {
+      width: 20rem;
+    }
+  }
+
+  &__addBtn {
+    margin-top: 1rem;
+  }
+}
+
+.selectBtns {
+
 }

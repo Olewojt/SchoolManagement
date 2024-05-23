@@ -15,11 +15,11 @@ interface InputProps {
 
 const Input = (props: InputProps) => {
     return (
-        <>
+        <div className={props.className}>
             {props.label && <h2>{props.label}</h2>}
             <input type={props.type} placeholder={props.placeholder}
-                   onChange={props.onChange} className={`${classes.input} ${props.className}`} name={props.name}/>
-        </>
+                   onChange={props.onChange} className={classes.input} name={props.name}/>
+        </div>
     );
 }
 

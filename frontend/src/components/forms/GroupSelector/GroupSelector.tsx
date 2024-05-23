@@ -32,10 +32,11 @@ const GroupSelector = () => {
 
     return (
         <div className={classes.selector}>
-            {groups.map((group, index) => (
-                <GroupSelectorCard key={index} number={index} members={group.members} />
-            ))}
-            <Button type={"button"} children={"Add Group"} />
+            <div className={classes.selector__cards}>
+                {groups.map((group, index) => (
+                    <GroupSelectorCard key={index} number={index} members={group.members}/>
+                ))}
+            </div>
         </div>
     );
 }

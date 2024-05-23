@@ -1,7 +1,8 @@
 .dropdown-btn {
   display: flex;
   align-items: center;
-  width: fit-content;
+  justify-content: space-between;
+  width: 15rem;
   padding: 1rem;
   background-color: var(--color-secondary-font);
   border-radius: 0.5rem;

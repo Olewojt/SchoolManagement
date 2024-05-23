@@ -4,4 +4,10 @@
 
   width: 20rem; //TODO: Może do wydupcenia jak już bedzie uzywany ten komponenet
 
+  &__cards {
+    max-height: 30vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+
+  }
 }
