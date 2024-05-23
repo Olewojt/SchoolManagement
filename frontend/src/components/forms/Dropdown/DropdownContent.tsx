@@ -1,4 +1,4 @@
-import React, { forwardRef, ReactNode } from "react";
+import { forwardRef, ReactNode } from "react";
 import classes from "./DropdownContent.module.scss";
 
 interface DropdownContentProps {

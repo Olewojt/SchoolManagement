@@ -19,7 +19,7 @@ axiosClient.interceptors.response.use((response) => {
 }, (error) => {
     const {response} = error
 
-    if (response.status === 401) {
+    if (response.status === 401 || response.status === 403) {
         removeToken()
     }
 

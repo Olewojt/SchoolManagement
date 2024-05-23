@@ -5,6 +5,7 @@ import Button from "ui/Button/Button.tsx";
 import TaskCardInterface from "@/interfaces/TaskCardInterface/TaskCardInterface.tsx";
 import Input from "forms/Input.tsx";
 import Dropdown from "forms/Dropdown/Dropdown.tsx";
+import GroupSelector from "forms/GroupSelector/GroupSelector.tsx";
 
 const ReadTaskCard = (props: TaskCardInterface) => {
     const [form, setForm] = useState<{ [key: string]: string }>({});
@@ -76,6 +77,9 @@ const ReadTaskCard = (props: TaskCardInterface) => {
                         />
 
                         <p>Selected Text: {selectedText}</p>
+
+                        <GroupSelector />
+
                     </div>
                     <div className={classes["content__elem-2"]}></div>
                     <div className={classes["content__elem-3"]}></div>

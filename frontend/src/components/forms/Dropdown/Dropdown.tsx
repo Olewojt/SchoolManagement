@@ -55,8 +55,8 @@ const Dropdown: React.FC<DropdownProps> = ({ buttonText, items, isCheckbox = fal
         ...item,
         originalIndex: index, // Dodanie oryginalnych indeksów
     })).filter(item => {
-        const label = item.label.toString().toLowerCase();
-        return label.includes(searchValue.toLowerCase());
+        const label = item.label?.toString().toLowerCase();
+        return label?.includes(searchValue.toLowerCase());
     });
 
     return (
