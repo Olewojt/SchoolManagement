@@ -23,6 +23,8 @@
   --grade-card-bg-2: #483978;
   --grade-card-bg-1: #FF2525;
 
+  --filter-invert: invert(1);
+
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -47,6 +49,8 @@
 
   --color-main-font: #FFFFFF;
   --color-secondary-font: #1a1a1a;
+
+  --filter-invert: invert(0);
 }
 
 a {

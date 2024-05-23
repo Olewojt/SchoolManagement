@@ -2,7 +2,7 @@ import {ChangeEvent} from "react";
 import classes from "./Input.module.scss"
 
 interface InputProps {
-    type: 'text' | 'number' | 'email' | 'password',
+    type: 'text' | 'number' | 'email' | 'password' | 'date',
     placeholder: string,
     name?: string,
     value?: string

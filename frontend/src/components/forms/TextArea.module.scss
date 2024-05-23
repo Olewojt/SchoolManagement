@@ -8,10 +8,10 @@
 
   font-size: 1rem;
   padding: 1rem;
-  &::-webkit-calendar-picker-indicator {
-    filter: var(--filter-invert);
-  }
 
+  resize: none;
+
+  font-family: sans-serif;
 }
 
 .container {
