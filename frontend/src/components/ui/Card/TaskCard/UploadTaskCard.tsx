@@ -1,15 +1,18 @@
-import {useState, ChangeEvent} from "react";
+import {useState, ChangeEvent, MouseEventHandler} from "react";
 import classes from "./UploadTaskCard.module.scss";
 import {PlusIcon} from "assets/icons/Icon.tsx";
 import Button from "ui/Button/Button.tsx";
-import TaskCardInterface from "@/interfaces/TaskCardInterface/TaskCardInterface.tsx";
 import Input from "forms/Input.tsx";
 import Dropdown from "forms/Dropdown/Dropdown.tsx";
 import GroupSelector from "forms/GroupSelector/GroupSelector.tsx";
 import TextArea from "forms/TextArea.tsx";
 import SelectButton from "ui/Button/SelectButton.tsx";
 
-const ReadTaskCard = (props: TaskCardInterface) => {
+interface UploadTaskCard {
+    onClick?: MouseEventHandler;
+}
+
+const UploadTaskCard = (props: UploadTaskCard) => {
     const [form, setForm] = useState<{ [key: string]: string }>({});
     const [selectedCheckboxItems, setSelectedCheckboxItems] = useState([
         {label: "David Jasper", checked: false},
@@ -117,4 +120,4 @@ const ReadTaskCard = (props: TaskCardInterface) => {
     );
 };
 
-export default ReadTaskCard;
+export default UploadTaskCard;

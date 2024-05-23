@@ -1,7 +1,6 @@
 import React, {DragEvent, FC} from "react";
 import TaskCard from "ui/Card/TaskCard/TaskCard.tsx";
 import DropIndicator from "layouts/TaskBoard/DropIndicator.tsx";
-import AddCard from "layouts/TaskBoard/AddCard.tsx";
 import classes from "./Column.module.scss";
 import Task from "@/interfaces/TaskCardInterface/TaskCardInterface.tsx";
 
@@ -12,15 +11,15 @@ interface ColumnProps {
     setCards: React.Dispatch<React.SetStateAction<Task[]>>;
 }
 
-const Column: FC<ColumnProps> = ({title, column, cards, setCards}) => {
+const Column: FC<ColumnProps> = ({title, column, cards}) => {
     const handleDragStart = (e: DragEvent<HTMLDivElement>, card: Task): void => {
         e.dataTransfer.setData("cardId", card.id);
     };
 
-    const handleDragOver = (e: DragEvent<HTMLDivElement>): void => {
-        e.preventDefault();
-        highlightIndicator(e);
-    };
+    // const handleDragOver = (e: DragEvent<HTMLDivElement>): void => {
+    //     e.preventDefault();
+    //     highlightIndicator(e);
+    // };
 
     const highlightIndicator = (e: DragEvent<HTMLDivElement>): void => {
         const indicators: Element[] = getIndicators();
@@ -67,43 +66,43 @@ const Column: FC<ColumnProps> = ({title, column, cards, setCards}) => {
         return Array.from(document.querySelectorAll(`[data-column="${column}"]`));
     };
 
-    const handleDragLeave = (): void => {
-        clearHighlight();
-    };
-
-    const handleDragEnd = (e: DragEvent<HTMLDivElement>): void => {
-        clearHighlight();
-
-        const cardId = e.dataTransfer.getData("cardId");
-        const indicators = getIndicators();
-        const {element} = getNearestIndicator(e, indicators);
-
-        const before = (element as HTMLElement).dataset.before || "-1";
-        if (before !== cardId) {
-            let copy = [...cards];
-
-            let cardToTransfer = copy.find((c) => c.id === cardId);
-
-            if (!cardToTransfer) return;
-
-            cardToTransfer = {...cardToTransfer, column};
-
-            copy = copy.filter((c) => c.id !== cardId);
-
-            const moveToBack = before === "-1";
-
-            if (moveToBack) {
-                copy.push(cardToTransfer);
-            } else {
-                const insertAtIndex = copy.findIndex((el) => el.id === before);
-                if (insertAtIndex === undefined) return;
-
-                copy.splice(insertAtIndex, 0, cardToTransfer);
-            }
-
-            setCards(copy);
-        }
-    };
+    // const handleDragLeave = (): void => {
+    //     clearHighlight();
+    // };
+    //
+    // const handleDragEnd = (e: DragEvent<HTMLDivElement>): void => {
+    //     clearHighlight();
+    //
+    //     const cardId = e.dataTransfer.getData("cardId");
+    //     const indicators = getIndicators();
+    //     const {element} = getNearestIndicator(e, indicators);
+    //
+    //     const before = (element as HTMLElement).dataset.before || "-1";
+    //     if (before !== cardId) {
+    //         let copy = [...cards];
+    //
+    //         let cardToTransfer = copy.find((c) => c.id === cardId);
+    //
+    //         if (!cardToTransfer) return;
+    //
+    //         cardToTransfer = {...cardToTransfer, column};
+    //
+    //         copy = copy.filter((c) => c.id !== cardId);
+    //
+    //         const moveToBack = before === "-1";
+    //
+    //         if (moveToBack) {
+    //             copy.push(cardToTransfer);
+    //         } else {
+    //             const insertAtIndex = copy.findIndex((el) => el.id === before);
+    //             if (insertAtIndex === undefined) return;
+    //
+    //             copy.splice(insertAtIndex, 0, cardToTransfer);
+    //         }
+    //
+    //         setCards(copy);
+    //     }
+    // };
 
     const filteredCards = cards.filter((c: Task) => c.column === column);
 
@@ -114,9 +113,9 @@ const Column: FC<ColumnProps> = ({title, column, cards, setCards}) => {
                 <span>{filteredCards.length}</span>
             </div>
             <div
-                onDragOver={handleDragOver}
-                onDragLeave={handleDragLeave}
-                onDrop={handleDragEnd}
+                // onDragOver={handleDragOver}
+                // onDragLeave={handleDragLeave}
+                // onDrop={handleDragEnd}
                 className={classes.column__items}
             >
                 {filteredCards
@@ -136,7 +135,6 @@ const Column: FC<ColumnProps> = ({title, column, cards, setCards}) => {
                 }
 
                 <DropIndicator beforeId="-1" column={column}/>
-                <AddCard column={column} setCards={setCards}/>
             </div>
         </div>
     );

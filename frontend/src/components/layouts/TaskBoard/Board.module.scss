@@ -4,7 +4,12 @@
   justify-content: space-around;
 }
 
-.filters {
+.headers {
   margin: 2rem auto;
-  width: 20rem;
+  width: 60%;
+  display: flex;
+  justify-content: space-evenly;
+  &__select {
+    width: 15rem;
+  }
 }
