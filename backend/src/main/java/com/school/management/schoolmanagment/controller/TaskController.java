@@ -60,4 +60,9 @@ public class TaskController {
         taskService.markTaskAsDone(taskId);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/created/{teacherId}")
+    public ResponseEntity<List<TaskDTO>> findTasksCreatedByTeacher(@PathVariable Long teacherId) {
+        return ResponseEntity.ok(taskService.findTasksCreatedByTeacher(teacherId));
+    }
 }

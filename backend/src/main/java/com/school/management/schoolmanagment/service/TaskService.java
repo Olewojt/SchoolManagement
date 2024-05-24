@@ -139,4 +139,13 @@ public class TaskService {
         task.setStatus(DONE);
         taskRepository.save(task);
     }
+
+    public List<TaskDTO> findTasksCreatedByTeacher(Long teacherId) {
+        validateUserAccess(teacherId);
+
+        User teacher = userRepository.findById(teacherId)
+                .orElseThrow();
+
+        return mapToTaskDTO(taskRepository.findByTaskCreator(teacher));
+    }
 }
