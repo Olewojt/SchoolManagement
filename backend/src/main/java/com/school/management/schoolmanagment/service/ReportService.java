@@ -10,10 +10,7 @@ import com.school.management.schoolmanagment.repository.SubjectRepository;
 import com.school.management.schoolmanagment.repository.TeacherSubjectInClassRepository;
 import com.school.management.schoolmanagment.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.example.AverageGradesReport;
-import org.example.SubjectReportForTeacher;
-import org.example.SubjectTaskInfo;
-import org.example.TeacherReport;
+import org.example.*;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,10 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -53,35 +47,47 @@ public class ReportService {
         }
     }
 
-    public String subjectReportForTeacher(Long classId, Long subjectId) {
+    public String subjectReportForTeacher(String className, List<String> subjectNames) {
         try {
-            validateTeacherBelongsToClassAndSubject(classId, subjectId);
-            Subject subject = subjectRepository.findById(subjectId).orElseThrow();
-            SchoolClass schoolClass = schoolClassRepository.findById(classId).orElseThrow();
+            validateTeacherBelongsToClassAndSubject(className, subjectNames);
+            SchoolClass schoolClass = schoolClassRepository.findByName(className);
 
-            //tu sie zmieni ze bedzie id nauczyciela podawane w sciezce chyba
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String currentUsername = authentication.getName();
             User teacher = userRepository.findByEmail(currentUsername).orElseThrow();
 
             Set<User> students = schoolClass.getStudents();
 
-            Map<String, List<Integer>> subjectGradesMap = new HashMap<>();
-            for (User student : students) {
-                List<SubjectGradesDTO> studentSubjectGrades = taskService.getStudentSubjectGrades(student.getId());
-                for (SubjectGradesDTO subjectGrades : studentSubjectGrades) {
-                    if (subjectGrades.subjectName().equals(subject.getName())) {
-                        List<Integer> grades = subjectGrades.grades().stream()
-                                .map(GradeDTO::grade)
-                                .collect(Collectors.toList());
-                        subjectGradesMap.put(student.getPersonalInfo().getFirstName() + " " +
-                                student.getPersonalInfo().getLastName(), grades);
+            List<ClassGrades> classGradesList = new ArrayList<>();
+
+            for (String subjectName :
+                    subjectNames) {
+
+                Subject subject = subjectRepository.findByName(subjectName);
+                Map<String, List<Integer>> subjectGradesMap = new HashMap<>();
+                for (User student : students) {
+                    List<SubjectGradesDTO> studentSubjectGrades = taskService.getStudentSubjectGrades(student.getId());
+                    for (SubjectGradesDTO subjectGrades : studentSubjectGrades) {
+                        if (subjectGrades.subjectName().equals(subject.getName())) {
+                            List<Integer> grades = subjectGrades.grades().stream()
+                                    .map(GradeDTO::grade)
+                                    .collect(Collectors.toList());
+                            subjectGradesMap.put(student.getPersonalInfo().getFirstName() + " " +
+                                    student.getPersonalInfo().getLastName(), grades);
+
+
+                        }
                     }
+
                 }
+
+                ClassGrades classGrades = new ClassGrades(subjectName, subjectGradesMap);
+                classGradesList.add(classGrades);
+
             }
 
             SubjectReportForTeacher subjectReport = new SubjectReportForTeacher(teacher.getPersonalInfo().getFirstName(),
-                    teacher.getPersonalInfo().getLastName(), subject.getName(), schoolClass.getName(), subjectGradesMap);
+                    teacher.getPersonalInfo().getLastName(), className, classGradesList);
             subjectReport.generate();
             return "Reports generated successfully";
         } catch (IOException e) {
@@ -90,6 +96,7 @@ public class ReportService {
     }
 
     public String teacherReport(Long teacherId, LocalDate startDate, LocalDate endDate) {
+       //TODO: zrobic aby dla poszczegolnych klas bylo sprawdzanie danego przedmiotu
         try {
             User teacher = userRepository.findById(teacherId).orElseThrow();
             Map<String, SubjectTaskInfo> subjectTaskInfoMap = new HashMap<>();
@@ -98,7 +105,7 @@ public class ReportService {
             for (Subject subject : subjects) {
                 int totalTasks = taskService.countTasksForTeacherAndSubject(teacherId, subject.getId(), startDate, endDate);
                 int gradedTasks = taskService.countGradedTasksForTeacherAndSubject(teacherId, subject.getId(), startDate, endDate);
-                subjectTaskInfoMap.put(subject.getName(), new SubjectTaskInfo(totalTasks, gradedTasks, subject.getName()));
+                subjectTaskInfoMap.put(subject.getName()+" 8C", new SubjectTaskInfo(totalTasks, gradedTasks));
             }
 
             TeacherReport teacherReport = new TeacherReport(teacher.getPersonalInfo().getFirstName(),
@@ -124,18 +131,25 @@ public class ReportService {
         return subjectGradesMap;
     }
 
-    private void validateTeacherBelongsToClassAndSubject(Long classId, Long subjectId) {
+    private void validateTeacherBelongsToClassAndSubject(String className, List<String> subjectNames) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUsername = authentication.getName();
 
         User teacher = userRepository.findByEmail(currentUsername)
                 .orElseThrow(() -> new AccessDeniedException("Unauthorized access"));
 
-        boolean teachesClassAndSubject = teacherSubjectInClassRepository.existsByIdTeacherIdAndIdSubjectIdAndIdClassId(teacher.getId(),
-                subjectId, classId);
+        SchoolClass schoolClass = schoolClassRepository.findByName(className);
+        for (String subjectName:
+             subjectNames) {
+            Subject subject = subjectRepository.findByName(subjectName);
+            boolean teachesClassAndSubject = teacherSubjectInClassRepository.existsByIdTeacherIdAndIdSubjectIdAndIdClassId(teacher.getId(),
+                    subject.getId(), schoolClass.getId());
 
-        if (!teachesClassAndSubject) {
-            throw new AccessDeniedException("Unauthorized access");
+            if (!teachesClassAndSubject) {
+                throw new AccessDeniedException("Unauthorized access");
+            }
         }
+
+
     }
 }

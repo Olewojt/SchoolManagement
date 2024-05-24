@@ -31,9 +31,9 @@ public class ReportController {
        return reportService.avgGradesReportForStudent(userId);
     }
 
-    @GetMapping("/subjectReport/{classId}/{subjectId}")
-    public String subjectReportForTeacher(@PathVariable Long classId, @PathVariable Long subjectId) {
-        return reportService.subjectReportForTeacher(classId, subjectId);
+    @GetMapping("/subjectReport/{className}")
+    public String subjectReportForTeacher(@PathVariable String className, @RequestParam List<String> subjectNames) {
+        return reportService.subjectReportForTeacher(className, subjectNames);
     }
 
     @GetMapping("/teacherReport/{teacherId}")
