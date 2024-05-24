@@ -47,4 +47,17 @@ public class TaskAttachmentService {
 
         return attachment.getDataBytes();
     }
+
+    public void deleteAttachmentFromTask(String taskAttachmentId) {
+        TaskAttachment attachment = taskAttachmentRepository.findById(taskAttachmentId)
+                .orElseThrow();
+
+        taskAttachmentRepository.delete(attachment);
+    }
+
+    public void deleteAllAttachmentsFromTask(Long taskId) {
+        List<TaskAttachment> allTaskAttachments = taskAttachmentRepository.getAllTaskAttachments(taskId);
+
+        taskAttachmentRepository.deleteAll(allTaskAttachments);
+    }
 }
