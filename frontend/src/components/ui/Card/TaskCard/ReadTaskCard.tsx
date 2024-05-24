@@ -63,7 +63,7 @@ const ReadTaskCard = (props: TaskCardInterface) => {
                         ))}
                     </div>
                     <div className={classes["open-card__upload-area"]}>
-                        <UploadInput task={props.id}/>
+                        <UploadInput task={props.id} status={props.status}/>
                     </div>
                 </div>
                 <button className={classes["open-card__btn"]} type="button" onClick={props.onClick}>

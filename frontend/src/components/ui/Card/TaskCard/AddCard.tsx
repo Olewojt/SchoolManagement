@@ -1,29 +1,14 @@
-import {FormEvent, useState} from "react";
+import {useState} from "react";
 import AddButton from "ui/Button/AddButton.tsx";
 import UploadTaskCard from "ui/Card/TaskCard/UploadTaskCard.tsx";
 import classes from "ui/Card/TaskCard/TaskCard.module.scss";
 
 
-
 const AddCard = () => {
-    const [text, setText] = useState("")
     const [adding, setAdding] = useState(false)
 
     const handleChange = () => {
         setAdding(prevState => !prevState)
-    }
-
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-
-        if (!text.trim().length) return;
-
-        const newCard = {
-            title: text.trim(),
-            id: Math.random().toString(),
-        };
-
-        setAdding(false);
     }
 
     const handleActive = () => {

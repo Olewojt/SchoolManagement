@@ -1,13 +1,24 @@
 import React from 'react';
 import classes from "./LastGradeCard.module.scss";
-//import {formatDate} from "src/utilities/dateUtils.tsx";
+// import {useSelector} from "react-redux";
+// import {RootState} from "state/store.tsx";
+// import {formatDate} from "src/utilities/dateUtils.tsx";
 
 interface LastGradeCardProps {
     className?: string;
 }
 
 const LastGradeCard: React.FC<LastGradeCardProps> = (props) => {
+    // const lastGrade = useSelector((state: RootState) => state.grade.grades[state.grade.grades.length - 1]);
+    // const lastSubject = useSelector((state: RootState) => state.grade.subject);
 
+    // if (!lastGrade) {
+    //     return (
+    //         <div className={classes["empty-grade"]}>
+    //             Brak ocen
+    //         </div>
+    //     );
+    // }
 
     return (
         <section className={`${classes["last-grade"]} ${props.className}`}>
