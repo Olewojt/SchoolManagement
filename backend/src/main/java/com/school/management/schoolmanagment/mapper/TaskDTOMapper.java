@@ -14,7 +14,7 @@ public class TaskDTOMapper {
                         task.getStatus().toString(), task.getSubject().getName(), task.getCreatedAt().toString(),
                         task.getUsers().stream()
                                 .map(member -> new UserDTO(member.getId(), member.getPersonalInfo().getFirstName(),
-                                        member.getPersonalInfo().getLastName())).toList()))
+                                        member.getPersonalInfo().getLastName())).sorted().toList()))
                 .toList();
     }
 
