@@ -30,15 +30,19 @@ const StudentGrades = () => {
     return (
         <main className={classes.home}>
             <div className={classes.content}>
-                {gradesData.map((subject, subjectIndex) => (
-                    <Header key={subjectIndex} value={subject.subjectName} className={classes.navbar}>
-                        <div className={classes.grades}>
-                            {subject.grades.map((gradeInfo, gradeIndex) => (
-                                <GradeCard key={gradeIndex} grade={gradeInfo.grade} date={gradeInfo.gradedAt}></GradeCard>
-                            ))}
-                        </div>
-                    </Header>
-                ))}
+                {
+                    (gradesData.length > 0)
+                    ? gradesData.map((subject, subjectIndex) => (
+                        <Header key={subjectIndex} value={subject.subjectName} className={classes.navbar}>
+                            <div className={classes.grades}>
+                                {subject.grades.map((gradeInfo, gradeIndex) => (
+                                    <GradeCard key={gradeIndex} grade={gradeInfo.grade} date={gradeInfo.gradedAt}></GradeCard>
+                                ))}
+                            </div>
+                        </Header>
+                    ))
+                    : <h1 className={classes.no_grades}>You haven't got any grades right now.</h1>
+                }
             </div>
         </main>
     );
