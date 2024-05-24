@@ -5,12 +5,14 @@ import Button from "ui/Button/Button.tsx";
 
 import TaskCardInterface from "@/interfaces/TaskCardInterface/TaskCardInterface.tsx";
 import {FormEvent} from "react";
+import {updateTaskStatus} from "api/Task.tsx";
 
 const ReadTaskCard = (props: TaskCardInterface) => {
 
     const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log("Form submitted");
+        updateTaskStatus(props.id)
     }
 
     return (
