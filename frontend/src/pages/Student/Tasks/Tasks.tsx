@@ -7,7 +7,6 @@ import {getUserTasks} from "api/Task.tsx";
 import {addTasks} from "state/tasks/tasksSlice.tsx";
 const StudentTasks = () => {
     const user = useSelector((state: RootState) => state.login);
-    const task = useSelector((state: RootState) => state.studentTasks);
     const dispatch = useDispatch();
 
     useEffect(() => {

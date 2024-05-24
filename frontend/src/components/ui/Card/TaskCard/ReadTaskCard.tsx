@@ -5,14 +5,27 @@ import Button from "ui/Button/Button.tsx";
 
 import TaskCardInterface from "@/interfaces/TaskCardInterface/TaskCardInterface.tsx";
 import {FormEvent} from "react";
-import {updateTaskStatus} from "api/Task.tsx";
+import {getUserTasks, updateTaskStatus} from "api/Task.tsx";
+import {addTasks} from "state/tasks/tasksSlice.tsx";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "state/store.tsx";
 
 const ReadTaskCard = (props: TaskCardInterface) => {
-
+    const user = useSelector((state: RootState) => state.login);
+    const dispatch = useDispatch();
     const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log("Form submitted");
-        updateTaskStatus(props.id)
+
+        try {
+            await updateTaskStatus(props.id);
+
+            const updatedTasks = await getUserTasks(user.id);
+            console.log('User tasks:', updatedTasks);
+            dispatch(addTasks(updatedTasks));
+        } catch (error) {
+            console.error('Error updating task status or fetching user tasks:', error);
+        }
     }
 
     return (
@@ -50,16 +63,18 @@ const ReadTaskCard = (props: TaskCardInterface) => {
                         ))}
                     </div>
                     <div className={classes["open-card__upload-area"]}>
-                        <UploadInput task={props.id} />
+                        <UploadInput task={props.id}/>
                     </div>
                 </div>
                 <button className={classes["open-card__btn"]} type="button" onClick={props.onClick}>
                     <PlusIcon/>
                 </button>
             </div>
-            <form onSubmit={onSubmit} className={classes["open-card__form"]}>
-                <Button className={classes["send-btn"]} type="submit">Send task</Button>
-            </form>
+            {props.status === "TO_DO" &&
+                <form onSubmit={onSubmit} className={classes["open-card__form"]}>
+                    <Button className={classes["send-btn"]} type="submit">Send task</Button>
+                </form>
+            }
         </div>
     )
 }
