@@ -1,7 +1,9 @@
 package com.school.management.schoolmanagment.database;
 
+import com.school.management.schoolmanagment.dto.GradeTaskDTO;
 import com.school.management.schoolmanagment.model.*;
 import com.school.management.schoolmanagment.repository.*;
+import com.school.management.schoolmanagment.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -38,6 +40,9 @@ public class DatabaseSeeder implements CommandLineRunner {
     private TeacherSubjectInClassRepository teacherSubjectInClassRepository;
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private TaskService taskService;
 
     @Override
     @Transactional
@@ -235,6 +240,8 @@ public class DatabaseSeeder implements CommandLineRunner {
         Task task10 = new Task("Math Quiz", "Solve the quiz questions in the workbook",
                 LocalDateTime.now().plusDays(5), taskCreator, math);
 
+
+
         taskRepository.save(task1);
         taskRepository.save(task2);
         taskRepository.save(task3);
@@ -244,6 +251,10 @@ public class DatabaseSeeder implements CommandLineRunner {
         taskRepository.save(task8);
         taskRepository.save(task9);
         taskRepository.save(task10);
+
+        taskService.gradeTask(task1.getId(), new GradeTaskDTO(5, "Good job"));
+        taskService.gradeTask(task2.getId(), new GradeTaskDTO(2, "Good job"));
+        taskService.gradeTask(task3.getId(), new GradeTaskDTO(3, "Good job"));
 
         User student1 = userRepository.findByEmail("john.doe@example.com").orElseThrow();
         User student2 = userRepository.findByEmail("jane.smith@example.com").orElseThrow();
@@ -260,6 +271,8 @@ public class DatabaseSeeder implements CommandLineRunner {
         student2.addTask(task4);
         student2.addTask(task5);
         student2.addTask(task1);
+
+
 
         userRepository.save(student1);
         userRepository.save(student2);
