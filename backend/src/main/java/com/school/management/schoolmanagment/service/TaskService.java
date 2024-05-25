@@ -5,7 +5,6 @@ import com.school.management.schoolmanagment.mapper.GradeInfoDTOMapper;
 import com.school.management.schoolmanagment.mapper.SubjectGradesDTOMapper;
 import com.school.management.schoolmanagment.model.Subject;
 import com.school.management.schoolmanagment.model.Task;
-import com.school.management.schoolmanagment.model.TaskStatus;
 import com.school.management.schoolmanagment.model.User;
 import com.school.management.schoolmanagment.repository.SubjectRepository;
 import com.school.management.schoolmanagment.repository.TaskRepository;
@@ -95,9 +94,6 @@ public class TaskService {
                 .orElseThrow();
 
         Subject subject = subjectRepository.findByName(taskCreateDTO.subjectName());
-        System.out.println(subject);
-        System.out.println(taskCreateDTO.subjectName());
-
 
         taskCreateDTO.taskMembersGroups().forEach(groupOfMembers -> {
             Task task = new Task(taskCreateDTO.title(), taskCreateDTO.description(),
@@ -106,7 +102,7 @@ public class TaskService {
             groupOfMembers.forEach(member -> {
                 User foundMember = userRepository.findById(member.userId())
                         .orElseThrow();
-                if (Objects.equals(foundMember.getSchoolClass().getId(), taskCreateDTO.schoolClassId())) {
+                if (Objects.equals(foundMember.getSchoolClass().getName(), taskCreateDTO.schoolClassName())) {
                     foundMember.addTask(task);
                     userRepository.save(foundMember);
                 }

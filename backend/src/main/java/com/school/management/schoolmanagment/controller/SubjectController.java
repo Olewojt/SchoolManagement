@@ -1,5 +1,6 @@
 package com.school.management.schoolmanagment.controller;
 
+import com.school.management.schoolmanagment.dto.SubjectDTO;
 import com.school.management.schoolmanagment.model.Subject;
 import com.school.management.schoolmanagment.repository.SubjectRepository;
 import com.school.management.schoolmanagment.service.SubjectService;
@@ -18,7 +19,7 @@ public class SubjectController {
     private final SubjectService subjectService;
 
     @GetMapping("/{name}")
-    public ResponseEntity<Subject> findBySubjectName(@PathVariable String name) {
+    public ResponseEntity<SubjectDTO> findBySubjectName(@PathVariable String name) {
         return ResponseEntity.ok(subjectService.findBySubjectName(name));
     }
 }
