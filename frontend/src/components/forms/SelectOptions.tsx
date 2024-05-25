@@ -28,19 +28,25 @@ const SelectOptions: React.FC<SelectProps> = (props: SelectProps) => {
             {isExpanded && (
                 <div className={`${baseClasses.expanded__content} ${classes.expanded__content}`}>
                     {
-                        props.options.map( (entry: string, index) =>
-                            <div className={baseClasses.expanded__content__element} key={index}>
+                        (props.options.length > 0)
+                            ? props.options.map((entry: string, index) =>
+                                <div className={baseClasses.expanded__content__element} key={index}>
+                                    <label>
+                                        {entry}
+                                        <input
+                                            type="checkbox"
+                                            checked={props.checkedItems[entry] || false}
+                                            onChange={() => props.onCheckboxChange(entry)}
+                                            name={entry}
+                                        />
+                                    </label>
+                                </div>
+                            )
+                            : <div className={baseClasses.expanded__content__element}>
                                 <label>
-                                    {entry}
-                                    <input
-                                        type="checkbox"
-                                        checked={props.checkedItems[entry] || false}
-                                        onChange={() => props.onCheckboxChange(entry)}
-                                        name={entry}
-                                    />
+                                    NO DATA
                                 </label>
                             </div>
-                        )
                     }
                 </div>
             )}

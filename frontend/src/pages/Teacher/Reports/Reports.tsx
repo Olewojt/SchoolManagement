@@ -1,6 +1,5 @@
 import classes from "./Reports.module.scss";
-import SelectDate, {currentDate} from "forms/SelectDate.tsx";
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import SelectOption from "forms/SelectOption.tsx";
 import {useSelector} from "react-redux";
 import {RootState} from "state/store.tsx";
@@ -42,9 +41,7 @@ const TeacherReports = () => {
     const [selectedSubjects, setSelectedSubjects] = useState<SubjectSelectionState>(generateSubjectSelectionStates(classInitialState.subjectNames));
     // State of export
     const [exportState, setExportState] = useState<string>("Export");
-    const [fromDate, setFromDate] = useState(currentDate());
-    const [toDate, setToDate] = useState(currentDate());
-
+    // State of data loading
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
@@ -74,7 +71,7 @@ const TeacherReports = () => {
         //     const filteredGrades = filterGrades();
         //     const newGrades = getGradesCount(filteredGrades);
         // }
-    }, [selectedClass, selectedSubjects, fromDate, toDate]);
+    }, [selectedClass, selectedSubjects]);
 
     const handleClassChange = (selected: string) => {
         setSelectedClass(getClass(classesSubjects, selected));
@@ -87,20 +84,9 @@ const TeacherReports = () => {
         }));
     };
 
-    const handleFromDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(classesSubjects)
-        setFromDate(event.target.value);
-    };
-
-    const handleToDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setToDate(event.target.value);
-    };
-
     const resetFilters = () => {
         setSelectedClass(classesSubjects[0]);
         setSelectedSubjects(generateSubjectSelectionStates(classInitialState.subjectNames));
-        setToDate(currentDate());
-        setFromDate(currentDate());
     }
 
     function displayExportState(state: string) {
@@ -154,17 +140,11 @@ const TeacherReports = () => {
                     checkedItems={selectedSubjects}
                     onCheckboxChange={onSubjectChange}
                 />
-                <SelectDate
-                    name={"Date"}
-                    fromDate={fromDate}
-                    toDate={toDate}
-                    handleFromDateChange={handleFromDateChange}
-                    handleToDateChange={handleToDateChange}
-                />
             </div>
 
             <div className={classes.charts}>
                 {/*<PieChart data={}/>*/}
+                <h1>Pick up a class and select subjects you want to include in the report.</h1>
             </div>
 
             <div className={classes.buttons}>
