@@ -2,6 +2,8 @@ import React, {useRef, useState, useEffect} from "react";
 import {AttachmentIcon, CheckIcon, DocIcon} from "assets/icons/Icon.tsx";
 import classes from "./UploadInput.module.scss";
 import axios from "axios";
+import {useSelector} from "react-redux";
+import {RootState} from "state/store.tsx";
 
 interface UploadInputProps {
     task: number;
@@ -13,6 +15,8 @@ const UploadInput: React.FC<UploadInputProps> = ({task, status}) => {
     const [uploadedFiles, setUploadedFiles] = useState<{ name: string; size: string }[]>([]);
     const [showProgress, setShowProgress] = useState<boolean>(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const user = useSelector((state: RootState) => state.login);
 
     // Fetching file details from the API
     useEffect(() => {
@@ -114,7 +118,7 @@ const UploadInput: React.FC<UploadInputProps> = ({task, status}) => {
                     ))}
                 </section>
             </div>
-            {status === "TO_DO" &&
+            {status === "TO_DO" && user.role === "Student" &&
                 <form>
                     <input
                         className={classes["upload__input-file"]}
