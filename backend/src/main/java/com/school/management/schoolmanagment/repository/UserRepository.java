@@ -15,4 +15,7 @@ public interface UserRepository extends JpaRepository<User, Long > {
     Boolean existsByEmailAndPassword(String email, String password);
     @Query("SELECT tsig FROM TeacherSubjectInClass tsig WHERE tsig.teacher = :teacher")
     List<TeacherSubjectInClass> findTeacherSubjectsInGroup(User teacher);
+
+    @Query("SELECT u FROM User u JOIN SchoolClass sc WHERE sc.id = :schoolClassId")
+    List<User> findStudentsBySchoolClassId(Long schoolClassId);
 }
