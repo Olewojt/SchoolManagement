@@ -8,6 +8,7 @@ import com.school.management.schoolmanagment.response.TaskAttachmentResponse;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -46,5 +47,18 @@ public class TaskAttachmentService {
                 .orElseThrow();
 
         return attachment.getDataBytes();
+    }
+
+    public void deleteAttachmentFromTask(String taskAttachmentId) {
+        TaskAttachment attachment = taskAttachmentRepository.findById(taskAttachmentId)
+                .orElseThrow();
+
+        taskAttachmentRepository.delete(attachment);
+    }
+
+    public void deleteAllAttachmentsFromTask(Long taskId) {
+        List<TaskAttachment> allTaskAttachments = taskAttachmentRepository.getAllTaskAttachments(taskId);
+
+        taskAttachmentRepository.deleteAll(allTaskAttachments);
     }
 }

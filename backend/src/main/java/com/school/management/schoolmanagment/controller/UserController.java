@@ -24,6 +24,11 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserPersonalInfo(userId));
     }
 
+    @GetMapping("/parents/{parentId}/children")
+    public ResponseEntity<List<Long>> getParentChildrenIds(@PathVariable Long parentId) {
+        return ResponseEntity.ok(userService.getParentChildrenIds(parentId));
+    }
+
     @GetMapping("/teachers/classes/subjects/{teacherId}")
     public ResponseEntity<List<TeacherSubjectInClassDTO>> findTeacherSubjectsInGroup(@PathVariable Long teacherId) {
         return ResponseEntity.ok(userService.findTeacherSubjectsInGroup(teacherId));
