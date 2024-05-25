@@ -1,17 +1,23 @@
 import classes from "./UserManagement.module.scss"
 import Search from "ui/Management/Search.tsx";
 import Button from "ui/Button/Button.tsx";
-import SelectOptions from "forms/SelectOptions.tsx";
 import {DUMMY_TEACHERS, Teacher} from "api/Teachers.tsx";
 import {DUMMY_STUDENTS, FullUser} from "api/User.tsx";
 import {SetStateAction, useState} from "react";
 import Input from "forms/Input.tsx";
 import SelectOption from "forms/SelectOption.tsx";
 
+enum TABS {
+    TEACHERS = "TEACHERS",
+    STUDENTS = "STUDENTS",
+    CLASSES = "CLASSES",
+    PARENTS = "PARENTS"
+}
+
 const UserManagement = () => {
 
     const [searchQuery, setSearchQuery] = useState('');
-    const [currentTab, setCurrentTab] = useState('TEACHERS'); // State to track current tab
+    const [currentTab, setCurrentTab] = useState(TABS.TEACHERS); // State to track current tab
     const [editMode, setEditMode] = useState(false); // State to track edit mode
     const [editedRow, setEditedRow] = useState(-1); // Track the currently edited row
     const [selectedClass, setSelectedClass] = useState("-"); // Track the currently selected class
@@ -19,7 +25,7 @@ const UserManagement = () => {
         setEditedRow(row);
     }
 
-    const handleTabChange = (tabName: string) => {
+    const handleTabChange = (tabName: TABS) => {
         setCurrentTab(tabName);
     }
 
@@ -37,8 +43,6 @@ const UserManagement = () => {
         setSelectedClass(selected);
     };
 
-    const DUMMY_SUBJECTS = ["History"]
-
     interface TabConfig {
         headers: string[];
         data: FullUser[] | Teacher[];
@@ -46,15 +50,19 @@ const UserManagement = () => {
 
     const tabConfig: { [key : string]: TabConfig } = {
         TEACHERS: {
-            headers: ["Name", "Surname", "E-Mail", "Subject", "Class"],
+            headers: ["Name", "Surname", "E-Mail", "Subject", "PESEL", "Country", "City", "Street", "Home number", "Flat number"],
             data: DUMMY_TEACHERS
         },
         STUDENTS: {
-            headers: ["Name", "Surname", "E-mail", "Class", "PESEL", "Country", "City", "Street", "Home number", "Flat number"],
+            headers: ["Name", "Surname", "E-Mail", "Class", "PESEL", "Country", "City", "Street", "Home number", "Flat number"],
             data: DUMMY_STUDENTS
         },
+        CLASSES: {
+            headers: ["Subject", "Teacher"],
+            data: []
+        },
         PARENTS: {
-            headers: ["Name", "Surname", "E-mail", "Phone Number"],
+            headers: ["Name", "Surname", "E-Mail", "Phone Number", "Children"],
             data: []
         }
     };
@@ -73,31 +81,51 @@ const UserManagement = () => {
     return (
         <div className={classes.content}>
             <div className={classes.filters}>
-                <Button
-                    className={`${classes.tab} ${currentTab === 'TEACHERS' ? classes.buttonOn : ''}`}
-                    type="button"
-                    onClick={() => handleTabChange('TEACHERS')}
-                    children={"TEACHERS"}
-                />
-                <Button
-                    className={`${classes.tab} ${currentTab === 'STUDENTS' ? classes.buttonOn : ''}`}
-                    type="button"
-                    onClick={() => handleTabChange('STUDENTS')}
-                    children={"STUDENTS"}
-                >
-                </Button>
-                <Button
-                    className={`${classes.tab} ${currentTab === 'PARENTS' ? classes.buttonOn : ''}`}
-                    type="button"
-                    onClick={() => handleTabChange('PARENTS')}
-                    children={"PARENTS"}
-                >
-                </Button>
+                {Object.values(TABS).map((tab) => (
+                    <Button
+                        key={tab}
+                        className={`${classes.tab} ${currentTab === tab ? classes.buttonOn : ''}`}
+                        type="button"
+                        onClick={() => handleTabChange(tab)}
+                        children={tab}
+                    />
+                ))}
             </div>
 
             <div className={classes.filters}>
+                {currentTab === TABS.CLASSES &&
+                    <>
+                        <SelectOption
+                            name={"Class"}
+                            options={[]}
+                            selected={""}
+                            onOptionChange={() => {}}
+                        />
+                    </>
+                }
+
                 <Search onInput={onSearchInput}></Search>
-                <SelectOptions options={DUMMY_SUBJECTS} checkedItems={{}} onCheckboxChange={() => {}} name={"Subjects"}></SelectOptions>
+                {currentTab === TABS.TEACHERS &&
+                    <>
+                        <SelectOption
+                            name={"Subject"}
+                            options={[]}
+                            selected={""}
+                            onOptionChange={() => {}}
+                        />
+                    </>
+                }
+
+                {currentTab === TABS.STUDENTS &&
+                    <>
+                        <SelectOption
+                            name={"Class"}
+                            options={[]}
+                            selected={""}
+                            onOptionChange={() => {}}
+                        />
+                    </>
+                }
             </div>
 
             <div className={classes.table_container}>
@@ -140,7 +168,7 @@ const UserManagement = () => {
                                 }
                             </td>
 
-                            {currentTab === "TEACHERS" &&
+                            {currentTab === TABS.TEACHERS &&
                                 <>
                                     <td colSpan={4}>{(item as Teacher).subject.length != 0 ? (item as Teacher).subject : "-"}</td>
                                     <td colSpan={4}>
@@ -158,7 +186,7 @@ const UserManagement = () => {
                                 </>
                             }
 
-                            {currentTab === "STUDENTS" &&
+                            {currentTab === TABS.STUDENTS &&
                                 <>
                                     <td colSpan={4}>{(item as FullUser).class}</td>
                                     <td colSpan={4}>{item.pesel}</td>
@@ -170,11 +198,12 @@ const UserManagement = () => {
                                 </>
                             }
 
-                            {/*{currentTab === "PARENTS" &&*/}
-                            {/*    <>*/}
-                            {/*        */}
-                            {/*    </>*/}
-                            {/*}*/}
+                            {currentTab === TABS.CLASSES &&
+                                <>
+                                    <td colSpan={4}>{(item as FullUser).class}</td>
+                                    <td colSpan={4}>{item.pesel}</td>
+                                </>
+                            }
                         </tr>
                     ))}
                     </tbody>

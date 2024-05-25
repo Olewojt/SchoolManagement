@@ -19,9 +19,14 @@ export async function getTeacherClassesSubjects(userId: number): Promise<Classes
     }
 }
 
-export async function exportSubjectClassGrades(classId: number, subjectId: number): Promise<string> {
+export async function exportSubjectClassGrades(className: string, subjects: string[]): Promise<string> {
     try {
-        const response: AxiosResponse<string, AxiosRequestConfig> = await axiosClient.get<string>(`/api/v1/reports/subjectReport/${classId}/${subjectId}`);
+        const params = new URLSearchParams();
+        subjects.forEach(subject => params.append('subjectNames', subject));
+
+        const url = `/api/v1/reports/subjectReport/${className}?${params.toString()}`;
+
+        const response: AxiosResponse<string, AxiosRequestConfig> = await axiosClient.get<string>(url);
         // Handle the response as needed
         return response.data;
     } catch (error) {

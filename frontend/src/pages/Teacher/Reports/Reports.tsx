@@ -65,14 +65,6 @@ const TeacherReports = () => {
     useEffect(() => {
     }, [loading]);
 
-    // Filter grades when selectedSubjects or date range changes
-    useEffect(() => {
-        // if (classesSubjects.length > 0) {
-        //     const filteredGrades = filterGrades();
-        //     const newGrades = getGradesCount(filteredGrades);
-        // }
-    }, [selectedClass, selectedSubjects]);
-
     const handleClassChange = (selected: string) => {
         setSelectedClass(getClass(classesSubjects, selected));
     };
@@ -101,17 +93,30 @@ const TeacherReports = () => {
     const exportRequest = () => {
         setExportState("Exporting...");
 
-        exportSubjectClassGrades(1, 1)
-            .then(data => {
-                console.log('Export request response', data);
+        const selectedSubjectNames = Object.keys(selectedSubjects)
+            .filter(subject => selectedSubjects[subject] && selectedClass.subjectNames.includes(subject));
 
-                displayExportState("Exported!")
-            })
-            .catch(error => {
-                console.error('Error requesting student grades report', error);
+        console.log('Selected subjects:', selectedSubjectNames);
 
-                displayExportState("Export failure!");
-            });
+        if (selectedClass.className != "-") {
+            if (selectedSubjectNames.length > 0) {
+                exportSubjectClassGrades(selectedClass.className, selectedSubjectNames)
+                    .then(data => {
+                        console.log('Export request response', data);
+
+                        displayExportState("Exported!")
+                    })
+                    .catch(error => {
+                        console.error('Error requesting student grades report', error);
+
+                        displayExportState("Export failure!");
+                    });
+            } else {
+                displayExportState("Select subjects!")
+            }
+        } else {
+            displayExportState("Select class!");
+        }
     }
 
     const getExportButtonClass = () => {
