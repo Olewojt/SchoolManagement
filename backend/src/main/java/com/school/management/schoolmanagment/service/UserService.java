@@ -17,6 +17,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import static com.school.management.schoolmanagment.mapper.TeacherSubjectInClassDTOMapper.mapToTeacherSubjectInClassDTO;
@@ -43,6 +45,16 @@ public class UserService {
                 .orElseThrow(() -> new EntityNotFoundException("User With Given ID Not Found!"));
 
         return personalInfoDTOMapper.mapToPersonalInfoDTO(user.getPersonalInfo());
+    }
+
+    public List<Long> getParentChildrenIds(Long parentId) {
+        User parent = userRepository.findById(parentId)
+                .orElseThrow(() -> new EntityNotFoundException("Parent With Given ID Not Found!"));
+
+        return parent.getChildren()
+                .stream()
+                .map(User::getId)
+                .toList();
     }
 
     public List<TeacherSubjectInClassDTO> findTeacherSubjectsInGroup(Long teacherId) {
