@@ -94,8 +94,9 @@ public class TaskService {
         User user = userRepository.findById(taskCreatorId)
                 .orElseThrow();
 
-        Subject subject = subjectRepository.findById(taskCreateDTO.subjectId())
-                .orElseThrow();
+        Subject subject = subjectRepository.findByName(taskCreateDTO.subjectName());
+        System.out.println(subject);
+        System.out.println(taskCreateDTO.subjectName());
 
 
         taskCreateDTO.taskMembersGroups().forEach(groupOfMembers -> {
