@@ -1,17 +1,20 @@
-import {useState, MouseEventHandler, FormEvent} from "react";
+import { useState, MouseEventHandler, FormEvent, useEffect } from "react";
 import classes from "./UploadTaskCard.module.scss";
-import {PlusIcon} from "assets/icons/Icon.tsx";
+import { PlusIcon } from "assets/icons/Icon.tsx";
 import Button from "ui/Button/Button.tsx";
 import Input from "forms/Input.tsx";
 import Dropdown from "forms/Dropdown/Dropdown.tsx";
 import GroupSelector from "forms/GroupSelector/GroupSelector.tsx";
 import TextArea from "forms/TextArea.tsx";
 import SelectButton from "ui/Button/SelectButton.tsx";
-import {DUMMY_TASK_TEACHER} from "api/Task.tsx";
+import { teacherTaskInfo } from "api/Task.tsx";
+import { useSelector } from "react-redux";
+import { RootState } from "state/store.tsx";
 
 const SELECT_CLASS = "Select Class";
 const SELECT_SUBJECT = "Select Subject";
 const SELECT_MEMBERS = "Select Members";
+const FIRST_CLASS = "First Select Class!";
 
 interface UploadTaskCardProps {
     onClick?: MouseEventHandler;
@@ -26,8 +29,19 @@ interface Group {
     members: { id: number; firstName: string; lastName: string }[];
 }
 
+interface Task {
+    classInfo: {
+        className: string;
+        subjectNames: string[];
+    };
+    studentList: {
+        id: number;
+        firstName: string;
+        lastName: string;
+    }[];
+}
+
 const UploadTaskCard = (props: UploadTaskCardProps) => {
-    // Stan
     const [form, setForm] = useState<{ [key: string]: string }>({
         taskName: "",
         dueDate: "",
@@ -38,8 +52,8 @@ const UploadTaskCard = (props: UploadTaskCardProps) => {
 
     const [selectedOptions, setSelectedOptions] = useState({
         class: SELECT_CLASS,
-        subject: SELECT_SUBJECT,
-        members: SELECT_MEMBERS,
+        subject: FIRST_CLASS,
+        members: FIRST_CLASS,
     });
 
     const [availableOptions, setAvailableOptions] = useState<{
@@ -53,7 +67,19 @@ const UploadTaskCard = (props: UploadTaskCardProps) => {
     const [groups, setGroups] = useState<Group[]>([]);
     const [single, setSingle] = useState<boolean>(true);
 
-    // Funkcje obsługi zmiany stanu
+    const [DUMMY_TASK_TEACHER, setDummyTaskTeacher] = useState<Task[]>([]);
+
+    const user = useSelector((state: RootState) => state.login);
+
+    useEffect(() => {
+        teacherTaskInfo(user.id).then(data => {
+            console.log("Fetched Data", data);
+            setDummyTaskTeacher(data as Task[]);
+        }).catch(error => {
+            console.log("Error fetching data", error);
+        });
+    }, [user.id]);
+
     const handleStateChange = (fieldName: string, value: string | boolean) => {
         setForm((prevForm) => ({
             ...prevForm,
@@ -70,25 +96,25 @@ const UploadTaskCard = (props: UploadTaskCardProps) => {
         }));
         setGroups([]);
         handleStateChange("class", selected);
-        const selectedClassItem = DUMMY_TASK_TEACHER.find((item) => item.class === selected);
+        const selectedClassItem = DUMMY_TASK_TEACHER.find((item) => item.classInfo.className === selected);
         if (selectedClassItem) {
             setAvailableOptions({
-                subjects: selectedClassItem.subjects,
-                members: selectedClassItem.members.map(
-                    (member) => `${member.firstName} ${member.lastName}`
+                subjects: selectedClassItem.classInfo.subjectNames,
+                members: selectedClassItem.studentList.map(
+                    (student) => `${student.firstName} ${student.lastName}`
                 ),
             });
         } else {
-            setAvailableOptions({subjects: [], members: []});
+            setAvailableOptions({ subjects: [], members: [] });
         }
     };
 
     const handleSubjectSelectionChange = (selected: string) => {
-        setSelectedOptions((prev) => ({...prev, subject: selected}));
+        setSelectedOptions((prev) => ({ ...prev, subject: selected }));
         handleStateChange("subject", selected);
     };
 
-    let newGroup: Group = {members: []};
+    let newGroup: Group = { members: [] };
 
     const handleMemberSelectionChange = (selectedMembers: Member[]) => {
         newGroup = {
@@ -96,7 +122,7 @@ const UploadTaskCard = (props: UploadTaskCardProps) => {
                 .filter((member) => member.checked)
                 .map((member, index) => {
                     const [firstName, lastName] = member.label.split(" ");
-                    return {id: index + 1, firstName, lastName};
+                    return { id: index + 1, firstName, lastName };
                 }),
         };
     };
@@ -111,12 +137,12 @@ const UploadTaskCard = (props: UploadTaskCardProps) => {
         e.preventDefault();
 
         if (!form.taskName || !form.dueDate || !form.class || !form.subject || !form.description) {
-            console.log("Wypełnij wszystkie pola przed wysłaniem formularza!");
+            console.log("Fill in all fields before submitting the form!");
             return;
         }
 
         if (!single && groups.length === 0) {
-            console.log("Wypełnij wszystkie pola przed wysłaniem formularza!");
+            console.log("Fill in all fields before submitting the form!");
             return;
         }
 
@@ -125,11 +151,21 @@ const UploadTaskCard = (props: UploadTaskCardProps) => {
             groups: single ? groups : [{
                 members: availableOptions.members.map((member, index) => {
                     const [firstName, lastName] = member.split(" ");
-                    return {id: index + 1, firstName, lastName};
+                    return { id: index + 1, firstName, lastName };
                 })
             }],
         };
         console.log("Form Data:", formData);
+    };
+
+    const getAvailableMembers = () => {
+        const assignedMemberNames = groups.flatMap(group =>
+            group.members.map(member => `${member.firstName} ${member.lastName}`)
+        );
+
+        return availableOptions.members.filter(member =>
+            !assignedMemberNames.includes(member)
+        );
     };
 
     return (
@@ -158,14 +194,14 @@ const UploadTaskCard = (props: UploadTaskCardProps) => {
                     <div className={classes["content__elem--2"]}>
                         <Dropdown
                             buttonText={selectedOptions.class}
-                            items={DUMMY_TASK_TEACHER.map((item) => ({label: item.class, checked: false}))}
+                            items={DUMMY_TASK_TEACHER.map((item) => ({ label: item.classInfo.className, checked: false }))}
                             isCheckbox={false}
                             onSelectionChange={handleClassSelectionChange}
                             label={"CLASS"}
                         />
                         <Dropdown
                             buttonText={selectedOptions.subject}
-                            items={availableOptions.subjects.map((item) => ({label: item, checked: false}))}
+                            items={availableOptions.subjects.map((item) => ({ label: item, checked: false }))}
                             isCheckbox={false}
                             onSelectionChange={handleSubjectSelectionChange}
                             label={"SUBJECT"}
@@ -182,7 +218,7 @@ const UploadTaskCard = (props: UploadTaskCardProps) => {
                     </div>
                     <div className={classes["content__elem--4"]}>
                         <div>
-                            <SelectButton group={false} onClick={() => setSingle(false)}/>
+                            <SelectButton group={false} onClick={() => setSingle(false)} />
                             <SelectButton
                                 group={true}
                                 onClick={() => {
@@ -196,7 +232,7 @@ const UploadTaskCard = (props: UploadTaskCardProps) => {
                                 <>
                                     <Dropdown
                                         buttonText={selectedOptions.members}
-                                        items={availableOptions.members.map((item) => ({label: item, checked: false}))}
+                                        items={getAvailableMembers().map((item) => ({ label: item, checked: false }))}
                                         isCheckbox={true}
                                         label={"MEMBERS"}
                                         disabled={selectedOptions.class === SELECT_CLASS}
@@ -222,7 +258,7 @@ const UploadTaskCard = (props: UploadTaskCardProps) => {
                     </div>
                 </div>
                 <button className={classes["open-card__btn"]} type="button" onClick={props.onClick}>
-                    <PlusIcon/>
+                    <PlusIcon />
                 </button>
                 <Button className={classes["send-btn"]} type="submit">
                     Send task

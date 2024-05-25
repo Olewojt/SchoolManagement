@@ -1,9 +1,9 @@
 package com.school.management.schoolmanagment.service;
 
-import com.school.management.schoolmanagment.dto.PersonalInfoDTO;
+import com.school.management.schoolmanagment.dto.StudentInfoDTO;
 import com.school.management.schoolmanagment.dto.TeacherSubjectInClassDTO;
 import com.school.management.schoolmanagment.mapper.PersonalInfoDTOMapper;
-import com.school.management.schoolmanagment.mapper.TeacherSubjectInClassDTOMapper;
+import com.school.management.schoolmanagment.mapper.StudentInfoDTOMapper;
 import com.school.management.schoolmanagment.model.Role;
 import com.school.management.schoolmanagment.model.TeacherSubjectInClass;
 import com.school.management.schoolmanagment.model.User;
@@ -17,8 +17,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import static com.school.management.schoolmanagment.mapper.TeacherSubjectInClassDTOMapper.mapToTeacherSubjectInClassDTO;
@@ -30,7 +28,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    private final PersonalInfoDTOMapper personalInfoDTOMapper;
+    private final StudentInfoDTOMapper studentInfoDTOMapper;
 
     public void setUserRole(String email, String roleName) {
         User user = userRepository.findByEmail(email)
@@ -40,11 +38,11 @@ public class UserService {
         user.setRole(role);
     }
 
-    public PersonalInfoDTO getUserPersonalInfo(Long userId) {
+    public StudentInfoDTO getUserPersonalInfo(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User With Given ID Not Found!"));
 
-        return personalInfoDTOMapper.mapToPersonalInfoDTO(user.getPersonalInfo());
+        return studentInfoDTOMapper.mapToStudentInfoDTO(user);
     }
 
     public List<Long> getParentChildrenIds(Long parentId) {

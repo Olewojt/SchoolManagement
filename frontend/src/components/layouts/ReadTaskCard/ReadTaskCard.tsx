@@ -70,7 +70,7 @@ const ReadTaskCard = (props: TaskCardInterface) => {
                     <PlusIcon/>
                 </button>
             </div>
-            {props.status === "TO_DO" &&
+            {props.status === "TO_DO" && user.role === "Student" &&
                 <form onSubmit={onSubmit} className={classes["open-card__form"]}>
                     <Button className={classes["send-btn"]} type="submit">Send task</Button>
                 </form>

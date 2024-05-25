@@ -1,4 +1,4 @@
-import {DragEvent, MouseEventHandler} from "react";
+import { DragEvent, MouseEventHandler } from "react";
 
 interface TaskCardInterface {
     title: string;
@@ -16,12 +16,15 @@ interface TaskCardInterface {
 
     style?: any;
     isSelected?: boolean;
+
+    className?: string;
 }
 
-type Member = {
-    profileImg: string;
+interface Member {
+    id: number;
     firstName: string;
     lastName: string;
-};
+}
+
 
 export default TaskCardInterface;
