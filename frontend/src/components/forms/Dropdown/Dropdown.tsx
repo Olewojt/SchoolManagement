@@ -10,19 +10,28 @@ interface DropdownProps {
     isCheckbox?: boolean;
     onSelectionChange?: (selected: any) => void;
     label?: string;
+    disabled?: boolean;
 }
 
-const Dropdown: React.FC<DropdownProps> = ({ buttonText, items, isCheckbox = false, onSelectionChange, label }) => {
+const Dropdown: React.FC<DropdownProps> = ({ buttonText, items, isCheckbox = false, onSelectionChange, label, disabled }) => {
     const [open, setOpen] = useState<boolean>(false);
     const [dropdownItems, setDropdownItems] = useState(items);
     const [searchValue, setSearchValue] = useState<string>("");
+    const [showSearch, setShowSearch] = useState<boolean>(false);
 
     const dropdownRef = useRef<HTMLDivElement>(null);
     const buttonRef = useRef<HTMLDivElement>(null);
     const contentRef = useRef<HTMLDivElement>(null);
 
+    useEffect(() => {
+        setDropdownItems(items);
+        setShowSearch(isCheckbox);
+    }, [items]);
+
     const toggleDropdown = () => {
-        setOpen((open) => !open);
+        if (!disabled) {
+            setOpen((open) => !open);
+        }
     };
 
     const handleItemClick = (originalIndex: number, checked?: boolean) => {
@@ -54,25 +63,25 @@ const Dropdown: React.FC<DropdownProps> = ({ buttonText, items, isCheckbox = fal
 
     const filteredItems = dropdownItems.map((item, index) => ({
         ...item,
-        originalIndex: index, // Dodanie oryginalnych indeksów
+        originalIndex: index, // Adding original indices
     })).filter(item => {
         const label = item.label?.toString().toLowerCase();
         return label?.includes(searchValue.toLowerCase());
     });
 
     return (
-        <div ref={dropdownRef} className={classes.dropdown}>
+        <div ref={dropdownRef} className={`${classes.dropdown} ${disabled ? classes.disabled : ""}`}>
             {label && <h2>{label}</h2>}
-            <DropdownButton ref={buttonRef} toggle={toggleDropdown} open={open}>
+            <DropdownButton ref={buttonRef} toggle={toggleDropdown} open={open} disabled={disabled}>
                 {buttonText}
             </DropdownButton>
-            {open && (
-                <DropdownContent ref={contentRef} open={open} searchValue={searchValue} setSearchValue={setSearchValue}>
+            {open && !disabled && (
+                <DropdownContent ref={contentRef} open={open} searchValue={searchValue} setSearchValue={setSearchValue} showSearch={showSearch}>
                     {filteredItems.map((item) => (
                         <DropdownItem
-                            key={item.originalIndex} // Użycie oryginalnego indeksu jako klucza
+                            key={item.originalIndex} // Using original index as key
                             checked={item.checked}
-                            onClick={(checked) => handleItemClick(item.originalIndex, checked)} // Użycie oryginalnego indeksu do obsługi kliknięć
+                            onClick={(checked) => handleItemClick(item.originalIndex, checked)} // Using original index for click handling
                             isCheckbox={isCheckbox}
                         >
                             {item.label}

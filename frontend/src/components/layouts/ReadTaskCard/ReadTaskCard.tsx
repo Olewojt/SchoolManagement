@@ -57,7 +57,7 @@ const ReadTaskCard = (props: TaskCardInterface) => {
                     <div className={classes["open-card__members"]}>
                         {props.members.map((member, index) => (
                             <div key={index} className={classes["open-card__members--profile"]}>
-                                <img src="src/assets/images/Profile_student.png"/>
+                                <img src="../../../assets/images/Profile_student.png"/>
                                 <span>{member.firstName} {member.lastName}</span>
                             </div>
                         ))}

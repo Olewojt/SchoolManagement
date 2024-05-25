@@ -4,7 +4,7 @@ import {GroupIcon, PlusIcon} from "assets/icons/Icon.tsx";
 import DropIndicator from "layouts/TaskBoard/DropIndicator.tsx";
 
 import TaskCardInterface from "@/interfaces/TaskCardInterface/TaskCardInterface.tsx";
-import ReadTaskCard from "ui/Card/TaskCard/ReadTaskCard.tsx";
+import ReadTaskCard from "layouts/ReadTaskCard/ReadTaskCard.tsx";
 
 
 const TaskCard = (props: TaskCardInterface) => {

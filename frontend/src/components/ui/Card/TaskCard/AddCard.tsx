@@ -1,6 +1,6 @@
 import {useState} from "react";
 import AddButton from "ui/Button/AddButton.tsx";
-import UploadTaskCard from "ui/Card/TaskCard/UploadTaskCard.tsx";
+import UploadTaskCard from "layouts/UploadTaskCard/UploadTaskCard.tsx";
 import classes from "ui/Card/TaskCard/TaskCard.module.scss";
 
 

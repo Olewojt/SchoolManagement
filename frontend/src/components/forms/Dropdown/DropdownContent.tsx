@@ -6,24 +6,25 @@ interface DropdownContentProps {
     open: boolean;
     searchValue: string;
     setSearchValue: (value: string) => void;
+    showSearch: boolean;
 }
 
 const DropdownContent = forwardRef<HTMLDivElement, DropdownContentProps>(
-    (props, ref) => {
-        const { children, open, searchValue, setSearchValue } = props;
-
+    ({ children, open, searchValue, setSearchValue, showSearch }, ref) => {
         return (
             <div
                 className={`${classes["dropdown-content"]} ${open ? classes["content-open"] : ""}`}
                 ref={ref}
             >
-                <input
-                    type="text"
-                    className={classes.searchInput}
-                    placeholder="Search..."
-                    value={searchValue}
-                    onChange={(e) => setSearchValue(e.target.value)}
-                />
+                {showSearch && (
+                    <input
+                        type="text"
+                        className={classes.searchInput}
+                        placeholder="Search..."
+                        value={searchValue}
+                        onChange={(e) => setSearchValue(e.target.value)}
+                    />
+                )}
                 {children}
             </div>
         );

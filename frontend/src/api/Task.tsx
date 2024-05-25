@@ -24,3 +24,38 @@ export async function updateTaskStatus(taskId: number): Promise<void> {
         throw error;
     }
 }
+
+export const DUMMY_TASK_TEACHER = [
+    {
+        class: "2B",
+        subjects: ["english", "dupisz"],
+        members: [
+            {
+                id: 1,
+                firstName: "Maciek",
+                lastName: "Psikuta"
+            },
+            {
+                id: 2,
+                firstName: "Bożena",
+                lastName: "Bożena"
+            }
+        ]
+    },
+    {
+        class: "69A",
+        subjects: ["religia", "kozactwo"],
+        members: [
+            {
+                id: 3,
+                firstName: "Fabian",
+                lastName: "Psikuta"
+            },
+            {
+                id: 4,
+                firstName: "Bożena",
+                lastName: "Niebożena"
+            }
+        ]
+    }
+]
