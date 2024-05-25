@@ -5,12 +5,27 @@ import Button from "ui/Button/Button.tsx";
 
 import TaskCardInterface from "@/interfaces/TaskCardInterface/TaskCardInterface.tsx";
 import {FormEvent} from "react";
+import {getUserTasks, updateTaskStatus} from "api/Task.tsx";
+import {addTasks} from "state/tasks/tasksSlice.tsx";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "state/store.tsx";
 
 const ReadTaskCard = (props: TaskCardInterface) => {
-
+    const user = useSelector((state: RootState) => state.login);
+    const dispatch = useDispatch();
     const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log("Form submitted");
+
+        try {
+            await updateTaskStatus(props.id);
+
+            const updatedTasks = await getUserTasks(user.id);
+            console.log('User tasks:', updatedTasks);
+            dispatch(addTasks(updatedTasks));
+        } catch (error) {
+            console.error('Error updating task status or fetching user tasks:', error);
+        }
     }
 
     return (
@@ -42,22 +57,24 @@ const ReadTaskCard = (props: TaskCardInterface) => {
                     <div className={classes["open-card__members"]}>
                         {props.members.map((member, index) => (
                             <div key={index} className={classes["open-card__members--profile"]}>
-                                <img src="src/assets/images/Profile_student.png"/>
+                                <img src="../../../assets/images/Profile_student.png"/>
                                 <span>{member.firstName} {member.lastName}</span>
                             </div>
                         ))}
                     </div>
                     <div className={classes["open-card__upload-area"]}>
-                        <UploadInput task={props.id} />
+                        <UploadInput task={props.id} status={props.status}/>
                     </div>
                 </div>
                 <button className={classes["open-card__btn"]} type="button" onClick={props.onClick}>
                     <PlusIcon/>
                 </button>
             </div>
-            <form onSubmit={onSubmit} className={classes["open-card__form"]}>
-                <Button className={classes["send-btn"]} type="submit">Send task</Button>
-            </form>
+            {props.status === "TO_DO" &&
+                <form onSubmit={onSubmit} className={classes["open-card__form"]}>
+                    <Button className={classes["send-btn"]} type="submit">Send task</Button>
+                </form>
+            }
         </div>
     )
 }

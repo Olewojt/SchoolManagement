@@ -1,19 +1,21 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import classes from "./GroupSelectorCard.module.scss";
 import ProfileStudent from "assets/images/Profile_student.png";
 import Button from "ui/Button/Button.tsx";
 
 interface Member {
     id: number;
-    name: string;
+    firstName: string;
+    lastName: string;
 }
 
 interface GroupSelectorCardProps {
     number: number;
     members: Member[];
+    onClick: () => void;
 }
 
-const GroupSelectorCard: React.FC<GroupSelectorCardProps> = ({number, members}) => {
+const GroupSelectorCard: React.FC<GroupSelectorCardProps> = ({ number, members, onClick }) => {
     const [isHovered, setIsHovered] = useState(false);
 
     return (
@@ -24,11 +26,12 @@ const GroupSelectorCard: React.FC<GroupSelectorCardProps> = ({number, members}) 
         >
             <img src={ProfileStudent} alt="Profile"/>
             <span>Group {number + 1}</span>
-            <Button type="button" className={classes.editButton} children="❌"/>
+            {/* Dodajemy onClick jako prop dla przycisku */}
+            <Button type="button" className={classes.editButton} children="❌" onClick={onClick} />
             {isHovered && (
                 <ul className={classes["members-list"]}>
                     {members.map(member => (
-                        <li key={member.id}>{member.name}</li>
+                        <li key={member.id}>{member.firstName} {member.lastName}</li>
                     ))}
                 </ul>
             )}

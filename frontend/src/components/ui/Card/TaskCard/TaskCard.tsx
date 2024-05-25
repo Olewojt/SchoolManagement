@@ -1,19 +1,16 @@
-import {FormEvent, useState} from "react";
+import {useState} from "react";
 import classes from "./TaskCard.module.scss";
 import {GroupIcon, PlusIcon} from "assets/icons/Icon.tsx";
 import DropIndicator from "layouts/TaskBoard/DropIndicator.tsx";
 
 import TaskCardInterface from "@/interfaces/TaskCardInterface/TaskCardInterface.tsx";
-import ReadTaskCard from "ui/Card/TaskCard/ReadTaskCard.tsx";
+import ReadTaskCard from "layouts/ReadTaskCard/ReadTaskCard.tsx";
 
 
 const TaskCard = (props: TaskCardInterface) => {
     const [active, setActive] = useState(false)
     const formattedDate = new Date(props.date).toLocaleDateString(); // Formatowanie daty
 
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-    }
 
     const handleActive = () => {
         setActive(prevState => !prevState)
@@ -42,9 +39,6 @@ const TaskCard = (props: TaskCardInterface) => {
                 <ReadTaskCard title={props.title} subject={props.subject} date={formattedDate} members={props.members}
                               description={props.description} id={props.id} status={props.status}
                               handleDragStart={props.handleDragStart} onClick={handleActive}/>
-                // <UploadTaskCard title={props.title} subject={props.subject} date={formattedDate} members={props.members}
-                //                 description={props.description} id={props.id} column={props.column}
-                //                 handleDragStart={props.handleDragStart} onClick={handleActive}/>
             }
         </>
     );
