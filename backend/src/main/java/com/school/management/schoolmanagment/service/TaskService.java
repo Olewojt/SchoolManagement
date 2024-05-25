@@ -25,8 +25,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.school.management.schoolmanagment.mapper.TaskDTOMapper.mapToTaskDTO;
-import static com.school.management.schoolmanagment.model.TaskStatus.DONE;
-import static com.school.management.schoolmanagment.model.TaskStatus.GRADED;
+import static com.school.management.schoolmanagment.model.TaskStatus.*;
 
 @Service
 @RequiredArgsConstructor
@@ -137,6 +136,14 @@ public class TaskService {
                 .orElseThrow();
 
         task.setStatus(DONE);
+        taskRepository.save(task);
+    }
+
+    public void markTaskAsToDo(Long taskId) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow();
+
+        task.setStatus(TO_DO);
         taskRepository.save(task);
     }
 

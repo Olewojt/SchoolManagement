@@ -55,9 +55,15 @@ public class TaskController {
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("/status/{taskId}")
+    @PatchMapping("/status/done/{taskId}")
     public ResponseEntity<Void> markTaskAsDone(@PathVariable Long taskId) {
         taskService.markTaskAsDone(taskId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/status/todo/{taskId}")
+    public ResponseEntity<Void> markTaskAsToDo(@PathVariable Long taskId) {
+        taskService.markTaskAsToDo(taskId);
         return ResponseEntity.noContent().build();
     }
 
