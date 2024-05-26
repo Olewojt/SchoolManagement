@@ -5,7 +5,7 @@ import Button from "ui/Button/Button.tsx";
 
 import TaskCardInterface from "@/interfaces/TaskCardInterface/TaskCardInterface.tsx";
 import {FormEvent} from "react";
-import {getUserTasks, updateTaskStatus} from "api/Task.tsx";
+import {getUserTasks, taskStatusDone, taskStatusTODO} from "api/Task.tsx";
 import {addTasks} from "state/tasks/tasksSlice.tsx";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "state/store.tsx";
@@ -13,12 +13,17 @@ import {RootState} from "state/store.tsx";
 const ReadTaskCard = (props: TaskCardInterface) => {
     const user = useSelector((state: RootState) => state.login);
     const dispatch = useDispatch();
+
     const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log("Form submitted");
 
         try {
-            await updateTaskStatus(props.id);
+            if (props.status === "TO_DO") {
+                await taskStatusDone(props.id);
+            } else if (props.status === "DONE") {
+                await taskStatusTODO(props.id);
+            }
 
             const updatedTasks = await getUserTasks(user.id);
             console.log('User tasks:', updatedTasks);
@@ -44,8 +49,12 @@ const ReadTaskCard = (props: TaskCardInterface) => {
                             <h2>{props.date}</h2>
                         </div>
                         <div className={classes["open-card__info-text"]}>
-                            <h2>DATE?:</h2>
-                            <h2>{props.date}</h2>
+                            {props.className && user.role === "Teacher" &&
+                                <>
+                                    <h2>Class:</h2>
+                                    <h2>{props.className}</h2>
+                                </>
+                            }
                         </div>
                     </div>
                     {/*Tutaj dodać jeszcze trzeba takie rzezczy typu descirpiotn dla props itp*/}
@@ -57,7 +66,7 @@ const ReadTaskCard = (props: TaskCardInterface) => {
                     <div className={classes["open-card__members"]}>
                         {props.members.map((member, index) => (
                             <div key={index} className={classes["open-card__members--profile"]}>
-                                <img src="../../../assets/images/Profile_student.png"/>
+                                <img src="src/assets/images/Profile_student.png"/>
                                 <span>{member.firstName} {member.lastName}</span>
                             </div>
                         ))}
@@ -70,11 +79,12 @@ const ReadTaskCard = (props: TaskCardInterface) => {
                     <PlusIcon/>
                 </button>
             </div>
-            {props.status === "TO_DO" && user.role === "Student" &&
+            {((props.status === "TO_DO" || props.status === "DONE") && user.role === "Student") && (
                 <form onSubmit={onSubmit} className={classes["open-card__form"]}>
-                    <Button className={classes["send-btn"]} type="submit">Send task</Button>
+                    <Button className={classes["send-btn"]}
+                            type="submit">{props.status === "TO_DO" ? "Send Task" : "Undo Task"}</Button>
                 </form>
-            }
+            )}
         </div>
     )
 }

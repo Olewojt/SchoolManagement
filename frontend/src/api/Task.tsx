@@ -27,9 +27,19 @@ export async function getTeacherTasks(teacherId: number): Promise<TaskCardInterf
     }
 }
 
-export async function updateTaskStatus(taskId: number): Promise<void> {
+export async function taskStatusDone(taskId: number): Promise<void> {
     try {
-        await axiosClient.patch(`/api/v1/tasks/status/${taskId}`);
+        await axiosClient.patch(`/api/v1/tasks/status/done/${taskId}`);
+        // Optionally handle success if needed
+    } catch (error) {
+        // Handle the error as needed
+        console.error('Error updating task status:', error);
+        throw error;
+    }
+}
+export async function taskStatusTODO(taskId: number): Promise<void> {
+    try {
+        await axiosClient.patch(`/api/v1/tasks/status/todo/${taskId}`);
         // Optionally handle success if needed
     } catch (error) {
         // Handle the error as needed

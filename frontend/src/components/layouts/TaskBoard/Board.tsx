@@ -1,25 +1,32 @@
 import {useSelector} from "react-redux";
 import {RootState} from "state/store.tsx";
 import Column from "layouts/TaskBoard/Column.tsx";
-import classes from "./Board.module.scss";
+import boardStyles from "./Board.module.scss";
 import TaskCardInterface from "@/interfaces/TaskCardInterface/TaskCardInterface.tsx";
 import SelectOptions from "forms/SelectOptions.tsx";
 import AddCard from "ui/Card/TaskCard/AddCard.tsx";
 import {useState} from "react";
 
-function getSubjects(cards: TaskCardInterface[]): string[] {
+function getSubjectsAndClasses(cards: TaskCardInterface[]): {subjects: string[], classes: string[]} {
     const subjectsSet = new Set<string>();
-    cards.forEach(card => subjectsSet.add(card.subject));
-    return Array.from(subjectsSet);
+    const classesSet = new Set<string>();
+    cards.forEach(card => {
+        subjectsSet.add(card.subject);
+        if (card.className) { // Sprawdzamy czy className istnieje
+            classesSet.add(card.className);
+        }
+    });
+    return { subjects: Array.from(subjectsSet), classes: Array.from(classesSet) };
 }
 
 const Board = () => {
     const tasks = useSelector((state: RootState) => state.studentTasks.tasks);
     const user = useSelector((state: RootState) => state.login);
 
-    const subjects = getSubjects(tasks);
+    const { subjects, classes } = getSubjectsAndClasses(tasks);
 
     const [selectedSubjects, setSelectedSubjects] = useState<{ [key: string]: boolean }>({});
+    const [selectedClasses, setSelectedClasses] = useState<{ [key: string]: boolean }>({});
 
     const onSubjectChange = (subject: string) => {
         const newSelectedSubjects = {...selectedSubjects};
@@ -27,32 +34,41 @@ const Board = () => {
         setSelectedSubjects(newSelectedSubjects);
     };
 
+    const onClassChange = (className: string) => {
+        const newSelectedClasses = {...selectedClasses};
+        newSelectedClasses[className] = !newSelectedClasses[className];
+        setSelectedClasses(newSelectedClasses);
+    };
+
     const filteredCards = tasks.map(card => {
-        if (Object.keys(selectedSubjects).length === 0 || Object.values(selectedSubjects).every(value => !value)) {
-            return {...card, isSelected: true};
-        } else {
-            if (selectedSubjects[card.subject]) {
-                return {...card, isSelected: true};
-            } else {
-                return {...card, isSelected: false};
-            }
-        }
+        const subjectFilterPassed = Object.keys(selectedSubjects).length === 0 || Object.values(selectedSubjects).every(value => !value) || selectedSubjects[card.subject];
+        const classFilterPassed = Object.keys(selectedClasses).length === 0 || Object.values(selectedClasses).every(value => !value) || !card.className || selectedClasses[card.className];
+        // Dodaliśmy warunek !card.className aby uwzględnić karty bez przypisanej klasy
+
+        return {...card, isSelected: subjectFilterPassed && classFilterPassed};
     });
 
     return (
         <>
-            <div className={classes.headers}>
+            <div className={boardStyles.headers}>
                 <SelectOptions
                     name={"Subject"}
                     options={subjects}
                     onCheckboxChange={onSubjectChange}
                     checkedItems={selectedSubjects}
-                    className={classes.headers__select}
+                    className={boardStyles.headers__select}
+                />
+                <SelectOptions
+                    name={"Class"}
+                    options={classes}
+                    onCheckboxChange={onClassChange}
+                    checkedItems={selectedClasses}
+                    className={boardStyles.headers__select}
                 />
                 {user.role === "Teacher" && <AddCard/>}
             </div>
 
-            <div className={classes.board}>
+            <div className={boardStyles.board}>
                 <Column title="TO-DO" status="TO_DO" cards={filteredCards} setCards={() => {
                 }}/>
                 <Column title="DONE" status="DONE" cards={filteredCards} setCards={() => {

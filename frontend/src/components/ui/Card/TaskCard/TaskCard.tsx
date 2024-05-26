@@ -20,8 +20,8 @@ const TaskCard = (props: TaskCardInterface) => {
         <>
             <DropIndicator beforeId={props.id} status={props.status}/>
             <div //draggable="true"
-                 //onDragStart={(e) => props.handleDragStart(e, {title: props.title, id: props.id, column: props.column})}
-                 className={classes.card}>
+                //onDragStart={(e) => props.handleDragStart(e, {title: props.title, id: props.id, column: props.column})}
+                className={classes.card}>
                 <GroupIcon className={classes.card__icon}/>
                 <h1 className={classes.card__title}>{props.title}</h1>
                 <div className={classes.card__info}>
@@ -38,7 +38,8 @@ const TaskCard = (props: TaskCardInterface) => {
                 &&
                 <ReadTaskCard title={props.title} subject={props.subject} date={formattedDate} members={props.members}
                               description={props.description} id={props.id} status={props.status}
-                              handleDragStart={props.handleDragStart} onClick={handleActive}/>
+                              handleDragStart={props.handleDragStart} onClick={handleActive}
+                              className={props.className}/>
             }
         </>
     );
