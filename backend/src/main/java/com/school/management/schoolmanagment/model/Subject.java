@@ -1,6 +1,8 @@
 package com.school.management.schoolmanagment.model;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,6 +22,7 @@ public class Subject {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
     private String name;
+    @JsonIgnore
     @ManyToMany(mappedBy = "subjects")
     private final Set<SchoolClass> schoolClasses = new HashSet<>();
 
