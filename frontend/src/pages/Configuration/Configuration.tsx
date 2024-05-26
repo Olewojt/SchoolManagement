@@ -40,12 +40,12 @@ const Configuration = () => {
             <Header value={'Account'}>
                 <div className={classes.account}>
                     <div className={classes.account__info}>
-                        <h2>First Name: {userData.firstName ?? "N/A"}</h2>
-                        <h2>Last Name: {userData.lastName ?? "N/A"}</h2>
-                        <h2>City: {userData.city ?? "N/A"}</h2>
-                        <h2>Street: {userData.street ?? "N/A"}</h2>
+                        <h2>First Name: {userData.personalInfo.firstName ?? "N/A"}</h2>
+                        <h2>Last Name: {userData.personalInfo.lastName ?? "N/A"}</h2>
+                        <h2>City: {userData.personalInfo.city ?? "N/A"}</h2>
+                        <h2>Street: {userData.personalInfo.street ?? "N/A"}</h2>
                         <h2>
-                            <strong>Address:</strong> {userData.homeNumber ?? "N/A"}{userData.flatNumber ? `/${userData.flatNumber}` : ""}
+                            <strong>Address:</strong> {userData.personalInfo.homeNumber ?? "N/A"}{userData.personalInfo.flatNumber ? `/${userData.personalInfo.flatNumber}` : ""}
                         </h2>
                     </div>
                 </div>

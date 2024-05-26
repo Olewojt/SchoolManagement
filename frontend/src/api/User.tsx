@@ -8,7 +8,7 @@ export interface User {
     email: string
 }
 
-export interface UserData {
+export interface UserPersonalData {
     firstName: string | null,
     lastName: string | null,
     pesel: string | null,
@@ -19,22 +19,39 @@ export interface UserData {
     flatNumber: string | null,
 }
 
-export const defaultUserData: UserData = {
-    firstName: null,
-    lastName: null,
-    pesel: null,
-    country: null,
-    city: null,
-    street: null,
-    homeNumber: null,
-    flatNumber: null
-};
+interface SchoolClass {
+    id: number,
+    name: string
+}
 
-export type FullUser = User & UserData & {class: string | null};
+export type UserData = {
+    personalInfo: UserPersonalData,
+    schoolClassDTO: SchoolClass | null
+}
+
+export type FullUser = {
+    personalInfo: User & UserPersonalData,
+    schoolClassDTO: SchoolClass | null
+}
+
+export const defaultUserData: UserData = {
+    personalInfo: {
+        firstName: null,
+        lastName: null,
+        pesel: null,
+        country: null,
+        city: null,
+        street: null,
+        homeNumber: null,
+        flatNumber: null
+    },
+    schoolClassDTO: null
+};
 
 export async function getUserData(userId: number) {
     try {
         const response = await axiosClient.get(`/api/v1/users/personalInfo/${userId}`);
+        console.log(response.data);
 
         return response.data;
     } catch (error) {
@@ -56,9 +73,14 @@ export async function getUserGrades(userId: number): Promise<SubjectsGrades[]> {
     }
 }
 
-export async function exportStudentGrades(userId: number): Promise<string> {
+export async function exportStudentGrades(userId: number, subjects: string[]): Promise<string> {
     try {
-        const response: AxiosResponse<string, AxiosRequestConfig> = await axiosClient.get<string>(`/api/v1/reports/studentReport/${userId}`);
+        const params = new URLSearchParams();
+        subjects.forEach(subject => params.append('subjectNames', subject));
+
+        const url = `/api/v1/reports/studentReport/${userId}?${params.toString()}`;
+
+        const response: AxiosResponse<string, AxiosRequestConfig> = await axiosClient.get<string>(url);
         // Handle the response as needed
         return response.data;
     } catch (error) {
@@ -70,213 +92,288 @@ export async function exportStudentGrades(userId: number): Promise<string> {
 
 export const DUMMY_STUDENTS: FullUser[] = [
     {
-        id: 1,
-        role: "Student",
-        firstName: "John",
-        lastName: "Smith",
-        pesel: "12345678901",
-        email: "JSmith@example.com",
-        country: "USA",
-        city: "New York",
-        street: "Broadway",
-        homeNumber: "123",
-        flatNumber: null,
-        class: "5C"
+        personalInfo: {
+            id: 1,
+            role: "Student",
+            firstName: "John",
+            lastName: "Smith",
+            pesel: "12345678901",
+            email: "JSmith@example.com",
+            country: "USA",
+            city: "New York",
+            street: "Broadway",
+            homeNumber: "123",
+            flatNumber: null,
+        },
+        schoolClassDTO: {
+            id: 1,
+            name: "5C"
+        }
     },
     {
-        id: 2,
-        role: "Student",
-        firstName: "Emily",
-        lastName: "Johnson",
-        pesel: "23456789012",
-        email: "EJohnson@example.com",
-        country: "USA",
-        city: "Los Angeles",
-        street: "Sunset Blvd",
-        homeNumber: "456",
-        flatNumber: null,
-        class: "4B"
+        personalInfo: {
+            id: 2,
+            role: "Student",
+            firstName: "Emily",
+            lastName: "Johnson",
+            pesel: "23456789012",
+            email: "EJohnson@example.com",
+            country: "USA",
+            city: "Los Angeles",
+            street: "Sunset Blvd",
+            homeNumber: "456",
+            flatNumber: null,
+        },
+        schoolClassDTO: {
+            id: 2,
+            name: "4B"
+        }
     },
     {
-        id: 3,
-        role: "Student",
-        firstName: "Michael",
-        lastName: "Brown",
-        pesel: "34567890123",
-        email: "MBrown@example.com",
-        country: "USA",
-        city: "Chicago",
-        street: "Lake Shore Dr",
-        homeNumber: "789",
-        flatNumber: null,
-        class: "3A"
+        personalInfo: {
+            id: 3,
+            role: "Student",
+            firstName: "Michael",
+            lastName: "Brown",
+            pesel: "34567890123",
+            email: "MBrown@example.com",
+            country: "USA",
+            city: "Chicago",
+            street: "Lake Shore Dr",
+            homeNumber: "789",
+            flatNumber: null,
+        },
+        schoolClassDTO: {
+            id: 3,
+            name: "3A"
+        }
     },
     {
-        id: 4,
-        role: "Student",
-        firstName: "Sarah",
-        lastName: "Davis",
-        pesel: "45678901234",
-        email: "SDavis@example.com",
-        country: "USA",
-        city: "Houston",
-        street: "Main St",
-        homeNumber: "1011",
-        flatNumber: null,
-        class: "2B"
+        personalInfo: {
+            id: 4,
+            role: "Student",
+            firstName: "Sarah",
+            lastName: "Davis",
+            pesel: "45678901234",
+            email: "SDavis@example.com",
+            country: "USA",
+            city: "Houston",
+            street: "Main St",
+            homeNumber: "1011",
+            flatNumber: null,
+        },
+        schoolClassDTO: {
+            id: 4,
+            name: "2B"
+        }
     },
     {
-        id: 5,
-        role: "Student",
-        firstName: "David",
-        lastName: "Martinez",
-        pesel: "56789012345",
-        email: "DMartinez@example.com",
-        country: "USA",
-        city: "San Francisco",
-        street: "Market St",
-        homeNumber: "1213",
-        flatNumber: null,
-        class: "1A"
+        personalInfo: {
+            id: 5,
+            role: "Student",
+            firstName: "David",
+            lastName: "Martinez",
+            pesel: "56789012345",
+            email: "DMartinez@example.com",
+            country: "USA",
+            city: "San Francisco",
+            street: "Market St",
+            homeNumber: "1213",
+            flatNumber: null,
+        },
+        schoolClassDTO: {
+            id: 5,
+            name: "1A"
+        }
     },
     {
-        id: 6,
-        role: "Student",
-        firstName: "Jennifer",
-        lastName: "Anderson",
-        pesel: "67890123456",
-        email: "JAnderson@example.com",
-        country: "USA",
-        city: "Miami",
-        street: "Ocean Dr",
-        homeNumber: "1415",
-        flatNumber: null,
-        class: "6C"
+        personalInfo: {
+            id: 6,
+            role: "Student",
+            firstName: "Jennifer",
+            lastName: "Anderson",
+            pesel: "67890123456",
+            email: "JAnderson@example.com",
+            country: "USA",
+            city: "Miami",
+            street: "Ocean Dr",
+            homeNumber: "1415",
+            flatNumber: null,
+        },
+        schoolClassDTO: {
+            id: 6,
+            name: "6C"
+        }
     },
     {
-        id: 7,
-        role: "Student",
-        firstName: "Robert",
-        lastName: "Wilson",
-        pesel: "78901234567",
-        email: "RWilson@example.com",
-        country: "USA",
-        city: "Seattle",
-        street: "Pike Pl",
-        homeNumber: "1617",
-        flatNumber: null,
-        class: "5A"
+        personalInfo: {
+            id: 7,
+            role: "Student",
+            firstName: "Robert",
+            lastName: "Wilson",
+            pesel: "78901234567",
+            email: "RWilson@example.com",
+            country: "USA",
+            city: "Seattle",
+            street: "Pike Pl",
+            homeNumber: "1617",
+            flatNumber: null,
+        },
+        schoolClassDTO: {
+            id: 7,
+            name: "5A"
+        }
     },
     {
-        id: 8,
-        role: "Student",
-        firstName: "Jessica",
-        lastName: "Taylor",
-        pesel: "89012345678",
-        email: "JTaylor@example.com",
-        country: "USA",
-        city: "Boston",
-        street: "Newbury St",
-        homeNumber: "1819",
-        flatNumber: null,
-        class: "4D"
+        personalInfo: {
+            id: 8,
+            role: "Student",
+            firstName: "Jessica",
+            lastName: "Taylor",
+            pesel: "89012345678",
+            email: "JTaylor@example.com",
+            country: "USA",
+            city: "Boston",
+            street: "Newbury St",
+            homeNumber: "1819",
+            flatNumber: null,
+        },
+        schoolClassDTO: {
+            id: 8,
+            name: "4D"
+        }
     },
     {
-        id: 9,
-        role: "Student",
-        firstName: "Kevin",
-        lastName: "Thompson",
-        pesel: "90123456789",
-        email: "KThompson@example.com",
-        country: "USA",
-        city: "Dallas",
-        street: "Elm St",
-        homeNumber: "2021",
-        flatNumber: null,
-        class: "3B"
+        personalInfo: {
+            id: 9,
+            role: "Student",
+            firstName: "Kevin",
+            lastName: "Thompson",
+            pesel: "90123456789",
+            email: "KThompson@example.com",
+            country: "USA",
+            city: "Dallas",
+            street: "Elm St",
+            homeNumber: "2021",
+            flatNumber: null,
+        },
+        schoolClassDTO: {
+            id: 9,
+            name: "3B"
+        }
     },
     {
-        id: 10,
-        role: "Student",
-        firstName: "Laura",
-        lastName: "Garcia",
-        pesel: "01234567890",
-        email: "LGarcia@example.com",
-        country: "USA",
-        city: "Philadelphia",
-        street: "Market St",
-        homeNumber: "2223",
-        flatNumber: null,
-        class: "2C"
+        personalInfo: {
+            id: 10,
+            role: "Student",
+            firstName: "Laura",
+            lastName: "Garcia",
+            pesel: "01234567890",
+            email: "LGarcia@example.com",
+            country: "USA",
+            city: "Philadelphia",
+            street: "Market St",
+            homeNumber: "2223",
+            flatNumber: null,
+        },
+        schoolClassDTO: {
+            id: 10,
+            name: "2C"
+        }
     },
     {
-        id: 11,
-        role: "Student",
-        firstName: "Andrew",
-        lastName: "Hernandez",
-        pesel: "11234567890",
-        email: "AHernandez@example.com",
-        country: "USA",
-        city: "Phoenix",
-        street: "Camelback Rd",
-        homeNumber: "2425",
-        flatNumber: null,
-        class: "1B"
+        personalInfo: {
+            id: 11,
+            role: "Student",
+            firstName: "Andrew",
+            lastName: "Hernandez",
+            pesel: "11234567890",
+            email: "AHernandez@example.com",
+            country: "USA",
+            city: "Phoenix",
+            street: "Camelback Rd",
+            homeNumber: "2425",
+            flatNumber: null,
+        },
+        schoolClassDTO: {
+            id: 11,
+            name: "1B"
+        }
     },
     {
-        id: 12,
-        role: "Student",
-        firstName: "Michelle",
-        lastName: "Young",
-        pesel: "21234567890",
-        email: "MYoung@example.com",
-        country: "USA",
-        city: "Denver",
-        street: "Colfax Ave",
-        homeNumber: "2627",
-        flatNumber: null,
-        class: "6A"
+        personalInfo: {
+            id: 12,
+            role: "Student",
+            firstName: "Michelle",
+            lastName: "Young",
+            pesel: "21234567890",
+            email: "MYoung@example.com",
+            country: "USA",
+            city: "Denver",
+            street: "Colfax Ave",
+            homeNumber: "2627",
+            flatNumber: null,
+        },
+        schoolClassDTO: {
+            id: 12,
+            name: "6A"
+        }
     },
     {
-        id: 13,
-        role: "Student",
-        firstName: "James",
-        lastName: "Lee",
-        pesel: "31234567890",
-        email: "JLee@example.com",
-        country: "USA",
-        city: "Las Vegas",
-        street: "Las Vegas Blvd",
-        homeNumber: "2829",
-        flatNumber: null,
-        class: "5B"
+        personalInfo: {
+            id: 13,
+            role: "Student",
+            firstName: "James",
+            lastName: "Lee",
+            pesel: "31234567890",
+            email: "JLee@example.com",
+            country: "USA",
+            city: "Las Vegas",
+            street: "Las Vegas Blvd",
+            homeNumber: "2829",
+            flatNumber: null,
+        },
+        schoolClassDTO: {
+            id: 13,
+            name: "5B"
+        }
     },
     {
-        id: 14,
-        role: "Student",
-        firstName: "Sophia",
-        lastName: "Kim",
-        pesel: "41234567890",
-        email: "SKim@example.com",
-        country: "USA",
-        city: "Atlanta",
-        street: "Peachtree St",
-        homeNumber: "3031",
-        flatNumber: null,
-        class: "4C"
+        personalInfo: {
+            id: 14,
+            role: "Student",
+            firstName: "Sophia",
+            lastName: "Kim",
+            pesel: "41234567890",
+            email: "SKim@example.com",
+            country: "USA",
+            city: "Atlanta",
+            street: "Peachtree St",
+            homeNumber: "3031",
+            flatNumber: null,
+        },
+        schoolClassDTO: {
+            id: 14,
+            name: "4C"
+        }
     },
     {
-        id: 15,
-        role: "Student",
-        firstName: "Daniel",
-        lastName: "Nguyen",
-        pesel: "51234567890",
-        email: "DNguyen@example.com",
-        country: "USA",
-        city: "Austin",
-        street: "Congress Ave",
-        homeNumber: "3233",
-        flatNumber: null,
-        class: "3D"
+        personalInfo: {
+            id: 15,
+            role: "Student",
+            firstName: "Daniel",
+            lastName: "Nguyen",
+            pesel: "51234567890",
+            email: "DNguyen@example.com",
+            country: "USA",
+            city: "Austin",
+            street: "Congress Ave",
+            homeNumber: "3233",
+            flatNumber: null,
+        },
+        schoolClassDTO: {
+            id: 15,
+            name: "3D"
+        }
     }
 ];

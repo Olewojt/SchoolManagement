@@ -15,7 +15,7 @@ const ProfileBookmark = (props: ProfileProps) => {
         <div className={classes.profile}>
             <div className={classes.profile__data}>
                 <img src={props.src}/>
-                <span>{userData.firstName} {userData.lastName}</span>
+                <span>{userData.personalInfo.firstName} {userData.personalInfo.lastName}</span>
             </div>
             <Link to={props.to} className={classes.profile__icon}>
                 <SettingsIcon/>
