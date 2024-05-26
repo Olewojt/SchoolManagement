@@ -69,8 +69,6 @@ const StudentReports = () => {
     const [studentGrades, setStudentGrades] = useState<GradeDict>(getGradesCount(grades));
     // State of export
     const [exportState, setExportState] = useState<string>("Export");
-    const [fromDate, setFromDate] = useState(currentDate());
-    const [toDate, setToDate] = useState(currentDate());
 
     const [loading, setLoading] = useState<boolean>(true);
 
@@ -105,7 +103,7 @@ const StudentReports = () => {
             const newGrades = getGradesCount(filteredGrades);
             setStudentGrades(newGrades);
         }
-    }, [selectedSubjects, fromDate, toDate, grades]);
+    }, [selectedSubjects, grades]);
 
     const onCheckboxChange = (subject: string) => {
         setSelectedSubjects((prevState) => ({
@@ -114,42 +112,14 @@ const StudentReports = () => {
         }));
     };
 
-    const handleFromDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setFromDate(event.target.value);
-    };
-
-    const handleToDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setToDate(event.target.value);
-    };
-
     const filterGrades = (): SubjectsGrades[] => {
-        const from = new Date(fromDate);
-        from.setHours(0, 0, 0, 0); // Set time to midnight
-
-        const to = new Date(toDate);
-        to.setHours(23, 59, 59, 999); // Set time to 23:59:59
-
         return grades
             .filter((subject) => selectedSubjects[subject.subjectName]) // Filter by selected subjects
-            .map((subject) => {
-                // Filter grades within date range
-                const filteredGrades = subject.grades.filter((grade) => {
-                    const current = new Date(grade.gradedAt);
-                    return current >= from && current <= to;
-                });
-
-                return {
-                    ...subject,
-                    grades: filteredGrades
-                };
-            })
             .filter((subject) => subject.grades.length > 0); // Remove subjects with no grades in range
     };
 
     const resetFilters = () => {
         setSelectedSubjects(generateSubjectSelectionStates(subjects));
-        setToDate(currentDate());
-        setFromDate(currentDate());
     }
 
     function displayExportState(state: string) {
@@ -164,7 +134,12 @@ const StudentReports = () => {
     const exportRequest = () => {
         setExportState("Exporting...");
 
-        exportStudentGrades(user.id)
+        const selectedSubjectNames = Object.keys(selectedSubjects)
+            .filter(subject => selectedSubjects[subject]);
+
+        console.log(selectedSubjectNames)
+
+        exportStudentGrades(user.id, selectedSubjectNames)
             .then(data => {
                 console.log('Export request response', data);
 
@@ -196,13 +171,6 @@ const StudentReports = () => {
                     options={subjects}
                     onCheckboxChange={onCheckboxChange}
                     checkedItems={selectedSubjects}
-                />
-                <SelectDate
-                    name={"Date"}
-                    fromDate={fromDate}
-                    toDate={toDate}
-                    handleFromDateChange={handleFromDateChange}
-                    handleToDateChange={handleToDateChange}
                 />
             </div>
 
