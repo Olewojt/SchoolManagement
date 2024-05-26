@@ -22,7 +22,6 @@ public class Subject {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
     private String name;
-    @JsonIgnore
     @ManyToMany(mappedBy = "subjects")
     private final Set<SchoolClass> schoolClasses = new HashSet<>();
 
