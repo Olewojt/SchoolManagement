@@ -156,6 +156,7 @@ public class DatabaseSeeder implements CommandLineRunner {
 
         math.addClass(class5A);
         science.addClass(class5A);
+        science.addClass(class8D);
         history.addClass(class8D);
         pe.addClass(class8D);
         art.addClass(class5A);
@@ -190,6 +191,7 @@ public class DatabaseSeeder implements CommandLineRunner {
 
         teacherSubjectInClassRepository.save(new TeacherSubjectInClass(teacher1, math, class5A));
         teacherSubjectInClassRepository.save(new TeacherSubjectInClass(teacher1, science, class5A));
+        teacherSubjectInClassRepository.save(new TeacherSubjectInClass(teacher1, science, class8D));
         teacherSubjectInClassRepository.save(new TeacherSubjectInClass(teacher2, history, class8D));
         teacherSubjectInClassRepository.save(new TeacherSubjectInClass(teacher2, pe, class8D));
         teacherSubjectInClassRepository.save(new TeacherSubjectInClass(teacher3, art, class5A));

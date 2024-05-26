@@ -4,6 +4,7 @@ import com.school.management.schoolmanagment.dto.GradeDTO;
 import com.school.management.schoolmanagment.dto.SubjectGradesDTO;
 import com.school.management.schoolmanagment.model.SchoolClass;
 import com.school.management.schoolmanagment.model.Subject;
+import com.school.management.schoolmanagment.model.TeacherSubjectInClass;
 import com.school.management.schoolmanagment.model.User;
 import com.school.management.schoolmanagment.repository.SchoolClassRepository;
 import com.school.management.schoolmanagment.repository.SubjectRepository;
@@ -17,7 +18,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -32,10 +35,13 @@ public class ReportService {
 
     private final TaskService taskService;
 
-    public String avgGradesReportForStudent(Long userId) {
+    public String avgGradesReportForStudent(Long userId, List<String> subjectNames) {
         try {
             List<SubjectGradesDTO> studentSubjectGrades = taskService.getStudentSubjectGrades(userId);
-            Map<String, List<Integer>> subjectGradesMap = mapSubjectGrades(studentSubjectGrades);
+            List<SubjectGradesDTO> filteredGrades = studentSubjectGrades.stream()
+                    .filter(subject -> subjectNames.contains(subject.subjectName()))
+                    .collect(Collectors.toList());
+            Map<String, List<Integer>> subjectGradesMap = mapSubjectGrades(filteredGrades);
             User user = userRepository.findById(userId).orElseThrow();
 
             AverageGradesReport averageGradesReport = new AverageGradesReport(user.getPersonalInfo().getFirstName(),
@@ -62,7 +68,6 @@ public class ReportService {
 
             for (String subjectName :
                     subjectNames) {
-
                 Subject subject = subjectRepository.findByName(subjectName);
                 Map<String, List<Integer>> subjectGradesMap = new HashMap<>();
                 for (User student : students) {
@@ -74,16 +79,11 @@ public class ReportService {
                                     .collect(Collectors.toList());
                             subjectGradesMap.put(student.getPersonalInfo().getFirstName() + " " +
                                     student.getPersonalInfo().getLastName(), grades);
-
-
                         }
                     }
-
                 }
-
                 ClassGrades classGrades = new ClassGrades(subjectName, subjectGradesMap);
                 classGradesList.add(classGrades);
-
             }
 
             SubjectReportForTeacher subjectReport = new SubjectReportForTeacher(teacher.getPersonalInfo().getFirstName(),
@@ -96,16 +96,26 @@ public class ReportService {
     }
 
     public String teacherReport(Long teacherId, LocalDate startDate, LocalDate endDate) {
-       //TODO: zrobic aby dla poszczegolnych klas bylo sprawdzanie danego przedmiotu
         try {
             User teacher = userRepository.findById(teacherId).orElseThrow();
             Map<String, SubjectTaskInfo> subjectTaskInfoMap = new HashMap<>();
 
-            List<Subject> subjects = teacherSubjectInClassRepository.findSubjectsByTeacherId(teacherId);
-            for (Subject subject : subjects) {
-                int totalTasks = taskService.countTasksForTeacherAndSubject(teacherId, subject.getId(), startDate, endDate);
-                int gradedTasks = taskService.countGradedTasksForTeacherAndSubject(teacherId, subject.getId(), startDate, endDate);
-                subjectTaskInfoMap.put(subject.getName()+" 8C", new SubjectTaskInfo(totalTasks, gradedTasks));
+            List<TeacherSubjectInClass> teacherSubjectInClassList = teacherSubjectInClassRepository.findAllByTeacherId(teacherId);
+
+            Instant startInstant = startDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
+            Instant endInstant = endDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
+
+            for (TeacherSubjectInClass teacherSubjectInClass : teacherSubjectInClassList) {
+                String className = teacherSubjectInClass.getSchoolClass().getName();
+                String subjectName = teacherSubjectInClass.getSubject().getName();
+                String key = className + " - " + subjectName;
+
+                int totalTasks = taskService.countTasksForTeacherClassAndSubject(teacherId, teacherSubjectInClass.getSchoolClass().getId(),
+                        teacherSubjectInClass.getSubject().getId(), startInstant, endInstant);
+                int gradedTasks = taskService.countGradedTasksForTeacherClassAndSubject(teacherId, teacherSubjectInClass.getSchoolClass().getId(),
+                        teacherSubjectInClass.getSubject().getId(), startInstant, endInstant);
+
+                subjectTaskInfoMap.put(key, new SubjectTaskInfo(totalTasks, gradedTasks));
             }
 
             TeacherReport teacherReport = new TeacherReport(teacher.getPersonalInfo().getFirstName(),
@@ -149,7 +159,5 @@ public class ReportService {
                 throw new AccessDeniedException("Unauthorized access");
             }
         }
-
-
     }
 }
