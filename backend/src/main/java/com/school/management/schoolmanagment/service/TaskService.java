@@ -69,16 +69,12 @@ public class TaskService {
         });
     }
 
-    public int countTasksForTeacherAndSubject(Long teacherId, Long id, LocalDate startDate, LocalDate endDate) {
-        Instant startInstant = startDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
-        Instant endInstant = endDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
-        return taskRepository.countTasksForTeacherAndSubject(teacherId, id, startInstant, endInstant);
+    public int countTasksForTeacherClassAndSubject(Long teacherId, Long classId, Long subjectId, Instant startDate, Instant endDate) {
+        return taskRepository.countTasks(teacherId, classId, subjectId, startDate, endDate);
     }
 
-    public int countGradedTasksForTeacherAndSubject(Long teacherId, Long id, LocalDate startDate, LocalDate endDate) {
-        Instant startInstant = startDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
-        Instant endInstant = endDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
-        return taskRepository.countGradedTasksForTeacherAndSubject(teacherId, id, startInstant, endInstant);
+    public int countGradedTasksForTeacherClassAndSubject(Long teacherId, Long classId, Long subjectId, Instant startDate, Instant endDate) {
+        return taskRepository.countGradedTasks(teacherId, classId, subjectId, startDate, endDate);
     }
 
     public List<TaskDTO> getTasksInfoAssignedToUser(Long userId) {
@@ -152,4 +148,5 @@ public class TaskService {
 
         return mapToTaskDTO(taskRepository.findByTaskCreator(teacher));
     }
+
 }

@@ -103,9 +103,9 @@
 		<dependency>
 			<groupId>org.example</groupId>
 			<artifactId>iTextTest</artifactId>
-			<version>1.3-SNAPSHOT</version>
+			<version>1.0-SNAPSHOT</version>
 			<scope>system</scope>
-			<systemPath>${project.basedir}/libs/iTextTest-1.3-SNAPSHOT.jar</systemPath>
+			<systemPath>${project.basedir}/libs/iTextTest-1.0-SNAPSHOT.jar</systemPath>
 		</dependency>
 	</dependencies>
 

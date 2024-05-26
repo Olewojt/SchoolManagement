@@ -13,6 +13,6 @@ import java.util.List;
 public interface TeacherSubjectInClassRepository extends JpaRepository<TeacherSubjectInClass, TSICID> {
     boolean existsByIdTeacherIdAndIdSubjectIdAndIdClassId(Long teacherId, Long subjectId, Long classId);
 
-    @Query("SELECT tsic.subject FROM TeacherSubjectInClass tsic WHERE tsic.teacher.id = :teacherId")
-    List<Subject> findSubjectsByTeacherId(Long teacherId);
+    @Query("SELECT t from TeacherSubjectInClass t where t.teacher.id = :teacherId")
+    List<TeacherSubjectInClass> findAllByTeacherId(Long teacherId);
 }

@@ -142,6 +142,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         Subject art = new Subject("Art");
         Subject music = new Subject("Music");
         Subject geography = new Subject("Geography");
+        Subject biology = new Subject("Biology");
 
         subjectRepository.save(math);
         subjectRepository.save(science);
@@ -150,12 +151,14 @@ public class DatabaseSeeder implements CommandLineRunner {
         subjectRepository.save(art);
         subjectRepository.save(music);
         subjectRepository.save(geography);
+        subjectRepository.save(biology);
 
         SchoolClass class5A = schoolClassRepository.findByName("5A");
         SchoolClass class8D = schoolClassRepository.findByName("8D");
 
         math.addClass(class5A);
         science.addClass(class5A);
+        science.addClass(class8D);
         history.addClass(class8D);
         pe.addClass(class8D);
         art.addClass(class5A);
@@ -190,6 +193,7 @@ public class DatabaseSeeder implements CommandLineRunner {
 
         teacherSubjectInClassRepository.save(new TeacherSubjectInClass(teacher1, math, class5A));
         teacherSubjectInClassRepository.save(new TeacherSubjectInClass(teacher1, science, class5A));
+        teacherSubjectInClassRepository.save(new TeacherSubjectInClass(teacher1, science, class8D));
         teacherSubjectInClassRepository.save(new TeacherSubjectInClass(teacher2, history, class8D));
         teacherSubjectInClassRepository.save(new TeacherSubjectInClass(teacher2, pe, class8D));
         teacherSubjectInClassRepository.save(new TeacherSubjectInClass(teacher3, art, class5A));

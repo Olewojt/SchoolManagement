@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -30,13 +31,37 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
             "AND t.grade IS NOT NULL")
     List<Task> findGradesForUser(@Param("userId") Long userId);
 
-    @Query("SELECT COUNT(t) FROM Task t WHERE t.taskCreator.id = :teacherId AND t.subject.id = :subjectId " +
-            "AND t.createdAt BETWEEN :startDate AND :endDate")
-    int countTasksForTeacherAndSubject(@Param("teacherId") Long teacherId, @Param("subjectId") Long subjectId,
-                                       @Param("startDate") Instant startDate, @Param("endDate") Instant endDate);
+    @Query("SELECT COUNT(t) FROM Task t " +
+            "JOIN t.subject s " +
+            "JOIN t.taskCreator tc " +
+            "JOIN t.users u " +
+            "JOIN TeacherSubjectInClass tsic ON tsic.teacher = tc AND tsic.subject = s " +
+            "WHERE tc.id = :teacherId " +
+            "AND tsic.schoolClass.id = :classId " +
+            "AND s.id = :subjectId " +
+            "AND t.createdAt BETWEEN :startDate AND :endDate " +
+            "AND u.schoolClass.id = :classId")
+    int countTasks(@Param("teacherId") Long teacherId,
+                   @Param("classId") Long classId,
+                   @Param("subjectId") Long subjectId,
+                   @Param("startDate") Instant startDate,
+                   @Param("endDate") Instant endDate);
 
-    @Query("SELECT COUNT(t) FROM Task t WHERE t.taskCreator.id = :teacherId AND t.subject.id = :subjectId " +
-            "AND t.gradedAt IS NOT NULL AND t.createdAt BETWEEN :startDate AND :endDate")
-    int countGradedTasksForTeacherAndSubject(@Param("teacherId") Long teacherId, @Param("subjectId") Long subjectId,
-                                             @Param("startDate") Instant startDate, @Param("endDate") Instant endDate);
+    @Query("SELECT COUNT(t) FROM Task t " +
+            "JOIN t.subject s " +
+            "JOIN t.taskCreator tc " +
+            "JOIN t.users u " +
+            "JOIN TeacherSubjectInClass tsic ON tsic.teacher = tc AND tsic.subject = s " +
+            "WHERE tc.id = :teacherId " +
+            "AND tsic.schoolClass.id = :classId " +
+            "AND s.id = :subjectId " +
+            "AND t.createdAt BETWEEN :startDate AND :endDate " +
+            "AND t.grade IS NOT NULL " +
+            "AND u.schoolClass.id = :classId")
+    int countGradedTasks(@Param("teacherId") Long teacherId,
+                         @Param("classId") Long classId,
+                         @Param("subjectId") Long subjectId,
+                         @Param("startDate") Instant startDate,
+                         @Param("endDate") Instant endDate);
+
 }
