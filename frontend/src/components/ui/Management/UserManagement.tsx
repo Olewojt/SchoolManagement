@@ -3,9 +3,10 @@ import Search from "ui/Management/Search.tsx";
 import Button from "ui/Button/Button.tsx";
 import {DUMMY_TEACHERS, Teacher} from "api/Teachers.tsx";
 import {DUMMY_STUDENTS, FullUser} from "api/User.tsx";
-import {SetStateAction, useState} from "react";
+import {SetStateAction, useEffect, useState} from "react";
 import Input from "forms/Input.tsx";
 import SelectOption from "forms/SelectOption.tsx";
+import {getSchoolClasses, SchoolClass} from "api/Classes.tsx";
 
 enum TABS {
     TEACHERS = "TEACHERS",
@@ -14,13 +15,38 @@ enum TABS {
     PARENTS = "PARENTS"
 }
 
+function getClasses(data: SchoolClass[]): string[] {
+    return data.map(schoolClass => schoolClass.name)
+}
+
+function findClass(data: SchoolClass[], name: string): SchoolClass | undefined {
+    return data.find(schoolClass => schoolClass.name === name);
+}
+
+
 const UserManagement = () => {
+
+    const [schoolClasses, setSchoolClasses] = useState<SchoolClass[]>([]);
 
     const [searchQuery, setSearchQuery] = useState('');
     const [currentTab, setCurrentTab] = useState(TABS.TEACHERS); // State to track current tab
     const [editMode, setEditMode] = useState(false); // State to track edit mode
     const [editedRow, setEditedRow] = useState(-1); // Track the currently edited row
-    const [selectedClass, setSelectedClass] = useState("-"); // Track the currently selected class
+    const [selectedClass, setSelectedClass] = useState(""); // Track the currently selected class
+
+    useEffect(() => {
+        if (currentTab === TABS.CLASSES) {
+            getSchoolClasses()
+                .then(data => {
+                    console.log('Classes', data);
+                    setSchoolClasses(data)
+                })
+                .catch(error => {
+                    console.error('Error fetching classes', error);
+                });
+        }
+    }, [currentTab]);
+
     const handleEditRow = (row: number) => {
         setEditedRow(row);
     }
@@ -30,7 +56,6 @@ const UserManagement = () => {
     }
 
     const editModeChange = (mode: boolean) => {
-        setSelectedClass("-");
         setEditedRow(-1);
         setEditMode(mode);
     }
@@ -97,9 +122,9 @@ const UserManagement = () => {
                     <>
                         <SelectOption
                             name={"Class"}
-                            options={[]}
-                            selected={""}
-                            onOptionChange={() => {}}
+                            options={getClasses(schoolClasses)}
+                            selected={selectedClass}
+                            onOptionChange={handleClassChange}
                         />
                     </>
                 }
@@ -142,58 +167,73 @@ const UserManagement = () => {
                     </thead>
 
                     <tbody>
-                    {currentTab && filteredData.map((item, index) => (
-                        <tr key={index} id={item.personalInfo.id.toString()}>
-                            {editMode && (
-                                <td colSpan={2}>
-                                    <Button type="button" className={classes.editButton} onClick={() => handleEditRow(item.personalInfo.id)} children="✏️"/>
-                                    <Button type="button" className={classes.editButton} children="❌"/>
+                        {(currentTab === TABS.TEACHERS || currentTab === TABS.STUDENTS) && filteredData.map((item, index) => (
+                            <tr key={index} id={item.personalInfo.id.toString()}>
+                                {editMode && (
+                                    <td colSpan={2}>
+                                        <Button type="button" className={classes.editButton} onClick={() => handleEditRow(item.personalInfo.id)} children="✏️"/>
+                                        <Button type="button" className={classes.editButton} children="❌"/>
+                                    </td>
+                                )}
+
+                                <td colSpan={4}>
+                                    {editMode && editedRow == item.personalInfo.id
+                                        ? <Input type={"text"} placeholder={item.personalInfo.firstName ? item.personalInfo.firstName : "-"} onChange={() => {}}/>
+                                        : item.personalInfo.firstName}
                                 </td>
-                            )}
+                                <td colSpan={4}>
+                                    {editMode && editedRow == item.personalInfo.id
+                                        ? <Input type={"text"} placeholder={item.personalInfo.lastName ? item.personalInfo.lastName : "-"} onChange={() => {}}/>
+                                        : item.personalInfo.lastName}
+                                </td>
+                                <td colSpan={4}>
+                                    {editMode && editedRow == item.personalInfo.id
+                                        ? <Input type={"text"} placeholder={item.personalInfo.email} onChange={() => {}}/>
+                                        : item.personalInfo.email
+                                    }
+                                </td>
 
-                            <td colSpan={4}>
-                                {editMode && editedRow == item.personalInfo.id
-                                    ? <Input type={"text"} placeholder={item.personalInfo.firstName ? item.personalInfo.firstName : "-"} onChange={() => {}}/>
-                                    : item.personalInfo.firstName}
-                            </td>
-                            <td colSpan={4}>
-                                {editMode && editedRow == item.personalInfo.id
-                                    ? <Input type={"text"} placeholder={item.personalInfo.lastName ? item.personalInfo.lastName : "-"} onChange={() => {}}/>
-                                    : item.personalInfo.lastName}
-                            </td>
-                            <td colSpan={4}>
-                                {editMode && editedRow == item.personalInfo.id
-                                    ? <Input type={"text"} placeholder={item.personalInfo.email} onChange={() => {}}/>
-                                    : item.personalInfo.email
+                                {currentTab === TABS.TEACHERS &&
+                                    <>
+                                        <td colSpan={4}>{(item as Teacher).subject.length != 0 ? (item as Teacher).subject : "-"}</td>
+                                    </>
                                 }
-                            </td>
 
-                            {currentTab === TABS.TEACHERS &&
-                                <>
-                                    <td colSpan={4}>{(item as Teacher).subject.length != 0 ? (item as Teacher).subject : "-"}</td>
-                                </>
-                            }
+                                {currentTab === TABS.STUDENTS &&
+                                    <>
+                                        <td colSpan={4}>{(item as FullUser).schoolClassDTO?.name}</td>
+                                        <td colSpan={4}>{item.personalInfo.pesel}</td>
+                                        <td colSpan={4}>{item.personalInfo.country}</td>
+                                        <td colSpan={4}>{item.personalInfo.city}</td>
+                                        <td colSpan={4}>{item.personalInfo.street}</td>
+                                        <td colSpan={4}>{item.personalInfo.homeNumber}</td>
+                                        <td colSpan={4}>{item.personalInfo.flatNumber ? item.personalInfo.flatNumber : "-"}</td>
+                                    </>
+                                }
+                            </tr>
+                        ))}
 
-                            {currentTab === TABS.STUDENTS &&
-                                <>
-                                    <td colSpan={4}>{(item as FullUser).schoolClassDTO?.name}</td>
-                                    <td colSpan={4}>{item.personalInfo.pesel}</td>
-                                    <td colSpan={4}>{item.personalInfo.country}</td>
-                                    <td colSpan={4}>{item.personalInfo.city}</td>
-                                    <td colSpan={4}>{item.personalInfo.street}</td>
-                                    <td colSpan={4}>{item.personalInfo.homeNumber}</td>
-                                    <td colSpan={4}>{item.personalInfo.flatNumber ? item.personalInfo.flatNumber : "-"}</td>
-                                </>
-                            }
+                        {currentTab === TABS.CLASSES && findClass(schoolClasses, selectedClass) ? (
+                            findClass(schoolClasses, selectedClass)?.subjectDTOs.map((item, index) => (
+                                <tr key={index}>
+                                    {editMode && (
+                                        <td colSpan={2}>
+                                            <Button type="button" className={classes.editButton} onClick={() => handleEditRow(item.id)} children="✏️"/>
+                                            <Button type="button" className={classes.editButton} children="❌"/>
+                                        </td>
+                                    )}
+                                    <td colSpan={4}>{item.name}</td>
+                                    <td colSpan={4}>
+                                        Kurdemol
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td>NO DATA FOUND</td>
+                            </tr>
+                        )}
 
-                            {/*{currentTab === TABS.CLASSES &&*/}
-                            {/*    <>*/}
-                            {/*        <td colSpan={4}>{(item as FullUser).class}</td>*/}
-                            {/*        <td colSpan={4}>{item.personalInfo.pesel}</td>*/}
-                            {/*    </>*/}
-                            {/*}*/}
-                        </tr>
-                    ))}
                     </tbody>
                 </table>
             </div>
