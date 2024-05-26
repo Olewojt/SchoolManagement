@@ -1,9 +1,9 @@
 package com.school.management.schoolmanagment.service;
 
-import com.school.management.schoolmanagment.dto.PersonalInfoDTO;
+import com.school.management.schoolmanagment.dto.StudentInfoDTO;
 import com.school.management.schoolmanagment.dto.TeacherSubjectInClassDTO;
 import com.school.management.schoolmanagment.mapper.PersonalInfoDTOMapper;
-import com.school.management.schoolmanagment.mapper.TeacherSubjectInClassDTOMapper;
+import com.school.management.schoolmanagment.mapper.StudentInfoDTOMapper;
 import com.school.management.schoolmanagment.model.Role;
 import com.school.management.schoolmanagment.model.TeacherSubjectInClass;
 import com.school.management.schoolmanagment.model.User;
@@ -28,7 +28,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    private final PersonalInfoDTOMapper personalInfoDTOMapper;
+    private final StudentInfoDTOMapper studentInfoDTOMapper;
 
     public void setUserRole(String email, String roleName) {
         User user = userRepository.findByEmail(email)
@@ -38,11 +38,21 @@ public class UserService {
         user.setRole(role);
     }
 
-    public PersonalInfoDTO getUserPersonalInfo(Long userId) {
+    public StudentInfoDTO getUserPersonalInfo(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User With Given ID Not Found!"));
 
-        return personalInfoDTOMapper.mapToPersonalInfoDTO(user.getPersonalInfo());
+        return studentInfoDTOMapper.mapToStudentInfoDTO(user);
+    }
+
+    public List<Long> getParentChildrenIds(Long parentId) {
+        User parent = userRepository.findById(parentId)
+                .orElseThrow(() -> new EntityNotFoundException("Parent With Given ID Not Found!"));
+
+        return parent.getChildren()
+                .stream()
+                .map(User::getId)
+                .toList();
     }
 
     public List<TeacherSubjectInClassDTO> findTeacherSubjectsInGroup(Long teacherId) {

@@ -22,7 +22,7 @@ public class TaskAttachmentController {
     @PostMapping("/upload/{taskId}")
     public ResponseEntity<String> storeAttachmentForTask(@RequestParam("file") MultipartFile file,
                                                          @PathVariable("taskId") Long taskId) {
-        String message = "";
+        String message;
         try {
             taskAttachmentService.storeAttachmentForTask(file, taskId);
 
@@ -43,5 +43,17 @@ public class TaskAttachmentController {
     @GetMapping("/{taskAttachmentId}")
     public ResponseEntity<byte[]> getFileBytes(@PathVariable String taskAttachmentId) {
         return ResponseEntity.ok(taskAttachmentService.getFileBytes(taskAttachmentId));
+    }
+
+    @DeleteMapping("/{taskAttachmentId}")
+    public ResponseEntity<Void> deleteAttachmentFromTask(@PathVariable String taskAttachmentId) {
+        taskAttachmentService.deleteAttachmentFromTask(taskAttachmentId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/all/{taskId}")
+    public ResponseEntity<Void> deleteAllAttachmentsFromTask(@PathVariable Long taskId) {
+        taskAttachmentService.deleteAllAttachmentsFromTask(taskId);
+        return ResponseEntity.noContent().build();
     }
 }

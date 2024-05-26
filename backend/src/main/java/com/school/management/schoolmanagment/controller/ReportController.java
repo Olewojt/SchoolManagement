@@ -1,23 +1,12 @@
 package com.school.management.schoolmanagment.controller;
 
-import com.school.management.schoolmanagment.dto.GradeDTO;
-import com.school.management.schoolmanagment.dto.SubjectGradesDTO;
-import com.school.management.schoolmanagment.model.Task;
-import com.school.management.schoolmanagment.model.User;
-import com.school.management.schoolmanagment.repository.UserRepository;
 import com.school.management.schoolmanagment.service.ReportService;
-import com.school.management.schoolmanagment.service.TaskService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.repository.query.Param;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
-import org.example.AverageGradesReport;
-import org.example.SubjectReportForTeacher;
 
-import java.io.IOException;
 import java.time.LocalDate;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController

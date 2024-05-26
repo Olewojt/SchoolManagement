@@ -1,6 +1,6 @@
 package com.school.management.schoolmanagment.controller;
 
-import com.school.management.schoolmanagment.dto.PersonalInfoDTO;
+import com.school.management.schoolmanagment.dto.StudentInfoDTO;
 import com.school.management.schoolmanagment.dto.TeacherSubjectInClassDTO;
 import com.school.management.schoolmanagment.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +20,13 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/users/personalInfo/{userId}")
-    public ResponseEntity<PersonalInfoDTO> getUserPersonalInfo(@PathVariable Long userId) {
+    public ResponseEntity<StudentInfoDTO> getUserPersonalInfo(@PathVariable Long userId) {
         return ResponseEntity.ok(userService.getUserPersonalInfo(userId));
+    }
+
+    @GetMapping("/parents/{parentId}/children")
+    public ResponseEntity<List<Long>> getParentChildrenIds(@PathVariable Long parentId) {
+        return ResponseEntity.ok(userService.getParentChildrenIds(parentId));
     }
 
     @GetMapping("/teachers/classes/subjects/{teacherId}")

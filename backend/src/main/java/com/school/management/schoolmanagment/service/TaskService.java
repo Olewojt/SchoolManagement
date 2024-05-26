@@ -5,7 +5,6 @@ import com.school.management.schoolmanagment.mapper.GradeInfoDTOMapper;
 import com.school.management.schoolmanagment.mapper.SubjectGradesDTOMapper;
 import com.school.management.schoolmanagment.model.Subject;
 import com.school.management.schoolmanagment.model.Task;
-import com.school.management.schoolmanagment.model.TaskStatus;
 import com.school.management.schoolmanagment.model.User;
 import com.school.management.schoolmanagment.repository.SubjectRepository;
 import com.school.management.schoolmanagment.repository.TaskRepository;
@@ -25,8 +24,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.school.management.schoolmanagment.mapper.TaskDTOMapper.mapToTaskDTO;
-import static com.school.management.schoolmanagment.model.TaskStatus.DONE;
-import static com.school.management.schoolmanagment.model.TaskStatus.GRADED;
+import static com.school.management.schoolmanagment.model.TaskStatus.*;
 
 @Service
 @RequiredArgsConstructor
@@ -91,9 +89,7 @@ public class TaskService {
         User user = userRepository.findById(taskCreatorId)
                 .orElseThrow();
 
-        Subject subject = subjectRepository.findById(taskCreateDTO.subjectId())
-                .orElseThrow();
-
+        Subject subject = subjectRepository.findByName(taskCreateDTO.subjectName());
 
         taskCreateDTO.taskMembersGroups().forEach(groupOfMembers -> {
             Task task = new Task(taskCreateDTO.title(), taskCreateDTO.description(),
@@ -102,7 +98,7 @@ public class TaskService {
             groupOfMembers.forEach(member -> {
                 User foundMember = userRepository.findById(member.userId())
                         .orElseThrow();
-                if (Objects.equals(foundMember.getSchoolClass().getId(), taskCreateDTO.schoolClassId())) {
+                if (Objects.equals(foundMember.getSchoolClass().getName(), taskCreateDTO.schoolClassName())) {
                     foundMember.addTask(task);
                     userRepository.save(foundMember);
                 }
@@ -136,5 +132,21 @@ public class TaskService {
         taskRepository.save(task);
     }
 
+    public void markTaskAsToDo(Long taskId) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow();
+
+        task.setStatus(TO_DO);
+        taskRepository.save(task);
+    }
+
+    public List<TaskDTO> findTasksCreatedByTeacher(Long teacherId) {
+        validateUserAccess(teacherId);
+
+        User teacher = userRepository.findById(teacherId)
+                .orElseThrow();
+
+        return mapToTaskDTO(taskRepository.findByTaskCreator(teacher));
+    }
 
 }

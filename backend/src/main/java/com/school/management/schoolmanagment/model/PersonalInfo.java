@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -32,6 +34,7 @@ public class PersonalInfo {
     private String homeNumber;
     private String flatNumber;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "personalInfo")
     private User user;
 
