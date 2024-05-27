@@ -61,7 +61,6 @@ export async function teacherTaskInfo(teacherId: number): Promise<any[]> {
     }
 }
 
-// Define the interface for the task payload
 interface TaskPayload {
     title: string;
     deadline: string;
@@ -76,7 +75,6 @@ interface TaskPayload {
     taskCreatorId: number;
 }
 
-// Function to send POST request to /api/v1/tasks
 export async function createTask(taskPayload: TaskPayload): Promise<TaskCardInterface> {
     try {
         const response: AxiosResponse<TaskCardInterface, AxiosRequestConfig> = await axiosClient.post<TaskCardInterface>('/api/v1/tasks', taskPayload);
@@ -85,6 +83,17 @@ export async function createTask(taskPayload: TaskPayload): Promise<TaskCardInte
     } catch (error) {
         // Handle the error as needed
         console.error('Error creating task:', error);
+        throw error;
+    }
+}
+
+export async function deleteAttachmentFromTask(taskAttachmentId: string): Promise<void> {
+    try {
+        await axiosClient.delete<void>(`/api/v1/attachments/${taskAttachmentId}`);
+        // Optionally handle success if needed
+    } catch (error) {
+        // Handle the error as needed
+        console.error('Error deleting task attachment:', error);
         throw error;
     }
 }

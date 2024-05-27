@@ -1,9 +1,10 @@
 import React, {useRef, useState, useEffect} from "react";
-import {AttachmentIcon, CheckIcon, DocIcon} from "assets/icons/Icon.tsx";
+import {AttachmentIcon, CheckIcon, DocIcon, CrossIcon} from "assets/icons/Icon.tsx";
 import classes from "./UploadInput.module.scss";
 import axios from "axios";
 import {useSelector} from "react-redux";
 import {RootState} from "state/store.tsx";
+import {deleteAttachmentFromTask} from "api/Task.tsx";
 
 interface UploadInputProps {
     task: number;
@@ -12,34 +13,36 @@ interface UploadInputProps {
 
 const UploadInput: React.FC<UploadInputProps> = ({task, status}) => {
     const [files, setFiles] = useState<{ name: string; loading: number; error: boolean }[]>([]);
-    const [uploadedFiles, setUploadedFiles] = useState<{ name: string; size: string }[]>([]);
+    const [uploadedFiles, setUploadedFiles] = useState<{ name: string; size: string, id: string }[]>([]);
     const [showProgress, setShowProgress] = useState<boolean>(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
+    const [isHovered, setIsHovered] = useState<number | null>(null);
+
     const user = useSelector((state: RootState) => state.login);
 
-    // Fetching file details from the API
+    const fetchUploadedFiles = async () => {
+        try {
+            const {data} = await axios.get(`http://localhost:8080/api/v1/attachments/all/${task}`, {
+                headers: {'Authorization': localStorage.getItem('BEARER_TOKEN')}
+            });
+            const filesWithSizeInMB = data.map((file: { name: string; size: number; id: string; }) => ({
+                name: file.name,
+                size: `${(file.size / (1024 * 1024)).toFixed(2)} MB`,
+                id: file.id
+            }));
+            setUploadedFiles(filesWithSizeInMB);
+        } catch (err) {
+            console.error("Error fetching uploaded files:", err);
+        }
+    };
+
     useEffect(() => {
-        const fetchUploadedFiles = async () => {
-            try {
-                const {data} = await axios.get(`http://localhost:8080/api/v1/attachments/all/${task}`, {
-                    headers: {'Authorization': localStorage.getItem('BEARER_TOKEN')}
-                });
-                const filesWithSizeInMB = data.map((file: { name: string; size: number }) => ({
-                    name: file.name,
-                    size: `${(file.size / (1024 * 1024)).toFixed(2)} MB`
-                }));
-                setUploadedFiles(filesWithSizeInMB);
-            } catch (err) {
-                console.error("Error fetching uploaded files:", err);
-            }
-        };
-        fetchUploadedFiles();
+        fetchUploadedFiles().then(null)
     }, [task]);
 
     const handleFileInputClick = () => fileInputRef.current?.click();
 
-    // Handling file upload
     const uploadedFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (!file) return;
@@ -65,13 +68,24 @@ const UploadInput: React.FC<UploadInputProps> = ({task, status}) => {
                 }
             });
 
-            const fileSize = (file.size / (1024 * 1024)).toFixed(2);
-            setUploadedFiles(prevState => [...prevState, {name: fileName, size: `${fileSize} MB`}]);
+            await fetchUploadedFiles();
+
             setFiles([]);
             setShowProgress(false);
         } catch (err) {
             console.error("Error uploading file:", err);
             setFiles([{name: fileName, loading: 0, error: true}]);
+        }
+    };
+
+    const handleDelete = async (attachmentId: string) => {
+        if (user.role === "Student" && status === "TO_DO") {
+            try {
+                await deleteAttachmentFromTask(attachmentId);
+                await fetchUploadedFiles();
+            } catch (error) {
+                console.error("Error deleting attachment:", error);
+            }
         }
     };
 
@@ -105,7 +119,13 @@ const UploadInput: React.FC<UploadInputProps> = ({task, status}) => {
                 )}
                 <section className={classes.uploaded}>
                     {uploadedFiles.map((file, index) => (
-                        <li className={classes.uploaded__row} key={index}>
+                        <li
+                            className={classes.uploaded__row}
+                            key={index}
+                            onMouseEnter={() => setIsHovered(index)}
+                            onMouseLeave={() => setIsHovered(null)}
+                            onClick={() => handleDelete(file.id)}
+                        >
                             <DocIcon/>
                             <div className={classes.uploaded__content}>
                                 <div className={classes.uploaded__details}>
@@ -113,9 +133,13 @@ const UploadInput: React.FC<UploadInputProps> = ({task, status}) => {
                                     <span className={classes.uploaded__size}>{file.size}</span>
                                 </div>
                             </div>
-                            <CheckIcon/>
+                            {isHovered === index && status === "TO_DO" && user.role === "Student" ?
+                                <CrossIcon/> :
+                                <CheckIcon/>
+                            }
                         </li>
                     ))}
+
                 </section>
             </div>
             {status === "TO_DO" && user.role === "Student" &&
