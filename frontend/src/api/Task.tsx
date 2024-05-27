@@ -60,3 +60,31 @@ export async function teacherTaskInfo(teacherId: number): Promise<any[]> {
         throw error;
     }
 }
+
+// Define the interface for the task payload
+interface TaskPayload {
+    title: string;
+    deadline: string;
+    subjectName: string;
+    schoolClassName: string;
+    description: string;
+    taskMembersGroups: {
+        userId: number;
+        firstName: string;
+        lastName: string;
+    }[][];
+    taskCreatorId: number;
+}
+
+// Function to send POST request to /api/v1/tasks
+export async function createTask(taskPayload: TaskPayload): Promise<TaskCardInterface> {
+    try {
+        const response: AxiosResponse<TaskCardInterface, AxiosRequestConfig> = await axiosClient.post<TaskCardInterface>('/api/v1/tasks', taskPayload);
+        // Handle the response as needed
+        return response.data;
+    } catch (error) {
+        // Handle the error as needed
+        console.error('Error creating task:', error);
+        throw error;
+    }
+}
