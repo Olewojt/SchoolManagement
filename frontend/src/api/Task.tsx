@@ -27,9 +27,19 @@ export async function getTeacherTasks(teacherId: number): Promise<TaskCardInterf
     }
 }
 
-export async function updateTaskStatus(taskId: number): Promise<void> {
+export async function taskStatusDone(taskId: number): Promise<void> {
     try {
-        await axiosClient.patch(`/api/v1/tasks/status/${taskId}`);
+        await axiosClient.patch(`/api/v1/tasks/status/done/${taskId}`);
+        // Optionally handle success if needed
+    } catch (error) {
+        // Handle the error as needed
+        console.error('Error updating task status:', error);
+        throw error;
+    }
+}
+export async function taskStatusTODO(taskId: number): Promise<void> {
+    try {
+        await axiosClient.patch(`/api/v1/tasks/status/todo/${taskId}`);
         // Optionally handle success if needed
     } catch (error) {
         // Handle the error as needed
@@ -47,6 +57,34 @@ export async function teacherTaskInfo(teacherId: number): Promise<any[]> {
     } catch (error) {
         // Handle the error as needed
         console.error('Error fetching user tasks:', error);
+        throw error;
+    }
+}
+
+// Define the interface for the task payload
+interface TaskPayload {
+    title: string;
+    deadline: string;
+    subjectName: string;
+    schoolClassName: string;
+    description: string;
+    taskMembersGroups: {
+        userId: number;
+        firstName: string;
+        lastName: string;
+    }[][];
+    taskCreatorId: number;
+}
+
+// Function to send POST request to /api/v1/tasks
+export async function createTask(taskPayload: TaskPayload): Promise<TaskCardInterface> {
+    try {
+        const response: AxiosResponse<TaskCardInterface, AxiosRequestConfig> = await axiosClient.post<TaskCardInterface>('/api/v1/tasks', taskPayload);
+        // Handle the response as needed
+        return response.data;
+    } catch (error) {
+        // Handle the error as needed
+        console.error('Error creating task:', error);
         throw error;
     }
 }

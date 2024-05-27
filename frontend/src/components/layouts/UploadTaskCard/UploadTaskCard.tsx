@@ -1,15 +1,16 @@
-import { useState, MouseEventHandler, FormEvent, useEffect } from "react";
+import {useState, MouseEventHandler, FormEvent, useEffect} from "react";
 import classes from "./UploadTaskCard.module.scss";
-import { PlusIcon } from "assets/icons/Icon.tsx";
+import {PlusIcon} from "assets/icons/Icon.tsx";
 import Button from "ui/Button/Button.tsx";
 import Input from "forms/Input.tsx";
 import Dropdown from "forms/Dropdown/Dropdown.tsx";
 import GroupSelector from "forms/GroupSelector/GroupSelector.tsx";
 import TextArea from "forms/TextArea.tsx";
 import SelectButton from "ui/Button/SelectButton.tsx";
-import { teacherTaskInfo } from "api/Task.tsx";
-import { useSelector } from "react-redux";
-import { RootState } from "state/store.tsx";
+import {teacherTaskInfo, createTask, getTeacherTasks} from "api/Task.tsx"; // Import the createTask function
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "state/store.tsx";
+import {addTasks} from "state/tasks/tasksSlice.tsx";
 
 const SELECT_CLASS = "Select Class";
 const SELECT_SUBJECT = "Select Subject";
@@ -17,7 +18,7 @@ const SELECT_MEMBERS = "Select Members";
 const FIRST_CLASS = "First Select Class!";
 
 interface UploadTaskCardProps {
-    onClick?: MouseEventHandler;
+    onClick?: MouseEventHandler | any;
 }
 
 interface Member {
@@ -58,7 +59,7 @@ const UploadTaskCard = (props: UploadTaskCardProps) => {
 
     const [availableOptions, setAvailableOptions] = useState<{
         subjects: string[];
-        members: string[];
+        members: { id: number; firstName: string; lastName: string }[];
     }>({
         subjects: [],
         members: [],
@@ -68,12 +69,14 @@ const UploadTaskCard = (props: UploadTaskCardProps) => {
     const [single, setSingle] = useState<boolean>(true);
 
     const [DUMMY_TASK_TEACHER, setDummyTaskTeacher] = useState<Task[]>([]);
+    const [message, setMessage] = useState<string>("");
 
     const user = useSelector((state: RootState) => state.login);
 
+    const dispatch = useDispatch();
+
     useEffect(() => {
         teacherTaskInfo(user.id).then(data => {
-            console.log("Fetched Data", data);
             setDummyTaskTeacher(data as Task[]);
         }).catch(error => {
             console.log("Error fetching data", error);
@@ -100,29 +103,28 @@ const UploadTaskCard = (props: UploadTaskCardProps) => {
         if (selectedClassItem) {
             setAvailableOptions({
                 subjects: selectedClassItem.classInfo.subjectNames,
-                members: selectedClassItem.studentList.map(
-                    (student) => `${student.firstName} ${student.lastName}`
-                ),
+                members: selectedClassItem.studentList,
             });
         } else {
-            setAvailableOptions({ subjects: [], members: [] });
+            setAvailableOptions({subjects: [], members: []});
         }
     };
 
     const handleSubjectSelectionChange = (selected: string) => {
-        setSelectedOptions((prev) => ({ ...prev, subject: selected }));
+        setSelectedOptions((prev) => ({...prev, subject: selected}));
         handleStateChange("subject", selected);
     };
 
-    let newGroup: Group = { members: [] };
+    let newGroup: Group = {members: []};
 
     const handleMemberSelectionChange = (selectedMembers: Member[]) => {
         newGroup = {
             members: selectedMembers
                 .filter((member) => member.checked)
-                .map((member, index) => {
+                .map((member) => {
                     const [firstName, lastName] = member.label.split(" ");
-                    return { id: index + 1, firstName, lastName };
+                    const memberData = availableOptions.members.find(m => m.firstName === firstName && m.lastName === lastName);
+                    return memberData ? memberData : {id: 0, firstName, lastName};
                 }),
         };
     };
@@ -133,38 +135,57 @@ const UploadTaskCard = (props: UploadTaskCardProps) => {
         }
     };
 
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         if (!form.taskName || !form.dueDate || !form.class || !form.subject || !form.description) {
-            console.log("Fill in all fields before submitting the form!");
+            setMessage("Fill in all fields!");
             return;
         }
 
-        if (!single && groups.length === 0) {
-            console.log("Fill in all fields before submitting the form!");
+        if (single && groups.length === 0) {
+            setMessage("Fill in all fields!");
             return;
         }
 
         const formData = {
-            ...form,
-            groups: single ? groups : [{
-                members: availableOptions.members.map((member, index) => {
-                    const [firstName, lastName] = member.split(" ");
-                    return { id: index + 1, firstName, lastName };
-                })
-            }],
+            title: form.taskName,
+            deadline: new Date(form.dueDate).toISOString(),
+            subjectName: form.subject,
+            schoolClassName: form.class,
+            description: form.description,
+            taskMembersGroups: single
+                ? groups.map(group => group.members.map(member => ({
+                    userId: member.id,
+                    firstName: member.firstName,
+                    lastName: member.lastName,
+                })))
+                : [availableOptions.members.map(member => ({
+                    userId: member.id,
+                    firstName: member.firstName,
+                    lastName: member.lastName,
+                }))],
+            taskCreatorId: user.id,
         };
-        console.log("Form Data:", formData);
+
+        try {
+            const createdTask = await createTask(formData);
+            console.log("Task created successfully:", createdTask);
+            const updatedTasks = await getTeacherTasks(user.id);
+            dispatch(addTasks(updatedTasks));
+            props.onClick();
+        } catch (error) {
+            console.error("Error creating task or updating task status or fetching user tasks:", error);
+        }
     };
 
     const getAvailableMembers = () => {
-        const assignedMemberNames = groups.flatMap(group =>
-            group.members.map(member => `${member.firstName} ${member.lastName}`)
+        const assignedMemberIds = groups.flatMap(group =>
+            group.members.map(member => member.id)
         );
 
         return availableOptions.members.filter(member =>
-            !assignedMemberNames.includes(member)
+            !assignedMemberIds.includes(member.id)
         );
     };
 
@@ -194,14 +215,17 @@ const UploadTaskCard = (props: UploadTaskCardProps) => {
                     <div className={classes["content__elem--2"]}>
                         <Dropdown
                             buttonText={selectedOptions.class}
-                            items={DUMMY_TASK_TEACHER.map((item) => ({ label: item.classInfo.className, checked: false }))}
+                            items={DUMMY_TASK_TEACHER.map((item) => ({
+                                label: item.classInfo.className,
+                                checked: false
+                            }))}
                             isCheckbox={false}
                             onSelectionChange={handleClassSelectionChange}
                             label={"CLASS"}
                         />
                         <Dropdown
                             buttonText={selectedOptions.subject}
-                            items={availableOptions.subjects.map((item) => ({ label: item, checked: false }))}
+                            items={availableOptions.subjects.map((item) => ({label: item, checked: false}))}
                             isCheckbox={false}
                             onSelectionChange={handleSubjectSelectionChange}
                             label={"SUBJECT"}
@@ -218,7 +242,7 @@ const UploadTaskCard = (props: UploadTaskCardProps) => {
                     </div>
                     <div className={classes["content__elem--4"]}>
                         <div>
-                            <SelectButton group={false} onClick={() => setSingle(false)} />
+                            <SelectButton group={false} onClick={() => setSingle(false)}/>
                             <SelectButton
                                 group={true}
                                 onClick={() => {
@@ -232,7 +256,10 @@ const UploadTaskCard = (props: UploadTaskCardProps) => {
                                 <>
                                     <Dropdown
                                         buttonText={selectedOptions.members}
-                                        items={getAvailableMembers().map((item) => ({ label: item, checked: false }))}
+                                        items={getAvailableMembers().map((item) => ({
+                                            label: `${item.firstName} ${item.lastName}`,
+                                            checked: false
+                                        }))}
                                         isCheckbox={true}
                                         label={"MEMBERS"}
                                         disabled={selectedOptions.class === SELECT_CLASS}
@@ -258,11 +285,14 @@ const UploadTaskCard = (props: UploadTaskCardProps) => {
                     </div>
                 </div>
                 <button className={classes["open-card__btn"]} type="button" onClick={props.onClick}>
-                    <PlusIcon />
+                    <PlusIcon/>
                 </button>
-                <Button className={classes["send-btn"]} type="submit">
-                    Send task
-                </Button>
+                <div className={classes["send-btn"]}>
+                    <p>{message}</p>
+                    <Button type="submit">
+                        Send task
+                    </Button>
+                </div>
             </form>
         </div>
     );
