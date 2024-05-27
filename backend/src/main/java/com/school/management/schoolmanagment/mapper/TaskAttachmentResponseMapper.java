@@ -16,7 +16,7 @@ public class TaskAttachmentResponseMapper {
                             .path("/files/")
                             .path(taskAttachment.getId())
                             .toUriString();
-                    return new TaskAttachmentResponse(taskAttachment.getName(), uri, taskAttachment.getType(),
+                    return new TaskAttachmentResponse(taskAttachment.getId(), taskAttachment.getName(), uri, taskAttachment.getType(),
                             taskAttachment.getDataLength());
                 }).toList();
     }

@@ -10,9 +10,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long > {
+public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
+
     Boolean existsByEmailAndPassword(String email, String password);
+
+    @Query("SELECT u FROM User u JOIN u.role r WHERE r.name = :roleName")
+    List<User> findByRoleName(String roleName);
+
     @Query("SELECT tsig FROM TeacherSubjectInClass tsig WHERE tsig.teacher = :teacher")
     List<TeacherSubjectInClass> findTeacherSubjectsInGroup(User teacher);
 
