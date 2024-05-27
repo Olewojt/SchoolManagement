@@ -2,6 +2,7 @@ package com.school.management.schoolmanagment.controller;
 
 import com.school.management.schoolmanagment.dto.StudentInfoDTO;
 import com.school.management.schoolmanagment.dto.TeacherSubjectInClassDTO;
+import com.school.management.schoolmanagment.dto.UserDTO;
 import com.school.management.schoolmanagment.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -32,5 +33,10 @@ public class UserController {
     @GetMapping("/teachers/classes/subjects/{teacherId}")
     public ResponseEntity<List<TeacherSubjectInClassDTO>> findTeacherSubjectsInGroup(@PathVariable Long teacherId) {
         return ResponseEntity.ok(userService.findTeacherSubjectsInGroup(teacherId));
+    }
+
+    @GetMapping("/teachers")
+    public ResponseEntity<List<UserDTO>> getBasicTeacherPersonalData() {
+        return ResponseEntity.ok(userService.getBasicTeacherPersonalData());
     }
 }
