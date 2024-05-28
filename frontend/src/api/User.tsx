@@ -34,6 +34,12 @@ export type FullUser = {
     schoolClassDTO: SchoolClass | null
 }
 
+export interface Child {
+    id: number;
+    firstName: string;
+    schoolClass: string
+}
+
 export const defaultUserData: UserData = {
     personalInfo: {
         firstName: null,
@@ -69,6 +75,28 @@ export async function getUserGrades(userId: number): Promise<SubjectsGrades[]> {
     } catch (error) {
         // Handle the error as needed
         console.error('Error fetching user grades:', error);
+        throw error;
+    }
+}
+
+export async function getParentChildren(userId: number): Promise<Child[]> {
+    try {
+        // Fetch the list of child IDs
+        const response: AxiosResponse<number[], AxiosRequestConfig> = await axiosClient.get<number[]>(`http://localhost:8080/api/v1/parents/${userId}/children`);
+        const childIds = response.data;
+
+        // Fetch details for each child
+        const childPromises: Promise<FullUser>[] = childIds.map(id => getUserData(id));
+        const childrenDetails = await Promise.all(childPromises);
+
+        // Map the details to the Child interface
+        return childrenDetails.map(child => ({
+            id: child.personalInfo.id,
+            firstName: child.personalInfo.firstName ? child.personalInfo.firstName : "UNKNOWN",
+            schoolClass: child.schoolClassDTO?.name ? child.schoolClassDTO.name : "ERROR",
+        }));
+    } catch (error) {
+        console.error('Error fetching parent children:', error);
         throw error;
     }
 }
