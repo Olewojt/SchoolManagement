@@ -1,29 +1,12 @@
 import classes from "pages/Student/Grades/Grades.module.scss";
 import Header from "ui/Header/Header.tsx";
 import GradeCard from "ui/Card/GradeCard.tsx";
-import {useEffect} from "react";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {RootState} from "state/store.tsx";
-import {getUserGrades} from "api/User.tsx";
-import {addGrades} from "state/grades/studentGradesSlice.tsx";
 
 const StudentGrades = () => {
-    const user = useSelector((state: RootState) => state.login);
     const gradesDT = useSelector((state: RootState) => state.studentGrades);
-    const dispatch = useDispatch();
 
-    useEffect(() => {
-        if (user) {
-            getUserGrades(user.id)
-                .then(data => {
-                    console.log('User grades:', data);
-                    dispatch(addGrades(data));
-                })
-                .catch(error => {
-                    console.error('Error fetching user grades:', error);
-                });
-        }
-    }, [user, dispatch]);
 
     const gradesData = gradesDT.grades;
 
