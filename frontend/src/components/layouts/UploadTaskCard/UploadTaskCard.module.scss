@@ -25,7 +25,7 @@
     height: 100%;
 
     display: grid;
-    grid-template-columns: 351px 1fr;
+    grid-template-columns: 20rem 1fr;
   }
 
   &__blank {
@@ -112,7 +112,6 @@
       display: flex;
       align-items: start;
       justify-content: space-between;
-      margin: 0 2rem;
     }
   }
 

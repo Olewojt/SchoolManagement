@@ -313,3 +313,11 @@ export const SingleIcon = () => {
         </svg>
     )
 }
+
+export const CrossIcon = () => {
+    return (<svg width="28" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 3L20 20" stroke="#3A4651" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M20 3L3 20" stroke="#3A4651" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+    )
+}

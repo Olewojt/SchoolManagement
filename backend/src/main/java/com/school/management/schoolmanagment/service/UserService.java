@@ -2,8 +2,10 @@ package com.school.management.schoolmanagment.service;
 
 import com.school.management.schoolmanagment.dto.StudentInfoDTO;
 import com.school.management.schoolmanagment.dto.TeacherSubjectInClassDTO;
+import com.school.management.schoolmanagment.dto.UserDTO;
 import com.school.management.schoolmanagment.mapper.PersonalInfoDTOMapper;
 import com.school.management.schoolmanagment.mapper.StudentInfoDTOMapper;
+import com.school.management.schoolmanagment.mapper.UserDTOMapper;
 import com.school.management.schoolmanagment.model.Role;
 import com.school.management.schoolmanagment.model.TeacherSubjectInClass;
 import com.school.management.schoolmanagment.model.User;
@@ -20,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static com.school.management.schoolmanagment.mapper.TeacherSubjectInClassDTOMapper.mapToTeacherSubjectInClassDTO;
+import static com.school.management.schoolmanagment.mapper.UserDTOMapper.mapToUserDTOs;
 
 @Service
 @RequiredArgsConstructor
@@ -62,5 +65,11 @@ public class UserService {
         List<TeacherSubjectInClass> teacherSubjectsInGroup = userRepository.findTeacherSubjectsInGroup(teacher);
 
         return mapToTeacherSubjectInClassDTO(teacherSubjectsInGroup);
+    }
+
+    public List<UserDTO> getBasicTeacherPersonalData() {
+        List<User> allUsers = userRepository.findByRoleName("Teacher");
+
+        return mapToUserDTOs(allUsers);
     }
 }

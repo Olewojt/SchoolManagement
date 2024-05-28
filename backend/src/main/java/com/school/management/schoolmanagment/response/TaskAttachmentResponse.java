@@ -6,6 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 
-public record TaskAttachmentResponse(String name, String url, String type, Long size) {
+public record TaskAttachmentResponse(String id, String name, String url, String type, Long size) {
 
 }

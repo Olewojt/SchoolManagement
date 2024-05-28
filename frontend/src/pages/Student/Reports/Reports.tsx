@@ -3,12 +3,10 @@ import SelectOptions from "forms/SelectOptions.tsx";
 import PieChart, {GradeDict} from "ui/Charts/PieChart.tsx";
 import {SubjectsGrades} from "api/Grades.tsx";
 import {useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
+import { useSelector} from "react-redux";
 import {RootState} from "state/store.tsx";
 import Button from "ui/Button/Button.tsx";
-import {addGrades} from "state/grades/studentGradesSlice.tsx";
-import {exportStudentGrades, getUserGrades} from "api/User.tsx";
-import {PARENT} from "utilitiesconstants.tsx/";
+import {exportStudentGrades} from "api/User.tsx";
 
 export interface SubjectSelectionState {
     [key: string]: boolean;
@@ -55,11 +53,9 @@ function getGradesCount(grades: SubjectsGrades[]): GradeDict {
 }
 
 const StudentReports = () => {
-    const parent = useSelector((state: RootState) => state.parentChildrenData);
     const user = useSelector((state: RootState) => state.login);
     const grades = useSelector((state: RootState) => state.studentGrades.grades);
-
-    const dispatch = useDispatch();
+    // const grades = DUMMY_GRADES
 
     // Subjects extracted from response
     const [subjects, setSubjects] = useState<string[]>(getSubjects(grades));
@@ -70,36 +66,12 @@ const StudentReports = () => {
     // State of export
     const [exportState, setExportState] = useState<string>("Export");
 
-    const [loading, setLoading] = useState<boolean>(true);
-
-    useEffect(() => {
-        let id = user.id
-
-        if (user.role === PARENT && parent.selected != -1)
-            id = parent.children[parent.selected].id
-
-        setLoading(true);
-        if (user) {
-            getUserGrades(id)
-                .then(data => {
-                    console.log('User grades:', data);
-
-                    dispatch(addGrades(data))
-
-                    setLoading(false);
-                })
-                .catch(error => {
-                    console.error('Error fetching user grades:', error);
-                    setLoading(true)
-                });
-        }
-    }, [user, parent]);
 
     useEffect(() => {
         setSubjects(getSubjects(grades));
         setSelectedSubjects(generateSubjectSelectionStates(getSubjects(grades)));
         setStudentGrades(getGradesCount(grades));
-    }, [loading]);
+    }, [grades]);
 
     // Filter grades when selectedSubjects or date range changes
     useEffect(() => {
