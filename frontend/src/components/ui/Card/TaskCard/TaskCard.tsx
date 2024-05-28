@@ -39,7 +39,7 @@ const TaskCard = (props: TaskCardInterface) => {
                 <ReadTaskCard title={props.title} subject={props.subject} date={formattedDate} members={props.members}
                               description={props.description} id={props.id} status={props.status}
                               handleDragStart={props.handleDragStart} onClick={handleActive}
-                              className={props.className}/>
+                              className={props.className} grade={props.grade}/>
             }
         </>
     );

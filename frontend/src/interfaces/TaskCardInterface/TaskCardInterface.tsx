@@ -4,6 +4,7 @@ interface TaskCardInterface {
     title: string;
     subject: string;
     date: string;
+    grade?: number;
 
     members: Member[];
     description: string;

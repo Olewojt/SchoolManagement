@@ -2,16 +2,17 @@ import classes from "./Notifications.module.scss";
 import React from "react";
 import Message from "ui/Notifications/Message.tsx";
 import Rainbow from "assets/images/Rainbow.png";
-import {DUMMY_NOTIFICATIONS} from "api/Notifications.tsx";
+import { DUMMY_NOTIFICATIONS } from "api/Notifications.tsx";
 
 interface NotificationsProps {
     children?: React.ReactNode;
     className?: string
+    style?: React.CSSProperties
 }
 
 const Notifications: React.FC<NotificationsProps> = (props: NotificationsProps) => {
     return (
-        <div className={`${classes.notifications} ${props.className}`}>
+        <div className={`${classes.notifications} ${props.className}`} style={props.style}>
             <img src="src/assets/images/duck.png" className={classes.duck} />
             <div className={classes.notifications__content}>
                 <h1>NOTIFICATIONS</h1>

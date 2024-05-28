@@ -4,34 +4,57 @@ import UploadInput from "forms/UploadInput/UploadInput.tsx";
 import Button from "ui/Button/Button.tsx";
 
 import TaskCardInterface from "@/interfaces/TaskCardInterface/TaskCardInterface.tsx";
-import {FormEvent} from "react";
-import {getUserTasks, taskStatusDone, taskStatusTODO} from "api/Task.tsx";
+import {FormEvent, useState} from "react";
+import {getTeacherTasks, getUserTasks, taskGraded, taskStatusDone, taskStatusTODO} from "api/Task.tsx";
 import {addTasks} from "state/tasks/tasksSlice.tsx";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "state/store.tsx";
+import Dropdown from "forms/Dropdown/Dropdown.tsx";
 
 const ReadTaskCard = (props: TaskCardInterface) => {
     const user = useSelector((state: RootState) => state.login);
     const dispatch = useDispatch();
 
+    const grades = ["1", "2", "3", "4", "5", "6"];
+    const [selectedGrade, setSelectedGrade] = useState<number>();
+
+    const handleGradeChange = (item: number) => {
+        setSelectedGrade(item);
+        console.log("Selected grade:", item);
+    }
+
     const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log("Form submitted");
-
+        let updatedTasks;
         try {
-            if (props.status === "TO_DO") {
-                await taskStatusDone(props.id);
-            } else if (props.status === "DONE") {
-                await taskStatusTODO(props.id);
+            if (user.role === "Student") {
+                if (props.status === "TO_DO") {
+                    await taskStatusDone(props.id);
+                } else if (props.status === "DONE") {
+                    await taskStatusTODO(props.id);
+                }
+                updatedTasks = await getUserTasks(user.id);
+            } else if (user.role === "Teacher") {
+                if (selectedGrade !== undefined) {
+                    await taskGraded(props.id, selectedGrade);
+                    updatedTasks = await getTeacherTasks(user.id);
+                    console.log(updatedTasks)
+
+                } else {
+                    console.error('Please select a grade for the task.');
+                    return;
+                }
             }
 
-            const updatedTasks = await getUserTasks(user.id);
             console.log('User tasks:', updatedTasks);
-            dispatch(addTasks(updatedTasks));
+            if (updatedTasks)
+                dispatch(addTasks(updatedTasks));
         } catch (error) {
             console.error('Error updating task status or fetching user tasks:', error);
         }
     }
+
 
     return (
         <div className={classes["open-card"]}>
@@ -74,17 +97,43 @@ const ReadTaskCard = (props: TaskCardInterface) => {
                     <div className={classes["open-card__upload-area"]}>
                         <UploadInput task={props.id} status={props.status}/>
                     </div>
+                    {user.role === "Teacher" && props.status === "DONE" &&
+                        <Dropdown
+                            buttonText={selectedGrade ? selectedGrade.toString() : "Select grade"}
+                            items={grades.map(grade => ({label: grade, checked: false}))}
+                            isCheckbox={false}
+                            onSelectionChange={handleGradeChange}
+                            label={"CHOOSE A GRADE"}
+                            className={classes["open-card__grade-task"]}
+                        />
+                    }
+                    {props.grade &&
+                        <div className={classes["open-card__grade-task"]} >
+                            <h3>Task grade:</h3>
+                            <p>{props.grade}</p>
+                        </div>
+                    }
                 </div>
                 <button className={classes["open-card__btn"]} type="button" onClick={props.onClick}>
                     <PlusIcon/>
                 </button>
             </div>
-            {((props.status === "TO_DO" || props.status === "DONE") && user.role === "Student") && (
+            {((props.status === "TO_DO" && user.role === "Student") || (props.status === "DONE" && user.role === "Student")) && (
                 <form onSubmit={onSubmit} className={classes["open-card__form"]}>
-                    <Button className={classes["send-btn"]}
-                            type="submit">{props.status === "TO_DO" ? "Send Task" : "Undo Task"}</Button>
+                    <Button className={classes["send-btn"]} type="submit">
+                        {props.status === "TO_DO" ? "Send Task" : "Undo Task"}
+                    </Button>
                 </form>
             )}
+
+            {(props.status === "DONE" && user.role === "Teacher") && (
+                <form onSubmit={onSubmit} className={classes["open-card__form"]}>
+                    <Button className={classes["send-btn"]} type="submit">
+                        Grade Task
+                    </Button>
+                </form>
+            )}
+
         </div>
     )
 }

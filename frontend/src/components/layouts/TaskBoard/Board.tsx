@@ -7,7 +7,7 @@ import SelectOptions from "forms/SelectOptions.tsx";
 import AddCard from "ui/Card/TaskCard/AddCard.tsx";
 import {useState} from "react";
 
-function getSubjectsAndClasses(cards: TaskCardInterface[]): {subjects: string[], classes: string[]} {
+function getSubjectsAndClasses(cards: TaskCardInterface[]): { subjects: string[], classes: string[] } {
     const subjectsSet = new Set<string>();
     const classesSet = new Set<string>();
     cards.forEach(card => {
@@ -16,14 +16,14 @@ function getSubjectsAndClasses(cards: TaskCardInterface[]): {subjects: string[],
             classesSet.add(card.className);
         }
     });
-    return { subjects: Array.from(subjectsSet), classes: Array.from(classesSet) };
+    return {subjects: Array.from(subjectsSet), classes: Array.from(classesSet)};
 }
 
 const Board = () => {
     const tasks = useSelector((state: RootState) => state.studentTasks.tasks);
     const user = useSelector((state: RootState) => state.login);
 
-    const { subjects, classes } = getSubjectsAndClasses(tasks);
+    const {subjects, classes} = getSubjectsAndClasses(tasks);
 
     const [selectedSubjects, setSelectedSubjects] = useState<{ [key: string]: boolean }>({});
     const [selectedClasses, setSelectedClasses] = useState<{ [key: string]: boolean }>({});
@@ -58,14 +58,18 @@ const Board = () => {
                     checkedItems={selectedSubjects}
                     className={boardStyles.headers__select}
                 />
-                <SelectOptions
-                    name={"Class"}
-                    options={classes}
-                    onCheckboxChange={onClassChange}
-                    checkedItems={selectedClasses}
-                    className={boardStyles.headers__select}
-                />
-                {user.role === "Teacher" && <AddCard/>}
+                {user.role === "Teacher" &&
+                    <>
+                        <SelectOptions
+                            name={"Class"}
+                            options={classes}
+                            onCheckboxChange={onClassChange}
+                            checkedItems={selectedClasses}
+                            className={boardStyles.headers__select}
+                        />
+                        <AddCard/>
+                    </>
+                }
             </div>
 
             <div className={boardStyles.board}>

@@ -11,9 +11,10 @@ interface DropdownProps {
     onSelectionChange?: (selected: any) => void;
     label?: string;
     disabled?: boolean;
+    className?: string;
 }
 
-const Dropdown: React.FC<DropdownProps> = ({ buttonText, items, isCheckbox = false, onSelectionChange, label, disabled }) => {
+const Dropdown: React.FC<DropdownProps> = ({ buttonText, items, isCheckbox = false, onSelectionChange, label, disabled, className }) => {
     const [open, setOpen] = useState<boolean>(false);
     const [dropdownItems, setDropdownItems] = useState(items);
     const [searchValue, setSearchValue] = useState<string>("");
@@ -63,14 +64,14 @@ const Dropdown: React.FC<DropdownProps> = ({ buttonText, items, isCheckbox = fal
 
     const filteredItems = dropdownItems.map((item, index) => ({
         ...item,
-        originalIndex: index, // Adding original indices
+        originalIndex: index,
     })).filter(item => {
         const label = item.label?.toString().toLowerCase();
         return label?.includes(searchValue.toLowerCase());
     });
 
     return (
-        <div ref={dropdownRef} className={`${classes.dropdown} ${disabled ? classes.disabled : ""}`}>
+        <div ref={dropdownRef} className={`${classes.dropdown} ${className} ${disabled ? classes.disabled : ""}`}>
             {label && <h2>{label}</h2>}
             <DropdownButton ref={buttonRef} toggle={toggleDropdown} open={open} disabled={disabled}>
                 {buttonText}
@@ -79,9 +80,9 @@ const Dropdown: React.FC<DropdownProps> = ({ buttonText, items, isCheckbox = fal
                 <DropdownContent ref={contentRef} open={open} searchValue={searchValue} setSearchValue={setSearchValue} showSearch={showSearch}>
                     {filteredItems.map((item) => (
                         <DropdownItem
-                            key={item.originalIndex} // Using original index as key
+                            key={item.originalIndex}
                             checked={item.checked}
-                            onClick={(checked) => handleItemClick(item.originalIndex, checked)} // Using original index for click handling
+                            onClick={(checked) => handleItemClick(item.originalIndex, checked)}
                             isCheckbox={isCheckbox}
                         >
                             {item.label}
