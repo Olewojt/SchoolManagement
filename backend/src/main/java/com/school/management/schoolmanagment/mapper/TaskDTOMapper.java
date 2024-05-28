@@ -15,7 +15,8 @@ public class TaskDTOMapper {
                         task.getUsers().stream()
                                 .map(member -> new UserDTO(member.getId(), member.getPersonalInfo().getFirstName(),
                                         member.getPersonalInfo().getLastName())).sorted().toList(),
-                        task.getUsers().iterator().next().getSchoolClass().getName()))
+                        task.getUsers().iterator().next().getSchoolClass().getName(),
+                        task.getGrade()))
                 .toList();
     }
 
@@ -25,7 +26,8 @@ public class TaskDTOMapper {
                 task.getUsers().stream()
                         .map(member -> new UserDTO(member.getId(), member.getPersonalInfo().getFirstName(),
                                 member.getPersonalInfo().getLastName())).toList(),
-                task.getUsers().iterator().next().getSchoolClass().getName());
+                task.getUsers().iterator().next().getSchoolClass().getName(),
+                task.getGrade());
     }
 
 }
