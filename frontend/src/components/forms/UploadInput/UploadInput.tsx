@@ -13,7 +13,7 @@ interface UploadInputProps {
 
 const UploadInput: React.FC<UploadInputProps> = ({task, status}) => {
     const [files, setFiles] = useState<{ name: string; loading: number; error: boolean }[]>([]);
-    const [uploadedFiles, setUploadedFiles] = useState<{ name: string; size: string, id: string }[]>([]);
+    const [uploadedFiles, setUploadedFiles] = useState<{ name: string; size: string, id: string,  fullName: string }[]>([]);
     const [showProgress, setShowProgress] = useState<boolean>(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -27,9 +27,10 @@ const UploadInput: React.FC<UploadInputProps> = ({task, status}) => {
                 headers: {'Authorization': localStorage.getItem('BEARER_TOKEN')}
             });
 
-            const filesWithSizeInMB = data.map((file: { name: string; size: number; id: string; }) => {
+            const filesWithSizeInMB = data.map((file: { name: string; size: number; id: string;}) => {
                 const fileName = file.name.length > 12 ? `${file.name.substring(0, 13)}... .${file.name.split(".")[1]}` : file.name;
                 return {
+                    fullName: file.name,
                     name: fileName,
                     size: `${(file.size / (1024 * 1024)).toFixed(2)} MB`,
                     id: file.id
@@ -98,13 +99,13 @@ const UploadInput: React.FC<UploadInputProps> = ({task, status}) => {
         if (user.role === "Teacher" && (status === "DONE" || status === "GRADED")) {
             try {
                 downloadAttachmentFromTask(attachmentId).then(data => {
-                    const uint8Array = new Uint8Array(data); // Convert data to Uint8Array
-                    const blob = new Blob([uint8Array], {type: 'application/pdf'}); // Creating Blob object from response data
-                    const url = window.URL.createObjectURL(blob); // Creating URL from Blob object
+                    const uint8Array = new Uint8Array(data);
+                    const blob = new Blob([uint8Array], {type: 'application/pdf'});
+                    const url = window.URL.createObjectURL(blob);
 
                     const link = document.createElement('a');
                     link.href = url;
-                    link.setAttribute('download', `${attachmentName}.pdf`); // Setting the filename for download
+                    link.setAttribute('download', `${attachmentName}.pdf`);
                     document.body.appendChild(link);
                     link.click();
                 })
@@ -151,7 +152,7 @@ const UploadInput: React.FC<UploadInputProps> = ({task, status}) => {
                             onMouseLeave={() => setIsHovered(null)}
                             onClick={() =>
                                 user.role === "Teacher"
-                                    ? handleDownload(file.id, file.name)
+                                    ? handleDownload(file.id, file.fullName)
                                     : handleDelete(file.id)
                             }
                         >

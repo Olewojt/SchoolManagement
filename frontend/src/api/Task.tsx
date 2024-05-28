@@ -99,12 +99,14 @@ export async function deleteAttachmentFromTask(taskAttachmentId: string): Promis
 }
 export async function downloadAttachmentFromTask(taskAttachmentId: string): Promise<ArrayBuffer> {
     try {
-        const response: AxiosResponse<ArrayBuffer, AxiosRequestConfig> = await axiosClient.get<ArrayBuffer>(`/api/v1/attachments/${taskAttachmentId}`);
-        // Handle the response as needed
+        const config: AxiosRequestConfig = {
+            responseType: 'arraybuffer'
+        };
+
+        const response: AxiosResponse<ArrayBuffer> = await axiosClient.get<ArrayBuffer>(`/api/v1/attachments/${taskAttachmentId}`, config);
 
         return response.data;
     } catch (error) {
-        // Handle the error as needed
         console.error('Error fetching user tasks:', error);
         throw error;
     }
