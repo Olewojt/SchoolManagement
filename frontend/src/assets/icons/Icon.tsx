@@ -321,3 +321,12 @@ export const CrossIcon = () => {
         </svg>
     )
 }
+
+export const DownloadIcon = () => {
+    return (<svg width="28" height="30" viewBox="0 0 22 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 14L11 20L4 14M11 2V19" stroke="#3A4651" strokeWidth="4" strokeLinecap="round"
+                  strokeLinejoin="round"/>
+            <path d="M2 28H20" stroke="#3A4651" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+    )
+}
