@@ -32,7 +32,7 @@ public class UserRepositoryTest {
         Role studentRole = roleRepository.save(new Role("Student"));
 
         PersonalInfo pi = new PersonalInfo("John", "Doe", "12345678901", "1234567890",
-                LocalDate.now(), "USA", "New York", "Main St", "42", "24");
+                LocalDate.now(), "USA", "New York", "Main St", "42", "24",true);
         personalInfoRepository.save(pi);
 
         User user = new User("john.doe@example.com", "password123", pi,

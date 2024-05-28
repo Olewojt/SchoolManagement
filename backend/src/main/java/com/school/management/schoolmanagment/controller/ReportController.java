@@ -33,6 +33,11 @@ public class ReportController {
         return reportService.teacherReport(teacherId, startDate, endDate);
     }
 
+    @GetMapping("/adminReport")
+    public String classStatsReport() {
+        return reportService.adminReport();
+    }
+
 
 
 

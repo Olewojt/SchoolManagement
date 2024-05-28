@@ -23,4 +23,5 @@ public class PersonalInfoDTO {
     private String street;
     private String homeNumber;
     private String flatNumber;
+    private Boolean isFromCity;
 }
