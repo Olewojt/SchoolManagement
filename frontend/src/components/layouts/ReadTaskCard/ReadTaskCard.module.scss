@@ -25,7 +25,7 @@
     height: 100%;
 
     display: grid;
-    grid-template-columns: 351px 1fr;
+    grid-template-columns: 20rem 1fr;
   }
 
   &__blank {
@@ -38,6 +38,8 @@
     display: grid;
     grid-template-columns: (1fr, 1fr);
     grid-template-rows: repeat(5, auto);
+
+    grid-gap: 0rem 4rem;
 
     margin: 1rem 2rem;
 
@@ -64,6 +66,7 @@
     margin-left: auto;
 
     grid-row: 5;
+    grid-column: 2/3;
   }
 
   &__title {
@@ -133,6 +136,8 @@
     width: fit-content;
 
     grid-row: 5;
+    grid-column: 1/2;
+
     img {
       width: 3rem;
     }
@@ -144,6 +149,7 @@
       grid-row: 4;
 
       position: relative;
+
       &::before {
         content: "";
         background-color: var(--color-main-font);
@@ -151,7 +157,7 @@
         height: 2px;
         width: 100%;
         position: absolute;
-        top: 1.2rem;
+        top: 1rem;
         margin-left: 1rem;
       }
     }
