@@ -6,15 +6,22 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "state/store.tsx";
 import {getUserGrades} from "api/User.tsx";
 import {addGrades} from "state/grades/studentGradesSlice.tsx";
+import {PARENT} from "utilitiesconstants.tsx/";
 
 const StudentGrades = () => {
+    const parent = useSelector((state: RootState) => state.parentChildrenData);
     const user = useSelector((state: RootState) => state.login);
     const gradesDT = useSelector((state: RootState) => state.studentGrades);
     const dispatch = useDispatch();
 
     useEffect(() => {
+        let id = user.id
+
+        if (user.role === PARENT && parent.selected != -1)
+            id = parent.children[parent.selected].id
+
         if (user) {
-            getUserGrades(user.id)
+            getUserGrades(id)
                 .then(data => {
                     console.log('User grades:', data);
                     dispatch(addGrades(data));
@@ -23,7 +30,7 @@ const StudentGrades = () => {
                     console.error('Error fetching user grades:', error);
                 });
         }
-    }, [user, dispatch]);
+    }, [user, parent, dispatch]);
 
     const gradesData = gradesDT.grades;
 

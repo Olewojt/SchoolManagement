@@ -8,6 +8,7 @@ import {RootState} from "state/store.tsx";
 import Button from "ui/Button/Button.tsx";
 import {addGrades} from "state/grades/studentGradesSlice.tsx";
 import {exportStudentGrades, getUserGrades} from "api/User.tsx";
+import {PARENT} from "utilitiesconstants.tsx/";
 
 export interface SubjectSelectionState {
     [key: string]: boolean;
@@ -54,9 +55,10 @@ function getGradesCount(grades: SubjectsGrades[]): GradeDict {
 }
 
 const StudentReports = () => {
+    const parent = useSelector((state: RootState) => state.parentChildrenData);
     const user = useSelector((state: RootState) => state.login);
     const grades = useSelector((state: RootState) => state.studentGrades.grades);
-    // const grades = DUMMY_GRADES
+
     const dispatch = useDispatch();
 
     // Subjects extracted from response
@@ -71,9 +73,14 @@ const StudentReports = () => {
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
+        let id = user.id
+
+        if (user.role === PARENT && parent.selected != -1)
+            id = parent.children[parent.selected].id
+
         setLoading(true);
         if (user) {
-            getUserGrades(user.id)
+            getUserGrades(id)
                 .then(data => {
                     console.log('User grades:', data);
 
@@ -86,7 +93,7 @@ const StudentReports = () => {
                     setLoading(true)
                 });
         }
-    }, [user]);
+    }, [user, parent]);
 
     useEffect(() => {
         setSubjects(getSubjects(grades));

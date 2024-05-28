@@ -42,7 +42,8 @@ const Login: React.FC = () => {
 
         if ((form.name === "admin" && form.password === "admin")
             || (form.name === "student" && form.password === "student")
-            || (form.name === "teacher" && form.password === "teacher")) {
+            || (form.name === "teacher" && form.password === "teacher")
+            || (form.name === "parent" && form.password === "parent")) {
 
             switch (form.name) {
                 case "admin":
@@ -54,7 +55,11 @@ const Login: React.FC = () => {
                     break
 
                 case "student":
-                    payload.email = "david.wilson@example.com"
+                    payload.email = "john.doe@example.com"
+                    break
+
+                case "parent":
+                    payload.email = "parent@example.com"
                     break
 
                 default:
