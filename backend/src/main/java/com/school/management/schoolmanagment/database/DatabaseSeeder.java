@@ -45,7 +45,7 @@ public class DatabaseSeeder implements CommandLineRunner {
     @Autowired
     private TaskService taskService;
 
-    
+
 
     @Override
     @Transactional
@@ -92,10 +92,10 @@ public class DatabaseSeeder implements CommandLineRunner {
         Role parentRole = roleRepository.findByName("Parent").orElseThrow();
 
         SchoolClass class5A = schoolClassRepository.findByName("5A");
-        SchoolClass class8D = schoolClassRepository.findByName("8D");
+        SchoolClass class8A = schoolClassRepository.findByName("8D");
 
         User student1 = new User("john.doe@example.com", "password123", personalInfoRepository.findById(1L).orElseThrow(), studentRole, class5A);
-        User student2 = new User("jane.smith@example.com", "password123", personalInfoRepository.findById(2L).orElseThrow(), studentRole, class8D);
+        User student2 = new User("jane.smith@example.com", "password123", personalInfoRepository.findById(2L).orElseThrow(), studentRole, class8A);
         User student3 = new User("emily.clark@example.com", "password123", personalInfoRepository.findById(6L).orElseThrow(), studentRole, class5A);
         User student4 = new User("michael.brown@example.com", "password123", personalInfoRepository.findById(7L).orElseThrow(), studentRole, class5A);
         User student5 = new User("emma.jones@example.com", "password123", personalInfoRepository.findById(8L).orElseThrow(), studentRole, class5A);
@@ -130,11 +130,11 @@ public class DatabaseSeeder implements CommandLineRunner {
     public void seedSchoolClasses() {
         schoolClassRepository.save(new SchoolClass("5A"));
         schoolClassRepository.save(new SchoolClass("8D"));
-        schoolClassRepository.save(new SchoolClass("3C"));
-        schoolClassRepository.save(new SchoolClass("7B"));
-        schoolClassRepository.save(new SchoolClass("6E"));
-        schoolClassRepository.save(new SchoolClass("4F"));
-        schoolClassRepository.save(new SchoolClass("2G"));
+        schoolClassRepository.save(new SchoolClass("3A"));
+        schoolClassRepository.save(new SchoolClass("7A"));
+        schoolClassRepository.save(new SchoolClass("6A"));
+        schoolClassRepository.save(new SchoolClass("2A"));
+        schoolClassRepository.save(new SchoolClass("2B"));
     }
 
     @Transactional

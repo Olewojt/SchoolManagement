@@ -103,8 +103,8 @@ public class ReportService {
 
             List<TeacherSubjectInClass> teacherSubjectInClassList = teacherSubjectInClassRepository.findAllByTeacherId(teacherId);
 
-            Instant startInstant = startDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
-            Instant endInstant = endDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
+            Instant startInstant = startDate.atStartOfDay(ZoneId.systemDefault()).minusDays(1).toInstant();
+            Instant endInstant = endDate.atStartOfDay(ZoneId.systemDefault()).plusDays(1).toInstant();
 
             for (TeacherSubjectInClass teacherSubjectInClass : teacherSubjectInClassList) {
                 String className = teacherSubjectInClass.getSchoolClass().getName();
