@@ -1,5 +1,6 @@
 package com.school.management.schoolmanagment;
 
+import com.school.management.schoolmanagment.service.ReportService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

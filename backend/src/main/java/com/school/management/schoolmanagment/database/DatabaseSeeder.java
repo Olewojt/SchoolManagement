@@ -3,6 +3,7 @@ package com.school.management.schoolmanagment.database;
 import com.school.management.schoolmanagment.dto.GradeTaskDTO;
 import com.school.management.schoolmanagment.model.*;
 import com.school.management.schoolmanagment.repository.*;
+import com.school.management.schoolmanagment.service.ReportService;
 import com.school.management.schoolmanagment.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -44,6 +45,8 @@ public class DatabaseSeeder implements CommandLineRunner {
     @Autowired
     private TaskService taskService;
 
+    
+
     @Override
     @Transactional
     public void run(String... args) {
@@ -56,6 +59,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         seedTasks();
         seedNotifications();
         seedReports();
+
     }
 
     @Transactional
@@ -68,16 +72,16 @@ public class DatabaseSeeder implements CommandLineRunner {
 
     @Transactional
     public void seedPersonalInfo() {
-        personalInfoRepository.save(new PersonalInfo("John", "Doe", "12345678901", "1234567890", LocalDate.now(), "USA", "New York", "Main St", "42", "24"));
-        personalInfoRepository.save(new PersonalInfo("Jane", "Smith", "98765432101", "0987654321", LocalDate.now(), "USA", "Chicago", "Elm St", "50", "12"));
-        personalInfoRepository.save(new PersonalInfo("Bob", "Brown", "45612378901", "4561237890", LocalDate.now(), "USA", "San Francisco", "Pine St", "10", "5"));
-        personalInfoRepository.save(new PersonalInfo("Alice", "Johnson", "32165498701", "3216549870", LocalDate.now(), "USA", "Los Angeles", "Maple St", "33", "2"));
-        personalInfoRepository.save(new PersonalInfo("Tom", "White", "15975348601", "1597534860", LocalDate.now(), "USA", "Seattle", "Cedar St", "22", "3"));
-        personalInfoRepository.save(new PersonalInfo("Emily", "Clark", "12312312345", "1231231231", LocalDate.now(), "USA", "Boston", "Oak St", "88", "11"));
-        personalInfoRepository.save(new PersonalInfo("Michael", "Brown", "54354354321", "5435435432", LocalDate.now(), "USA", "Houston", "Pine St", "44", "8"));
-        personalInfoRepository.save(new PersonalInfo("Emma", "Jones", "98798798765", "9879879876", LocalDate.now(), "USA", "Phoenix", "Spruce St", "12", "7"));
-        personalInfoRepository.save(new PersonalInfo("David", "Wilson", "65465465432", "6546546543", LocalDate.now(), "USA", "Dallas", "Birch St", "23", "9"));
-        personalInfoRepository.save(new PersonalInfo("Sophia", "Taylor", "32132132109", "3213213210", LocalDate.now(), "USA", "Austin", "Maple St", "77", "4"));
+        personalInfoRepository.save(new PersonalInfo("John", "Doe", "12345678901", "1234567890", LocalDate.now(), "USA", "New York", "Main St", "42", "24", true));
+        personalInfoRepository.save(new PersonalInfo("Jane", "Smith", "98765432101", "0987654321", LocalDate.now(), "USA", "Chicago", "Elm St", "50", "12",false));
+        personalInfoRepository.save(new PersonalInfo("Bob", "Brown", "45612378901", "4561237890", LocalDate.now(), "USA", "San Francisco", "Pine St", "10", "5",true));
+        personalInfoRepository.save(new PersonalInfo("Alice", "Johnson", "32165498701", "3216549870", LocalDate.now(), "USA", "Los Angeles", "Maple St", "33", "2",false));
+        personalInfoRepository.save(new PersonalInfo("Tom", "White", "15975348601", "1597534860", LocalDate.now(), "USA", "Seattle", "Cedar St", "22", "3",true));
+        personalInfoRepository.save(new PersonalInfo("Emily", "Clark", "12312312345", "1231231231", LocalDate.now(), "USA", "Boston", "Oak St", "88", "11",true));
+        personalInfoRepository.save(new PersonalInfo("Michael", "Brown", "54354354321", "5435435432", LocalDate.now(), "USA", "Houston", "Pine St", "44", "8",true));
+        personalInfoRepository.save(new PersonalInfo("Emma", "Jones", "98798798765", "9879879876", LocalDate.now(), "USA", "Phoenix", "Spruce St", "12", "7",false));
+        personalInfoRepository.save(new PersonalInfo("David", "Wilson", "65465465432", "6546546543", LocalDate.now(), "USA", "Dallas", "Birch St", "23", "9",false));
+        personalInfoRepository.save(new PersonalInfo("Sophia", "Taylor", "32132132109", "3213213210", LocalDate.now(), "USA", "Austin", "Maple St", "77", "4",true));
     }
 
     @Transactional

@@ -1,21 +1,53 @@
 import classes from "./Reports.module.scss";
 import SelectDate, {currentDate} from "forms/SelectDate.tsx";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import SelectOption from "forms/SelectOption.tsx";
 import Button from "ui/Button/Button.tsx";
-import {exportTeacherTasks} from "api/Teachers.tsx";
+import {exportTeacherTasks, getTeachers, TeacherSelection} from "api/Teachers.tsx";
+import {useSelector} from "react-redux";
+import {RootState} from "state/store.tsx";
+
+const selectedTeacherInitialState = {
+    id: -1,
+    firstName: "NO",
+    lastName: "DATA"
+}
 
 const PrincipalReports = () => {
-    // const user = useSelector((state: RootState) => state.login);
-
-    // const [selectedTeacher, setSelectedTeacher] = useState<number>();
+    const user = useSelector((state: RootState) => state.login);
+    const [teachers, setTeachers] = useState<TeacherSelection[]>([]);
+    const [selectedTeacher, setSelectedTeacher] = useState<TeacherSelection>(selectedTeacherInitialState);
 
     // State of export
     const [exportState, setExportState] = useState<string>("Export");
-    const [fromDate, setFromDate] = useState(currentDate());
+    const [fromDate, setFromDate] = useState(currentDate(-180));
     const [toDate, setToDate] = useState(currentDate());
 
-    // const [loading, setLoading] = useState<boolean>(true);
+    const [loading, setLoading] = useState<boolean>(true);
+
+    useEffect(() => {
+        setLoading(true);
+
+        getTeachers()
+            .then((data) => {
+                setTeachers(data)
+                setSelectedTeacher(data[0]);
+                setLoading(false);
+            })
+            .catch((error) => {
+                console.log("Error getting teachers in principal report tab", error)
+            })
+    }, [user]);
+
+    useEffect(() => {
+    }, [loading]);
+
+    const handleTeacherChange = (selected: string) => {
+        const id = teachers.findIndex(
+            (teacher) => `${teacher.firstName} ${teacher.lastName}` == selected);
+
+        setSelectedTeacher(teachers[id]);
+    };
 
     const handleFromDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setFromDate(event.target.value);
@@ -42,7 +74,7 @@ const PrincipalReports = () => {
     const exportRequest = () => {
         setExportState("Exporting...");
 
-        exportTeacherTasks(8, new Date("2024-01-01"), new Date("2024-12-30"))
+        exportTeacherTasks(selectedTeacher?.id, new Date(fromDate), new Date(toDate))
             .then(data => {
                 console.log('Export request response', data);
 
@@ -71,9 +103,9 @@ const PrincipalReports = () => {
             <div className={classes.filters}>
                 <SelectOption
                     name={"Teacher"}
-                    options={[]}
-                    selected={""}
-                    onOptionChange={() => {}}
+                    options={teachers.map((teacher) => `${teacher.firstName} ${teacher.lastName}`)}
+                    selected={`${selectedTeacher.firstName} ${selectedTeacher.lastName}`}
+                    onOptionChange={handleTeacherChange}
                 ></SelectOption>
                 <SelectDate
                     name={"Date"}

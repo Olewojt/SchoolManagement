@@ -1,6 +1,7 @@
 package com.school.management.schoolmanagment.service;
 
 import com.school.management.schoolmanagment.dto.GradeDTO;
+import com.school.management.schoolmanagment.dto.StudentInfoDTO;
 import com.school.management.schoolmanagment.dto.SubjectGradesDTO;
 import com.school.management.schoolmanagment.model.SchoolClass;
 import com.school.management.schoolmanagment.model.Subject;
@@ -127,6 +128,27 @@ public class ReportService {
         }
     }
 
+    public String adminReport() {
+        try {
+            List<SchoolClass> schoolClassList = schoolClassRepository.findAll();
+            Map<String, ClassInfo> classInfoMap = new HashMap<>();
+            for (SchoolClass schoolClass :
+                    schoolClassList) {
+                List<User> cityMembers = userRepository.findCityMembersBySchoolClassId(schoolClass.getId());
+                List<User> totalMember = userRepository.findStudentsBySchoolClassId(schoolClass.getId());
+                classInfoMap.put(schoolClass.getName(), new ClassInfo(totalMember.size()-cityMembers.size(), cityMembers.size()));
+            }
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String currentUsername = authentication.getName();
+            User admin = userRepository.findByEmail(currentUsername).orElseThrow();
+            AdminReport adminReport = new AdminReport(admin.getPersonalInfo().getFirstName(), admin.getPersonalInfo().getLastName(), classInfoMap);
+            adminReport.generate();
+            return "Admin report generated successfully";
+        } catch (IOException e) {
+            return "Error generating teacher report: " + e.getMessage();
+        }
+    }
+
 
     private Map<String, List<Integer>> mapSubjectGrades(List<SubjectGradesDTO> gradesList) {
         Map<String, List<Integer>> subjectGradesMap = new HashMap<>();
@@ -160,4 +182,6 @@ public class ReportService {
             }
         }
     }
+
+
 }

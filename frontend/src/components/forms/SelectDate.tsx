@@ -12,8 +12,14 @@ interface SelectProps {
     handleToDateChange: React.ChangeEventHandler;
     className?: string
 }
-export function currentDate() {
-    const date = new Date();
+export function currentDate(offset?: number) {
+    const date = new Date()
+
+    if (offset) {
+        // Offset in days
+        date.setDate(date.getDate() + offset);
+    }
+
     const year = date.getFullYear();
     let month: string | number = date.getMonth() + 1;
     let day: string | number = date.getDate();

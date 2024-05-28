@@ -33,6 +33,7 @@ public class PersonalInfo {
     private String street;
     private String homeNumber;
     private String flatNumber;
+    private Boolean isFromCity;
 
     @JsonIgnore
     @OneToOne(mappedBy = "personalInfo")
@@ -40,7 +41,7 @@ public class PersonalInfo {
 
     public PersonalInfo(String firstName, String lastName, String pesel,
                         String phoneNumber, LocalDate dateOfBirth, String country, String city,
-                        String street, String homeNumber, String flatNumber) {
+                        String street, String homeNumber, String flatNumber, Boolean isFromCity) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.pesel = pesel;
@@ -51,5 +52,6 @@ public class PersonalInfo {
         this.street = street;
         this.homeNumber = homeNumber;
         this.flatNumber = flatNumber;
+        this.isFromCity = isFromCity;
     }
 }

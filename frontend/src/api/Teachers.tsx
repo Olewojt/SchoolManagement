@@ -7,6 +7,13 @@ export interface ClassesSubjects {
     subjectNames: string[]
 }
 
+// for principal report
+export interface TeacherSelection {
+    id: number,
+        firstName: string,
+        lastName: string
+}
+
 export async function getTeacherClassesSubjects(userId: number): Promise<ClassesSubjects[]> {
     try {
         const response: AxiosResponse<ClassesSubjects[], AxiosRequestConfig> = await axiosClient.get<ClassesSubjects[]>(`/api/v1/teachers/classes/subjects/${userId}`);
@@ -54,6 +61,19 @@ export async function exportTeacherTasks(teacherId: number, startDate: Date, end
     } catch (error) {
         // Handle the error as needed
         console.error('Error requesting teacher report', error);
+        throw error;
+    }
+}
+
+export async function getTeachers(): Promise<TeacherSelection[]> {
+    try {
+        const response: AxiosResponse<TeacherSelection[], AxiosRequestConfig> = await axiosClient.get<TeacherSelection[]>(`/api/v1/teachers`);
+
+        // Handle the response as needed
+        return response.data;
+    } catch (error) {
+        // Handle the error as needed
+        console.error('Error requesting teachers list', error);
         throw error;
     }
 }
