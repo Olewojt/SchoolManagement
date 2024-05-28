@@ -30,7 +30,7 @@ const LastGradeCard: React.FC<LastGradeCardProps> = (props) => {
             <div className={classes["card"]}>
                 {lastGrade ? (
                     <>
-                        <h3 className={classes["card__header"]}>Ostatnia ocena</h3>
+                        <h3 className={classes["card__header"]}>Last Grade</h3>
                         <h1 className={classes["card__grade"]}>{lastGrade.grades[lastGrade.grades.length - 1].grade}</h1>
                         <h3 className={classes["card__subject"]}>{lastSubject}</h3>
                         <h3 className={classes["card__date"]}>{formatDate(lastGrade.grades[lastGrade.grades.length - 1].gradedAt)}</h3>
