@@ -1,7 +1,7 @@
 import classes from "./Reports.module.scss";
-import SelectDate, {currentDate} from "forms/SelectDate.tsx";
+import SelectDate, {currentDate} from "forms/SelectHeaders/SelectDate.tsx";
 import React, {useEffect, useState} from "react";
-import SelectOption from "forms/SelectOption.tsx";
+import SelectOption from "forms/SelectHeaders/SelectOption.tsx";
 import Button from "ui/Button/Button.tsx";
 import {exportTeacherTasks, getTeachers, TeacherSelection} from "api/Teachers.tsx";
 import {useSelector} from "react-redux";

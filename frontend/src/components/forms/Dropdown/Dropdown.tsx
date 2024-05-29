@@ -3,6 +3,7 @@ import DropdownButton from "./DropdownButton";
 import DropdownContent from "./DropdownContent";
 import DropdownItem from "./DropdownItem";
 import classes from "./Dropdown.module.scss";
+import {useClickOutside} from "hooks/useClickOutside.tsx";
 
 interface DropdownProps {
     buttonText: string;
@@ -20,7 +21,7 @@ const Dropdown: React.FC<DropdownProps> = ({ buttonText, items, isCheckbox = fal
     const [searchValue, setSearchValue] = useState<string>("");
     const [showSearch, setShowSearch] = useState<boolean>(false);
 
-    const dropdownRef = useRef<HTMLDivElement>(null);
+    const dropdownRef = useClickOutside(() => setOpen(false));
     const buttonRef = useRef<HTMLDivElement>(null);
     const contentRef = useRef<HTMLDivElement>(null);
 
@@ -47,20 +48,6 @@ const Dropdown: React.FC<DropdownProps> = ({ buttonText, items, isCheckbox = fal
             onSelectionChange && onSelectionChange(selectedLabel);
         }
     };
-
-    useEffect(() => {
-        const handler = (event: MouseEvent) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-                setOpen(false);
-            }
-        };
-
-        document.addEventListener("click", handler);
-
-        return () => {
-            document.removeEventListener("click", handler);
-        };
-    }, [dropdownRef]);
 
     const filteredItems = dropdownItems.map((item, index) => ({
         ...item,

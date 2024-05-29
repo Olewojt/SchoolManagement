@@ -1,8 +1,9 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import expand from 'assets/icons/expand.svg';
 import collapse from 'assets/icons/collapse.svg';
 import baseClasses from './Select.module.scss';
 import classes from './SelectOption.module.scss';
+import {useClickOutside} from "hooks/useClickOutside.tsx";
 
 interface SelectProps {
     options: Array<string>;
@@ -15,6 +16,8 @@ interface SelectProps {
 const SelectOption: React.FC<SelectProps> = (props: SelectProps) => {
     const [isExpanded, setIsExpanded] = useState(false);
 
+    const dropdownRef = useClickOutside(() => setIsExpanded(false));
+
     const toggleExpansion = () => {
         setIsExpanded(prev => !prev);
     };
@@ -24,7 +27,7 @@ const SelectOption: React.FC<SelectProps> = (props: SelectProps) => {
     };
 
     return (
-        <div className={baseClasses.select}>
+        <div ref={dropdownRef} className={baseClasses.select}>
             <div className={`${baseClasses.select__content} ${classes.select__content} ${props.className}`} onClick={toggleExpansion}>
                 <h3>{props.name}</h3>
                 <img src={isExpanded ? collapse : expand} alt={isExpanded ? "collapse-icon" : "expand-icon"} />

@@ -1,11 +1,11 @@
 import classes from "./Reports.module.scss";
 import {useEffect, useState} from "react";
-import SelectOption from "forms/SelectOption.tsx";
+import SelectOption from "forms/SelectHeaders/SelectOption.tsx";
 import {useSelector} from "react-redux";
 import {RootState} from "state/store.tsx";
 import Button from "ui/Button/Button.tsx";
 import {ClassesSubjects, exportSubjectClassGrades, getTeacherClassesSubjects} from "api/Teachers.tsx";
-import SelectOptions from "forms/SelectOptions.tsx";
+import SelectOptions from "forms/SelectHeaders/SelectOptions.tsx";
 import {generateSubjectSelectionStates, SubjectSelectionState} from "pages/Student/Reports/Reports.tsx";
 
 const classInitialState: ClassesSubjects = {

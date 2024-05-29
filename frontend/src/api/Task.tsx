@@ -18,7 +18,7 @@ export async function getTeacherTasks(teacherId: number): Promise<TaskCardInterf
     try {
         const response: AxiosResponse<TaskCardInterface[], AxiosRequestConfig> = await axiosClient.get<TaskCardInterface[]>(`/api/v1/tasks/created/${teacherId}`);
         // Handle the response as needed
-
+        console.log("ESSA" + response)
         return response.data;
     } catch (error) {
         // Handle the error as needed

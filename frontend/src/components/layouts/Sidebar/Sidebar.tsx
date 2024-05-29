@@ -12,7 +12,7 @@ import {removeToken} from "@/axios-client.tsx";
 import {setLoggedInUser} from "state/auth/authSlice.tsx";
 import {setParentChildrenData, setSelectedChild} from "state/user/parentChildrenSlice.tsx";
 import {getParentChildren} from "api/User.tsx";
-import SelectOption from "forms/SelectOption.tsx";
+import SelectOption from "forms/SelectHeaders/SelectOption.tsx";
 
 const Sidebar = () => {
     const user = useSelector((state: RootState) => state.login);

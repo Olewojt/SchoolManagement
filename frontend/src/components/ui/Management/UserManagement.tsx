@@ -5,7 +5,7 @@ import {DUMMY_TEACHERS, Teacher} from "api/Teachers.tsx";
 import {DUMMY_STUDENTS, FullUser} from "api/User.tsx";
 import {SetStateAction, useEffect, useState} from "react";
 import Input from "forms/Input.tsx";
-import SelectOption from "forms/SelectOption.tsx";
+import SelectOption from "forms/SelectHeaders/SelectOption.tsx";
 import {getSchoolClasses, SchoolClass} from "api/Classes.tsx";
 
 enum TABS {

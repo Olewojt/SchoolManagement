@@ -3,7 +3,7 @@ import {RootState} from "state/store.tsx";
 import Column from "layouts/TaskBoard/Column.tsx";
 import boardStyles from "./Board.module.scss";
 import TaskCardInterface from "@/interfaces/TaskCardInterface/TaskCardInterface.tsx";
-import SelectOptions from "forms/SelectOptions.tsx";
+import SelectOptions from "forms/SelectHeaders/SelectOptions.tsx";
 import AddCard from "ui/Card/TaskCard/AddCard.tsx";
 import {useState} from "react";
 

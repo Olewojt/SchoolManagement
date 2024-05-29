@@ -1,5 +1,5 @@
 import classes from "./Reports.module.scss";
-import SelectOptions from "forms/SelectOptions.tsx";
+import SelectOptions from "forms/SelectHeaders/SelectOptions.tsx";
 import PieChart, {GradeDict} from "ui/Charts/PieChart.tsx";
 import {SubjectsGrades} from "api/Grades.tsx";
 import {useEffect, useState} from "react";

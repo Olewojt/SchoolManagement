@@ -1,39 +1,38 @@
 import Header from "ui/Header/Header.tsx";
 import classes from './Configuration.module.scss'
-import {Toggle} from "forms/Toggle.tsx";
-import {useToggle} from "hooks/useToggle.tsx";
-import {useEffect} from "react";
-import {useSelector} from "react-redux";
-import {RootState} from "state/store.tsx";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "state/store.tsx";
+import { Toggle } from "forms/Toggle.tsx";
+
+interface Settings {
+    isDark: boolean;
+    isNotified: boolean;
+    isAnimated: boolean;
+}
 
 const Configuration = () => {
-    const userData = useSelector((state: RootState) => state.userData)
-    const isDarkLocalStorage = localStorage.getItem("isDark") === 'true'
-    const isNotifiedLocalStorage = localStorage.getItem("isNotified") === 'true'
-    const isAnimatedLocalStorage = localStorage.getItem("isAnimated") === 'true'
+    const userData = useSelector((state: RootState) => state.userData);
 
-    const [isDark, toggleDarkMode] = useToggle(isDarkLocalStorage) //Taki nowy hook napisany. Jest w folderze hooks
-    const [isNotified, toggleNotifications] = useToggle(isNotifiedLocalStorage)
-    const [isAnimated, toggleAnimations] = useToggle(isAnimatedLocalStorage)
+    const handleToggleChange = (key: keyof Settings, value: boolean) => {
+        localStorage.setItem(key, JSON.stringify(value));
+    };
 
-    useEffect(() => {
-        if (isDarkLocalStorage != isDark) {
-            localStorage.setItem("isDark", JSON.stringify(isDark))
-            window.location.reload()
-        }
-    }, [isDark])
+    const [settings, setSettings] = useState<Settings>({
+        isDark: localStorage.getItem("isDark") === 'true',
+        isNotified: localStorage.getItem("isNotified") === 'true',
+        isAnimated: localStorage.getItem("isAnimated") === 'true'
+    });
+
 
     useEffect(() => {
-        if (isNotifiedLocalStorage != isNotified) {
-            localStorage.setItem("isNotified", JSON.stringify(isNotified))
-        }
-    }, [isNotified])
-
-    useEffect(() => {
-        if (isAnimatedLocalStorage != isAnimated) {
-            localStorage.setItem("isAnimated", JSON.stringify(isAnimated))
-        }
-    }, [isDark])
+        Object.keys(settings).forEach((key) => {
+            const typedKey = key as keyof Settings;
+            if (localStorage.getItem(typedKey) !== JSON.stringify(settings[typedKey])) {
+                handleToggleChange(typedKey, settings[typedKey]);
+            }
+        });
+    }, [settings]);
 
     return (
         <main className={classes.home}>
@@ -51,14 +50,23 @@ const Configuration = () => {
                 </div>
             </Header>
             <Header value={'Look & Feel'}>
-                <Toggle id={"dark-mode"} onChange={toggleDarkMode} checked={isDark} labelText={"Dark Mode"}></Toggle>
-                <Toggle id={"animations"} onChange={toggleAnimations} checked={isAnimated} labelText={"Animations"}></Toggle>
+                <Toggle
+                    id={"dark-mode"}
+                    onChange={() => {
+                        setSettings(prev => ({ ...prev, isDark: !prev.isDark }));
+                        window.location.reload();
+                    }}
+                    checked={settings.isDark}
+                    labelText={"Dark Mode"}
+                />
+
+                <Toggle id={"animations"} onChange={() => setSettings(prev => ({ ...prev, isAnimated: !prev.isAnimated }))} checked={settings.isAnimated} labelText={"Animations"} />
             </Header>
             <Header value={'Notifications'}>
-                <Toggle id={"notifications"} onChange={toggleNotifications} checked={isNotified} labelText={"Notifications"}></Toggle>
+                <Toggle id={"notifications"} onChange={() => setSettings(prev => ({ ...prev, isNotified: !prev.isNotified }))} checked={settings.isNotified} labelText={"Notifications"} />
             </Header>
         </main>
-    )
-}
+    );
+};
 
-export default Configuration
+export default Configuration;

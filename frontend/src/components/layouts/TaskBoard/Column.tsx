@@ -1,4 +1,4 @@
-import React, {DragEvent, FC} from "react";
+import React, {FC} from "react";
 import TaskCard from "ui/Card/TaskCard/TaskCard.tsx";
 import DropIndicator from "layouts/TaskBoard/DropIndicator.tsx";
 import classes from "./Column.module.scss";
