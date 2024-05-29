@@ -1,16 +1,28 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import classes from "./TaskCard.module.scss";
 import {GroupIcon, PlusIcon} from "assets/icons/Icon.tsx";
 import DropIndicator from "layouts/TaskBoard/DropIndicator.tsx";
 
 import TaskCardInterface from "@/interfaces/TaskCardInterface/TaskCardInterface.tsx";
 import ReadTaskCard from "layouts/ReadTaskCard/ReadTaskCard.tsx";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "state/store.tsx";
+import {resetTaskId} from "state/tasks/tasksSlice.tsx";
 
 
 const TaskCard = (props: TaskCardInterface) => {
-    const [active, setActive] = useState(false)
-    const formattedDate = new Date(props.date).toLocaleDateString(); // Formatowanie daty
+    const dispatch = useDispatch();
+    const taskid = useSelector((state: RootState) => state.studentTasks.currentTaskId);
 
+    const [active, setActive] = useState(false)
+    const formattedDate = new Date(props.date).toLocaleDateString();
+
+    useEffect(() => {
+        if (taskid && props.id === taskid) {
+            setActive(true);
+            dispatch(resetTaskId());
+        }
+    }, [taskid, props.id, dispatch]);
 
     const handleActive = () => {
         setActive(prevState => !prevState)
@@ -33,13 +45,21 @@ const TaskCard = (props: TaskCardInterface) => {
                 </button>
             </div>
             {active && <div className={classes.background}></div>}
-            {/*TODO: będzie można tutaj coś kombinwować z nowym komponenetem dla Studenta/Nauczyciela*/}
             {active
                 &&
-                <ReadTaskCard title={props.title} subject={props.subject} date={formattedDate} members={props.members}
-                              description={props.description} id={props.id} status={props.status}
-                              handleDragStart={props.handleDragStart} onClick={handleActive}
-                              className={props.className} grade={props.grade}/>
+                <ReadTaskCard
+                    title={props.title}
+                    subject={props.subject}
+                    date={formattedDate}
+                    members={props.members}
+                    description={props.description}
+                    id={props.id}
+                    status={props.status}
+                    handleDragStart={props.handleDragStart}
+                    onClick={handleActive}
+                    className={props.className}
+                    grade={props.grade}
+                />
             }
         </>
     );

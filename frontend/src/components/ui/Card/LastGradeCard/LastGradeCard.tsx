@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import classes from "./LastGradeCard.module.scss";
 import { useSelector } from "react-redux";
 import { RootState } from "state/store.tsx";
@@ -22,7 +23,7 @@ const LastGradeCard: React.FC<LastGradeCardProps> = (props) => {
     )?.subjectName : "";
 
     return (
-        <section className={`${classes["last-grade"]} ${props.className}`}>
+        <Link to="/grades" className={`${classes["last-grade"]} ${props.className}`}>
             <div className={classes["lolipop"]}>
                 <img className={classes["lolipop--2"]} src="src/assets/images/lolipop-icon-stick.png" alt="Lolipop stick"/>
                 <img className={classes["lolipop--1"]} src="src/assets/images/lolipop-icon-sugar.png" alt="Lolipop sugar"/>
@@ -39,7 +40,7 @@ const LastGradeCard: React.FC<LastGradeCardProps> = (props) => {
                     <div className={classes["card__subject"]}>Brak ocen</div>
                 )}
             </div>
-        </section>
+        </Link>
     );
 };
 

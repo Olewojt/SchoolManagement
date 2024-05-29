@@ -6,6 +6,7 @@ interface DropdownButtonProps {
     toggle: () => void;
     open: boolean;
     children: ReactNode;
+    disabled?: boolean
 }
 
 const DropdownButton = forwardRef<HTMLDivElement, DropdownButtonProps>(

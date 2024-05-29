@@ -1,6 +1,6 @@
 import Header from "ui/Header/Header.tsx";
 import classes from './Configuration.module.scss'
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "state/store.tsx";
 import { Toggle } from "forms/Toggle.tsx";

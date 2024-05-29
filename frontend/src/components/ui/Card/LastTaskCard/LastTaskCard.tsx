@@ -1,8 +1,10 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import classes from "./LastTaskCard.module.scss";
-import {useSelector} from "react-redux";
-import {RootState} from "state/store.tsx";
-import {formatDate} from "utilitiesdateUtils.tsx/";
+import {useDispatch, useSelector} from "react-redux";
+import { RootState } from "state/store.tsx";
+import { formatDate } from "utilitiesdateUtils.tsx/";
+import {checkTaskById} from "state/tasks/tasksSlice.tsx";
 
 interface LastTaskCardProps {
     className?: string;
@@ -10,6 +12,7 @@ interface LastTaskCardProps {
 
 const LastTaskCard: React.FC<LastTaskCardProps> = (props) => {
     const tasks = useSelector((state: RootState) => state.studentTasks.tasks);
+    const dispatch = useDispatch();
 
     const filteredTasks = tasks.filter(task => task.status === "TO_DO");
 
@@ -17,8 +20,13 @@ const LastTaskCard: React.FC<LastTaskCardProps> = (props) => {
 
     const lastTask = sortedTasks.length > 0 ? sortedTasks[0] : null;
 
+    const handleLink = () => {
+        if (lastTask)
+            dispatch(checkTaskById(lastTask.id))
+    }
+
     return (
-        <section className={`${classes["last-task"]} ${props.className}`}>
+        <Link to="/tasks" onClick={handleLink} className={`${classes["last-task"]} ${props.className}`}>
             <div className={classes["card"]}>
                 <h3 className={classes["card__header"]}>Cumming Task</h3>
                 {lastTask ? (
@@ -34,8 +42,8 @@ const LastTaskCard: React.FC<LastTaskCardProps> = (props) => {
                     <p>No tasks available</p>
                 )}
             </div>
-        </section>
+        </Link>
     );
-}
+};
 
 export default LastTaskCard;
