@@ -1,0 +1,113 @@
+:root {
+  // Light Mode
+  --color-primary: #BBD0FF;
+  --color-secondary: #C8B6FF;
+  --color-third: #B8C0FF;
+  --color-fourth: #FFD6FF;
+  --color-fifth: #E7C6FF;
+  --color-gradient: linear-gradient(0deg, rgba(187, 208, 255, 1) 0%, rgba(255, 214, 255, 1) 100%);
+
+  --color-transparent: rgba(0, 0, 0, 0.25);
+  --color-transparent-select: rgba(0, 0, 0, 0.75);
+
+  --color-main-font: #1a1a1a;
+  --color-secondary-font: #FFFFFF;
+
+  --img-family-bg-login: url("assets/images/family-bg-light.png");
+
+  --img-lolipop-bg: url("../src/assets/images/lollipop.png") no-repeat bottom; // TODO: for fixing mby
+  --img-birds-bg: url("../src/assets/images/birds-bg.png") no-repeat bottom right; // TODO: for fixing mby
+  --shadow-main: 2px 2px 4px rgba(0, 0, 0, 0.25);
+  --grade-card-bg-5: #47DC4D;
+  --grade-card-bg-4: #5467FF;
+  --grade-card-bg-3: #FFAC0A;
+  --grade-card-bg-2: #483978;
+  --grade-card-bg-1: #FF2525;
+
+  --filter-invert: invert(1);
+
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+[data-theme="dark"] {
+  --color-primary: #1F428F;
+  --color-secondary: #9E4DD9;
+  --color-third: #2F3EB1;
+  --color-fourth: #BA6CBA;
+  --color-gradient: linear-gradient(0deg, rgba(31, 66, 143, 1) 0%, rgba(186, 108, 186, 1) 100%);
+  --img-family-bg-login: url("assets/images/family-bg-dark.png");
+
+  --color-main-font: #FFFFFF;
+  --color-secondary-font: #1a1a1a;
+
+  --filter-invert: invert(0);
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+  //background-color: var(--color-primary); /*  Tutaj kolor zmieniany dla tła*/
+  overflow: hidden;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: var(--color-font-main);
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+//scrollbar
+::-webkit-scrollbar {
+  width: 1em;
+}
+
+::-webkit-scrollbar-track {
+  //background-color: transparent;
+  //border-radius: 100vw;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-fourth);
+  border-radius: 100vw;
+  //box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+}
