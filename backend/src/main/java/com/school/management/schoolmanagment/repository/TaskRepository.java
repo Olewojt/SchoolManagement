@@ -39,7 +39,7 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
             "WHERE tc.id = :teacherId " +
             "AND tsic.schoolClass.id = :classId " +
             "AND s.id = :subjectId " +
-            "AND t.createdAt BETWEEN :startDate AND :endDate " +
+            "AND t.createdAt >= :startDate AND t.createdAt <= :endDate " +
             "AND u.schoolClass.id = :classId")
     int countTasks(@Param("teacherId") Long teacherId,
                    @Param("classId") Long classId,
