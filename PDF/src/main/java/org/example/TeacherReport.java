@@ -14,6 +14,7 @@ import com.itextpdf.layout.properties.UnitValue;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -33,7 +34,11 @@ public class TeacherReport {
     private LocalDate endDate;
     private Map<String, SubjectTaskInfo> subjectTaskInfoMap;
 
-    public static final String DEST = "./target/sandbox/tables/teacher-report-%s-%s.pdf";
+    private static final String USER_HOME = System.getProperty("user.home");
+
+    private static final String DOWNLOADS_DIR = Paths.get(USER_HOME, "Downloads").toString();
+
+    public static final String DEST = DOWNLOADS_DIR + "/teacher-report-%s-%s.pdf";
 
     public TeacherReport(String firstName, String lastName, LocalDate startDate, LocalDate endDate, Map<String, SubjectTaskInfo> subjectTaskInfoMap) {
         this.firstName = firstName;

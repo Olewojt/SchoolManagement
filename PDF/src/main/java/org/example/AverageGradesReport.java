@@ -14,6 +14,7 @@ import com.itextpdf.layout.properties.UnitValue;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +31,13 @@ public final class AverageGradesReport {
     private String lastName;
     private String studentClass;
     private Map<String, List<Integer>> subjectGrades;
-    public static final String DEST = "./target/sandbox/tables/avg-grades-%s-%s.pdf";
+
+    private static final String USER_HOME = System.getProperty("user.home");
+
+    private static final String DOWNLOADS_DIR = Paths.get(USER_HOME, "Downloads").toString();
+
+    public static final String DEST = DOWNLOADS_DIR + "/avg-grades-%s-%s.pdf";
+
 
     public AverageGradesReport(String firstName, String lastName, Map<String, List<Integer>> subjectGrades,
                                String studentClass) {
