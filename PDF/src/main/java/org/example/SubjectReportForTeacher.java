@@ -1,5 +1,6 @@
 package org.example;
 
+import com.itextpdf.commons.utils.JsonUtil;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.pdf.PdfDocument;
@@ -11,9 +12,11 @@ import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.element.Text;
 import com.itextpdf.layout.properties.HorizontalAlignment;
 import com.itextpdf.layout.properties.UnitValue;
+import org.bouncycastle.jcajce.provider.symmetric.DES;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +33,13 @@ public class SubjectReportForTeacher {
     private String className;
     private List<ClassGrades> classGradesList;
 
-    public static final String DEST = "./target/sandbox/tables/subject-report-%s-%s.pdf";
+
+
+    private static final String USER_HOME = System.getProperty("user.home");
+    private static final String DOWNLOADS_DIR = Paths.get(USER_HOME, "Downloads").toString();
+
+    public static final String DEST = DOWNLOADS_DIR + "/subject-report-%s-%s.pdf";
+
 
     public SubjectReportForTeacher(String firstName, String lastName, String className, List<ClassGrades> classGradesList) {
         this.firstName = firstName;
