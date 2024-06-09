@@ -1,6 +1,7 @@
-import {FullUser} from "api/User.tsx";
+import {defaultUserPersonalInfoDTO, UserPersonalData} from "api/User.tsx";
 import {AxiosRequestConfig, AxiosResponse} from "axios";
 import axiosClient from "@/axios-client.tsx";
+import {SchoolClassSubject} from "api/Classes.tsx";
 
 export interface ClassesSubjects {
     className: string,
@@ -12,6 +13,26 @@ export interface TeacherSelection {
     id: number,
         firstName: string,
         lastName: string
+}
+
+export interface SchoolClassWithSubjects {
+    id: number,
+    name: string,
+    subjectDTOs: SchoolClassSubject[]
+}
+
+export type Teacher = {
+    id: number,
+    email: string,
+    personalInfoDTO: UserPersonalData,
+    schoolClassWithSubjectsDTOs: SchoolClassWithSubjects[]
+}
+
+export const defaultTeacherData: Teacher = {
+    id: -1,
+    email: "",
+    personalInfoDTO: defaultUserPersonalInfoDTO,
+    schoolClassWithSubjectsDTOs: []
 }
 
 export async function getTeacherClassesSubjects(userId: number): Promise<ClassesSubjects[]> {
@@ -65,7 +86,55 @@ export async function exportTeacherTasks(teacherId: number, startDate: Date, end
     }
 }
 
-export async function getTeachers(): Promise<TeacherSelection[]> {
+export async function getTeachers(): Promise<Teacher[]> {
+    try {
+        const response: AxiosResponse<Teacher[], AxiosRequestConfig> = await axiosClient.get<Teacher[]>(`/api/v1/tsic`);
+
+        // Handle the response as needed
+        return response.data;
+    } catch (error) {
+        // Handle the error as needed
+        console.error('Error requesting teachers info', error);
+        throw error;
+    }
+}
+
+export async function setTeacherSubjectInClass(className: string, subjectName: string, teacherId: number) {
+    try {
+        const url = `/api/v1/tsic/${className}?subjectName=${subjectName}&teacherId=${teacherId}`
+
+        console.log("URL = ", url)
+
+        const response = await axiosClient.put(url);
+
+        // Handle the response as needed
+        return response.data;
+    } catch (error) {
+        // Handle the error as needed
+        console.error('Error setting teacher subject in class', error);
+        throw error;
+    }
+}
+
+export async function createNewTeacher(data: Teacher) {
+    try {
+        const url = `/api/v1/users?roleName=Teacher`;
+        const response = await axiosClient.post(url, {
+            email: data.email,
+            password: "password123",
+            personalInfoDTO: data.personalInfoDTO,
+        });
+
+        // Handle the response as needed
+        return response.data;
+    } catch (error) {
+        // Handle the error as needed
+        console.error('Error creating new teacher', error);
+        throw error;
+    }
+}
+
+export async function getBasicTeachers(): Promise<TeacherSelection[]> {
     try {
         const response: AxiosResponse<TeacherSelection[], AxiosRequestConfig> = await axiosClient.get<TeacherSelection[]>(`/api/v1/teachers`);
 
@@ -73,250 +142,229 @@ export async function getTeachers(): Promise<TeacherSelection[]> {
         return response.data;
     } catch (error) {
         // Handle the error as needed
-        console.error('Error requesting teachers list', error);
+        console.error('Error requesting teachers info', error);
         throw error;
     }
 }
 
-export type Teacher = FullUser & {subject: string}
-
-export const DUMMY_TEACHERS: Teacher[] = [
-    {
-        personalInfo: {
-            id: 1,
-            role: "Teacher",
-            email: "JSmith@school.com",
-            firstName: "John",
-            lastName: "Smith",
-            pesel: "12345678901",
-            country: "USA",
-            city: "New York",
-            street: "5th Avenue",
-            homeNumber: "123",
-            flatNumber: "1A",
-        },
-        schoolClassDTO: null,
-        subject: "Mathematics"
-    },
-    {
-        personalInfo: {
-            id: 2,
-            role: "Teacher",
-            email: "EJohnson@school.com",
-            firstName: "Emily",
-            lastName: "Johnson",
-            pesel: "23456789012",
-            country: "USA",
-            city: "Los Angeles",
-            street: "Sunset Boulevard",
-            homeNumber: "456",
-            flatNumber: "2B",
-        },
-        schoolClassDTO: null,
-        subject: "English"
-    },
-    {
-        personalInfo: {
-            id: 3,
-            role: "Teacher",
-            email: "MBrown@school.com",
-            firstName: "Michael",
-            lastName: "Brown",
-            pesel: "34567890123",
-            country: "USA",
-            city: "Chicago",
-            street: "Michigan Avenue",
-            homeNumber: "789",
-            flatNumber: "3C",
-        },
-        schoolClassDTO: null,
-        subject: "Physics"
-    },
-    {
-        personalInfo: {
-            id: 4,
-            role: "Teacher",
-            email: "SDavis@school.com",
-            firstName: "Sarah",
-            lastName: "Davis",
-            pesel: "45678901234",
-            country: "USA",
-            city: "Houston",
-            street: "Main Street",
-            homeNumber: "101",
-            flatNumber: "4D",
-        },
-        schoolClassDTO: null,
-        subject: "History"
-    },
-    {
-        personalInfo: {
-            id: 5,
-            role: "Teacher",
-            email: "DMartinez@school.com",
-            firstName: "David",
-            lastName: "Martinez",
-            pesel: "56789012345",
-            country: "USA",
-            city: "Phoenix",
-            street: "Washington Street",
-            homeNumber: "202",
-            flatNumber: "5E",
-        },
-        schoolClassDTO: null,
-        subject: "Physical Education"
-    },
-    {
-        personalInfo: {
-            id: 6,
-            role: "Teacher",
-            email: "JAnderson@school.com",
-            firstName: "Jennifer",
-            lastName: "Anderson",
-            pesel: "67890123456",
-            country: "USA",
-            city: "Philadelphia",
-            street: "Market Street",
-            homeNumber: "303",
-            flatNumber: "6F",
-        },
-        schoolClassDTO: null,
-        subject: "Art"
-    },
-    {
-        personalInfo: {
-            id: 7,
-            role: "Teacher",
-            email: "RWilson@school.com",
-            firstName: "Robert",
-            lastName: "Wilson",
-            pesel: "78901234567",
-            country: "USA",
-            city: "San Antonio",
-            street: "Alamo Plaza",
-            homeNumber: "404",
-            flatNumber: "7G",
-        },
-        schoolClassDTO: null,
-        subject: "Geography"
-    },
-    {
-        personalInfo: {
-            id: 8,
-            role: "Teacher",
-            email: "JTaylor@school.com",
-            firstName: "Jessica",
-            lastName: "Taylor",
-            pesel: "89012345678",
-            country: "USA",
-            city: "San Diego",
-            street: "Broadway",
-            homeNumber: "505",
-            flatNumber: "8H",
-        },
-        schoolClassDTO: null,
-        subject: "Music"
-    },
-    {
-        personalInfo: {
-            id: 9,
-            role: "Teacher",
-            email: "KThompson@school.com",
-            firstName: "Kevin",
-            lastName: "Thompson",
-            pesel: "90123456789",
-            country: "USA",
-            city: "Dallas",
-            street: "Elm Street",
-            homeNumber: "606",
-            flatNumber: "9I",
-        },
-        schoolClassDTO: null,
-        subject: "Computer Science"
-    },
-    {
-        personalInfo: {
-            id: 10,
-            role: "Teacher",
-            email: "LGarcia@school.com",
-            firstName: "Laura",
-            lastName: "Garcia",
-            pesel: "01234567890",
-            country: "USA",
-            city: "San Jose",
-            street: "Santa Clara Street",
-            homeNumber: "707",
-            flatNumber: "10J",
-        },
-        schoolClassDTO: null,
-        subject: "Foreign Language"
-    },
-    {
-        personalInfo: {
-            id: 11,
-            role: "Teacher",
-            email: "KThompson2@school.com",
-            firstName: "Kevin",
-            lastName: "Thompson",
-            pesel: "90123456789",
-            country: "USA",
-            city: "Dallas",
-            street: "Elm Street",
-            homeNumber: "606",
-            flatNumber: "9I",
-        },
-        schoolClassDTO: null,
-        subject: "Computer Science"
-    },
-    {
-        personalInfo: {
-            id: 12,
-            role: "Teacher",
-            email: "KThompson3@school.com",
-            firstName: "Kevin",
-            lastName: "Thompson",
-            pesel: "90123456789",
-            country: "USA",
-            city: "Dallas",
-            street: "Elm Street",
-            homeNumber: "606",
-            flatNumber: "9I",
-        },
-        schoolClassDTO: null,
-        subject: "Computer Science"
-    },
-    {
-        personalInfo: {
-            id: 13,
-            role: "Teacher",
-            email: "KThompson4@school.com",
-            firstName: "Kevin",
-            lastName: "Thompson",
-            pesel: "90123456789",
-            country: "USA",
-            city: "Dallas",
-            street: "Elm Street",
-            homeNumber: "606",
-            flatNumber: "9I",
-        },
-        schoolClassDTO: null,
-        subject: "Computer Science"
-    },
-    {
-        personalInfo: {
-            id: 14,
-            role: "Teacher",
-            email: "KThompson5@school.com",
-            firstName: "Kevin",
-            lastName: "Thompson",
-            pesel: "90123456789",
-            country: "USA",
-            city: "Dallas",
-            street: "Elm Street",
-            homeNumber: "606",
-            flatNumber: "9I",
-        },
-        schoolClassDTO: null,
-        subject: "Computer Science"
-    }
-];
+// export const DUMMY_TEACHERS: Teacher[] = [
+//     {
+//         id: 1,
+//         email: "john.smith@example.com",
+//         personalInfoDTO: {
+//             firstName: "John",
+//             lastName: "Smith",
+//             pesel: "12345678901",
+//             country: "USA",
+//             city: "New York",
+//             street: "5th Avenue",
+//             homeNumber: "123",
+//             flatNumber: "1A",
+//         },
+//         schoolClassWithSubjectsDTOs: [
+//             {
+//                 id: 1,
+//                 name: "5A",
+//                 subjectDTOs: [
+//                     { id: 1, name: "Math" },
+//                     { id: 2, name: "Science" }
+//                 ]
+//             }
+//         ]
+//     },
+//     {
+//         id: 2,
+//         email: "EJohnson@school.com",
+//         personalInfoDTO: {
+//             firstName: "Emily",
+//             lastName: "Johnson",
+//             pesel: "23456789012",
+//             country: "USA",
+//             city: "Los Angeles",
+//             street: "Sunset Boulevard",
+//             homeNumber: "456",
+//             flatNumber: "2B",
+//         },
+//         schoolClassWithSubjectsDTOs: []
+//     },
+//     {
+//         id: 3,
+//         email: "MBrown@school.com",
+//         personalInfoDTO: {
+//             firstName: "Michael",
+//             lastName: "Brown",
+//             pesel: "34567890123",
+//             country: "USA",
+//             city: "Chicago",
+//             street: "Michigan Avenue",
+//             homeNumber: "789",
+//             flatNumber: "3C",
+//         },
+//         schoolClassWithSubjectsDTOs: []
+//     },
+//     {
+//         id: 4,
+//         email: "SDavis@school.com",
+//         personalInfoDTO: {
+//             firstName: "Sarah",
+//             lastName: "Davis",
+//             pesel: "45678901234",
+//             country: "USA",
+//             city: "Houston",
+//             street: "Main Street",
+//             homeNumber: "101",
+//             flatNumber: "4D",
+//         },
+//         schoolClassWithSubjectsDTOs: []
+//     },
+//     {
+//         id: 5,
+//         email: "DMartinez@school.com",
+//         personalInfoDTO: {
+//             firstName: "David",
+//             lastName: "Martinez",
+//             pesel: "56789012345",
+//             country: "USA",
+//             city: "Phoenix",
+//             street: "Washington Street",
+//             homeNumber: "202",
+//             flatNumber: "5E",
+//         },
+//         schoolClassWithSubjectsDTOs: []
+//     },
+//     {
+//         id: 6,
+//         email: "JAnderson@school.com",
+//         personalInfoDTO: {
+//             firstName: "Jennifer",
+//             lastName: "Anderson",
+//             pesel: "67890123456",
+//             country: "USA",
+//             city: "Philadelphia",
+//             street: "Market Street",
+//             homeNumber: "303",
+//             flatNumber: "6F",
+//         },
+//         schoolClassWithSubjectsDTOs: []
+//     },
+//     {
+//         id: 7,
+//         email: "RWilson@school.com",
+//         personalInfoDTO: {
+//             firstName: "Robert",
+//             lastName: "Wilson",
+//             pesel: "78901234567",
+//             country: "USA",
+//             city: "San Antonio",
+//             street: "Alamo Plaza",
+//             homeNumber: "404",
+//             flatNumber: "7G",
+//         },
+//         schoolClassWithSubjectsDTOs: []
+//     },
+//     {
+//         id: 8,
+//         email: "JTaylor@school.com",
+//         personalInfoDTO: {
+//             firstName: "Jessica",
+//             lastName: "Taylor",
+//             pesel: "89012345678",
+//             country: "USA",
+//             city: "San Diego",
+//             street: "Broadway",
+//             homeNumber: "505",
+//             flatNumber: "8H",
+//         },
+//         schoolClassWithSubjectsDTOs: []
+//     },
+//     {
+//         id: 9,
+//         email: "KThompson@school.com",
+//         personalInfoDTO: {
+//             firstName: "Kevin",
+//             lastName: "Thompson",
+//             pesel: "90123456789",
+//             country: "USA",
+//             city: "Dallas",
+//             street: "Elm Street",
+//             homeNumber: "606",
+//             flatNumber: "9I",
+//         },
+//         schoolClassWithSubjectsDTOs: []
+//     },
+//     {
+//         id: 10,
+//         email: "LGarcia@school.com",
+//         personalInfoDTO: {
+//             firstName: "Laura",
+//             lastName: "Garcia",
+//             pesel: "01234567890",
+//             country: "USA",
+//             city: "San Jose",
+//             street: "Santa Clara Street",
+//             homeNumber: "707",
+//             flatNumber: "10J",
+//         },
+//         schoolClassWithSubjectsDTOs: []
+//     },
+//     {
+//         id: 11,
+//         email: "KThompson2@school.com",
+//         personalInfoDTO: {
+//             firstName: "Kevin",
+//             lastName: "Thompson",
+//             pesel: "90123456789",
+//             country: "USA",
+//             city: "Dallas",
+//             street: "Elm Street",
+//             homeNumber: "606",
+//             flatNumber: "9I",
+//         },
+//         schoolClassWithSubjectsDTOs: []
+//     },
+//     {
+//         id: 12,
+//         email: "KThompson3@school.com",
+//         personalInfoDTO: {
+//             firstName: "Kevin",
+//             lastName: "Thompson",
+//             pesel: "90123456789",
+//             country: "USA",
+//             city: "Dallas",
+//             street: "Elm Street",
+//             homeNumber: "606",
+//             flatNumber: "9I",
+//         },
+//         schoolClassWithSubjectsDTOs: []
+//     },
+//     {
+//         id: 13,
+//         email: "KThompson4@school.com",
+//         personalInfoDTO: {
+//             firstName: "Kevin",
+//             lastName: "Thompson",
+//             pesel: "90123456789",
+//             country: "USA",
+//             city: "Dallas",
+//             street: "Elm Street",
+//             homeNumber: "606",
+//             flatNumber: "9I",
+//         },
+//         schoolClassWithSubjectsDTOs: []
+//     },
+//     {
+//         id: 14,
+//         email: "KThompson5@school.com",
+//         personalInfoDTO: {
+//             firstName: "Kevin",
+//             lastName: "Thompson",
+//             pesel: "90123456789",
+//             country: "USA",
+//             city: "Dallas",
+//             street: "Elm Street",
+//             homeNumber: "606",
+//             flatNumber: "9I",
+//         },
+//         schoolClassWithSubjectsDTOs: []
+//     }
+// ];

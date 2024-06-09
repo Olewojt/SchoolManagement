@@ -5,12 +5,15 @@ interface ButtonProps {
     onClick?: any,
     type: "button" | "submit" | "reset" | undefined
     className?: string
+    disabled?:boolean
 }
 
 const Button = (props: ButtonProps) => {
     return (
         <button type={props.type} onClick={props.onClick}
-                className={`${classes.btn} ${props.className}`}>{props.children}</button>
+                className={`${classes.btn} ${props.className}`}
+                disabled={props.disabled}
+        >{props.children}</button>
     )
 }
 

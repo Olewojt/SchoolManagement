@@ -1,14 +1,16 @@
 package com.school.management.schoolmanagment.model;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import static jakarta.persistence.FetchType.EAGER;
-import static jakarta.persistence.FetchType.LAZY;
-import static jakarta.persistence.GenerationType.IDENTITY;
+import static javax.persistence.FetchType.EAGER;
+import static javax.persistence.FetchType.LAZY;
+import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @NoArgsConstructor
@@ -26,21 +28,24 @@ public class User {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "personal_id")
     private PersonalInfo personalInfo;
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne(fetch = EAGER)
     @JoinColumn(name = "role_id")
     private Role role;
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "class_id")
     private SchoolClass schoolClass;
 
+    @OneToOne(mappedBy = "user")
+    private ForgotPassword forgotPassword;
+
     // TODO: maybe to refactor
     @ManyToMany
     @JoinTable(name = "parent_children",
             joinColumns = @JoinColumn(name = "parent_id"),
             inverseJoinColumns = @JoinColumn(name = "child_id"))
-    private Set<User> children;
+    private Set<User> children = new HashSet<>();
     @ManyToMany(mappedBy = "children")
-    private Set<User> parents;
+    private Set<User> parents = new HashSet<>();
     @ManyToMany(mappedBy = "users", fetch = EAGER)
     private final Set<Task> tasks = new HashSet<>();
 
@@ -52,7 +57,7 @@ public class User {
         this.schoolClass = schoolClass;
     }
 
-    public void addTask (Task task) {
+    public void addTask(Task task) {
         this.tasks.add(task);
         task.getUsers().add(this);
     }

@@ -1,0 +1,32 @@
+.selector-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 1rem;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--color-main-font);
+  text-align: left;
+  max-width: 15rem;
+}
+
+
+.members-list {
+  position: absolute;
+  z-index: 10;
+  background-color: var(--color-secondary);
+  width: 70%;
+  padding: 1rem;
+  border-radius: 15px;
+  list-style-type: none;
+  box-shadow: var(--shadow-main);
+  color: var(--color-main-font);
+  font-size: 1rem;
+  font-weight: 600;
+
+}
+
+.editButton {
+  width: fit-content;
+}

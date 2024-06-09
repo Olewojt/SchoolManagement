@@ -79,6 +79,13 @@
 .form {
   display: flex;
   flex-direction: column;
+
+  &__error {
+    color: red;
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+
   &__input {
     margin-bottom: 2rem;
   }
@@ -87,7 +94,15 @@
 .text {
   display: inline-block;
   float: right;
-  a{
+}
+a{
+  cursor: pointer;
+}
+.changed-text {
+  text-align: center;
+  font-size: 2rem;
+
+  a {
     cursor: pointer;
   }
 }
@@ -151,4 +166,10 @@
 
 .logo {
   padding: 0.5rem;
+}
+
+.error {
+  color: orangered;
+  font-weight: 600;
+  font-size: 1.1rem;
 }

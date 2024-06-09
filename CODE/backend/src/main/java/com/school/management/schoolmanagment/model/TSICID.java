@@ -1,7 +1,7 @@
 package com.school.management.schoolmanagment.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import lombok.Getter;
 
 import java.io.Serializable;

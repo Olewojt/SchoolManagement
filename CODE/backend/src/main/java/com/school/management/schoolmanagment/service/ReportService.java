@@ -1,7 +1,6 @@
 package com.school.management.schoolmanagment.service;
 
 import com.school.management.schoolmanagment.dto.GradeDTO;
-import com.school.management.schoolmanagment.dto.StudentInfoDTO;
 import com.school.management.schoolmanagment.dto.SubjectGradesDTO;
 import com.school.management.schoolmanagment.model.SchoolClass;
 import com.school.management.schoolmanagment.model.Subject;
@@ -33,8 +32,8 @@ public class ReportService {
     private final SchoolClassRepository schoolClassRepository;
     private final UserRepository userRepository;
     private final TeacherSubjectInClassRepository teacherSubjectInClassRepository;
-
     private final TaskService taskService;
+    private final NotificationService notificationService;
 
     public String avgGradesReportForStudent(Long userId, List<String> subjectNames) {
         try {
@@ -48,7 +47,12 @@ public class ReportService {
             AverageGradesReport averageGradesReport = new AverageGradesReport(user.getPersonalInfo().getFirstName(),
                     user.getPersonalInfo().getLastName(), subjectGradesMap, user.getSchoolClass().getName());
             averageGradesReport.generate();
-            return "Reports generated successfully";
+
+            String content = "Reports generated successfully";
+
+            notificationService.sendNotificationToUser(content);
+
+            return content;
         } catch (IOException e) {
             return "Error generating reports: " + e.getMessage();
         }
@@ -90,7 +94,12 @@ public class ReportService {
             SubjectReportForTeacher subjectReport = new SubjectReportForTeacher(teacher.getPersonalInfo().getFirstName(),
                     teacher.getPersonalInfo().getLastName(), className, classGradesList);
             subjectReport.generate();
-            return "Reports generated successfully";
+
+            String content = "Reports generated successfully";
+
+            notificationService.sendNotificationToUser(content);
+
+            return content;
         } catch (IOException e) {
             return "Error generating reports: " + e.getMessage();
         }
@@ -122,7 +131,11 @@ public class ReportService {
             TeacherReport teacherReport = new TeacherReport(teacher.getPersonalInfo().getFirstName(),
                     teacher.getPersonalInfo().getLastName(), startDate, endDate, subjectTaskInfoMap);
             teacherReport.generate();
-            return "Teacher report generated successfully";
+            String content = "Reports generated successfully";
+
+            notificationService.sendNotificationToUser(content);
+
+            return content;
         } catch (IOException e) {
             return "Error generating teacher report: " + e.getMessage();
         }
@@ -136,14 +149,18 @@ public class ReportService {
                     schoolClassList) {
                 List<User> cityMembers = userRepository.findCityMembersBySchoolClassId(schoolClass.getId());
                 List<User> totalMember = userRepository.findStudentsBySchoolClassId(schoolClass.getId());
-                classInfoMap.put(schoolClass.getName(), new ClassInfo(totalMember.size()-cityMembers.size(), cityMembers.size()));
+                classInfoMap.put(schoolClass.getName(), new ClassInfo(totalMember.size() - cityMembers.size(), cityMembers.size()));
             }
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String currentUsername = authentication.getName();
             User admin = userRepository.findByEmail(currentUsername).orElseThrow();
             AdminReport adminReport = new AdminReport(admin.getPersonalInfo().getFirstName(), admin.getPersonalInfo().getLastName(), classInfoMap);
             adminReport.generate();
-            return "Admin report generated successfully";
+            String content = "Reports generated successfully";
+
+            notificationService.sendNotificationToUser(content);
+
+            return content;
         } catch (IOException e) {
             return "Error generating teacher report: " + e.getMessage();
         }
@@ -171,8 +188,7 @@ public class ReportService {
                 .orElseThrow(() -> new AccessDeniedException("Unauthorized access"));
 
         SchoolClass schoolClass = schoolClassRepository.findByName(className);
-        for (String subjectName:
-             subjectNames) {
+        for (String subjectName : subjectNames) {
             Subject subject = subjectRepository.findByName(subjectName);
             boolean teachesClassAndSubject = teacherSubjectInClassRepository.existsByIdTeacherIdAndIdSubjectIdAndIdClassId(teacher.getId(),
                     subject.getId(), schoolClass.getId());
@@ -182,6 +198,4 @@ public class ReportService {
             }
         }
     }
-
-
 }

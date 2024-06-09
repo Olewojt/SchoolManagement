@@ -7,12 +7,22 @@
   "asar": true,
   "productName": "YourAppName",
   "directories": {
-    "output": "release/${version}"
+    "output": "release/${version}",
+    buildResources: "resources"
   },
   "files": [
     "dist",
-    "dist-electron"
+    "dist-electron",
+    "resources/**/*"
   ],
+  extraResources: [{
+    "from": "resources",
+    "to": '.'
+  },
+    {
+      "from": "dist",
+      "to": '.'
+    }],
   "mac": {
     "target": [
       "dmg"

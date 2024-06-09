@@ -1,11 +1,11 @@
 package com.school.management.schoolmanagment.model;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import static jakarta.persistence.FetchType.EAGER;
+import static javax.persistence.FetchType.EAGER;
 
 @Entity
 @NoArgsConstructor

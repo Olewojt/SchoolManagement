@@ -324,11 +324,11 @@ public class DatabaseSeeder implements CommandLineRunner {
         User user1 = userRepository.findByEmail("john.doe@example.com").orElseThrow();
         User user2 = userRepository.findByEmail("jane.smith@example.com").orElseThrow();
 
-        notificationRepository.save(new Notification("Welcome to our platform", Instant.now(), user1, false));
-        notificationRepository.save(new Notification("New assignment available", Instant.now(), user2, false));
-        notificationRepository.save(new Notification("Don't forget the upcoming test", Instant.now(), user1, false));
-        notificationRepository.save(new Notification("Project submission deadline", Instant.now(), user2, false));
-        notificationRepository.save(new Notification("Meeting with your teacher", Instant.now(), user1, false));
+        notificationRepository.save(new Notification("Welcome to our platform", user1));
+        notificationRepository.save(new Notification("New assignment available", user2));
+        notificationRepository.save(new Notification("Don't forget the upcoming test", user1));
+        notificationRepository.save(new Notification("Project submission deadline", user2));
+        notificationRepository.save(new Notification("Meeting with your teacher", user1));
     }
 
     @Transactional

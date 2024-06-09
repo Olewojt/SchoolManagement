@@ -16,25 +16,72 @@ import PrincipalReports from "pages/Principal/Reports/Reports.tsx";
 import {ADMIN, PARENT, STUDENT, TEACHER} from "utilitiesconstants.tsx/";
 import {useEffect, useState} from "react";
 import {getAuthToken} from "@/axios-client.tsx";
+import Loading from "layouts/Loading.tsx";
+import {pingServer} from "api/Ping.tsx";
 
 function App() {
     const user = useSelector((state: RootState) => state.login);
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
+    const [isLoading, setIsLoading] = useState<boolean>(true)
+
     useEffect(() => {
+        let timeoutId;
+        const checkToken = async () => {
+            if (isLoading) {
+                timeoutId = setTimeout(checkToken, 1000);
+                console.log("Test async");
+            } else {
+                clearTimeout(timeoutId);
+                return;
+            }
+            try {
+                setIsAuthenticated(true);
+                const ping = await pingServer();
+                if (ping) {
+                    const token = getAuthToken();
+                    if (!token) {
+                        setIsAuthenticated(false);
+                    }
+                    setIsLoading(false);
+                    clearTimeout(timeoutId);
+                }
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+            }
+        };
+        checkToken();
+
+        return () => {
+            clearTimeout(timeoutId);
+        };
+    }, [user]);
+
+
+    useEffect(() => {
+        if (isLoading)
+            return
+
         const token = getAuthToken();
         if (token !== null) {
             setIsAuthenticated(true);
+
         } else {
             setIsAuthenticated(false);
+            setIsLoading(false);
         }
+
     }, [user]);
+
+    if (isLoading) {
+        return <Loading/>;
+    }
 
     return (
         <HashRouter>
             <Routes>
                 <Route path="/" element={<Layout/>}>
-                    { !isAuthenticated &&
+                    {!isAuthenticated &&
                         <Route element={<LayoutAuth/>}>
                             <Route index element={<Login/>}/>
                             <Route path="reset" element={<Reset/>}/>
@@ -67,14 +114,14 @@ function App() {
                         </Route>
                     }
                     {user.role === PARENT && isAuthenticated &&
-                    <Route element={<LayoutMain/>}>
-                        <Route index element={<StudentHome/>}/>
-                        <Route path="config" element={<Configuration/>}/>
-                        <Route path="grades" element={<StudentGrades/>}/>
-                        <Route path="tasks" element={<StudentTasks/>}/>
-                        <Route path="reports" element={<StudentReports/>}/>
-                    </Route>
-                }
+                        <Route element={<LayoutMain/>}>
+                            <Route index element={<StudentHome/>}/>
+                            <Route path="config" element={<Configuration/>}/>
+                            <Route path="grades" element={<StudentGrades/>}/>
+                            <Route path="tasks" element={<StudentTasks/>}/>
+                            <Route path="reports" element={<StudentReports/>}/>
+                        </Route>
+                    }
                 </Route>
             </Routes>
         </HashRouter>

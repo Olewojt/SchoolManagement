@@ -1,0 +1,11 @@
+.expanded {
+  height: auto;
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+
+    max-height: calc(5 * 2.5rem);
+    overflow-y: auto;
+  }
+}

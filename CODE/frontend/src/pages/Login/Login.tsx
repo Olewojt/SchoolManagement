@@ -19,7 +19,7 @@ const Login: React.FC = () => {
     })
 
     const [anime, setAnime] = useState(false)
-    const [error, setError] = useState(false)
+    const [error, setError] = useState<string>("")
 
     const navigate = useNavigate()
 
@@ -70,6 +70,13 @@ const Login: React.FC = () => {
         }
 
         try {
+            if (form.name === "" || form.password === "") {
+                setError("Please fill in the fields correctly <3");
+                return;
+            } else {
+                setError("");
+            }
+
             const user = await login(payload);
             dispatch(setLoggedInUser(user));
 
@@ -77,7 +84,7 @@ const Login: React.FC = () => {
             dispatch(setUserData(userData));
 
         } catch (error) {
-            setError(true);
+            setError("Check if the provided data is correct.")
         }
     }
 
@@ -90,15 +97,12 @@ const Login: React.FC = () => {
 
     return (
         <div className={classes.login}>
-            <div className={classes.login__background}>
-                <h1 style={{background: "rgba(0, 0, 0, 0.7)"}}>Login: admin@example.com<br/> Password: password123
-                </h1> {/*TODO: do testow, bedzie trzeba i tak reduxa ogarnac*/}
-            </div>
+            <div className={classes.login__background}></div>
             <aside className={classes.login__aside}>
                 <Logo className={classes.logo}/>
                 <div className={`${classes["login__form"]} ${anime && classes["login__form--anime"]}`}>
                     <h1 className={classes.header}>Sign in</h1>
-                    {error && <p className={classes.error}>Error (taki do poprawy)</p>}
+                    <p className={classes.error}>{error}</p>
                     <form onSubmit={onSubmit} className={classes.form}>
                         <Input type={"text"}
                                placeholder={"Login"}

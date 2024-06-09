@@ -1,0 +1,32 @@
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: var(--color-secondary);
+}
+
+.loader {
+  border: 8px solid transparent; /* Jasny kolor obramowania */
+  border-top: 8px solid #3498db; /* Niebieski kolor obramowania */
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite; /* Animacja obrotu */
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.text {
+  font-size: 3rem;
+  animation: fadeInOut 2.5s linear infinite; /* Animacja zmiany komunikatu */
+}
+
+@keyframes fadeInOut {
+  0%, 100% { opacity: 0; }
+  10%, 90% { opacity: 1; }
+}

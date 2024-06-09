@@ -1,18 +1,19 @@
-import {useSelector} from "react-redux";
-import {RootState} from "state/store.tsx";
+import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState, AppDispatch } from "state/store.tsx"; // Ensure AppDispatch is exported from the store
 import Column from "layouts/TaskBoard/Column.tsx";
 import boardStyles from "./Board.module.scss";
 import TaskCardInterface from "@/interfaces/TaskCardInterface/TaskCardInterface.tsx";
-import SelectOptions from "forms/SelectOptions.tsx";
+import SelectOptions from "forms/SelectHeaders/SelectOptions.tsx";
 import AddCard from "ui/Card/TaskCard/AddCard.tsx";
-import {useState} from "react";
+import { fetchNewTasks } from "state/tasks/tasksSlice.tsx";
 
-function getSubjectsAndClasses(cards: TaskCardInterface[]): {subjects: string[], classes: string[]} {
+function getSubjectsAndClasses(cards: TaskCardInterface[]): { subjects: string[], classes: string[] } {
     const subjectsSet = new Set<string>();
     const classesSet = new Set<string>();
     cards.forEach(card => {
         subjectsSet.add(card.subject);
-        if (card.className) { // Sprawdzamy czy className istnieje
+        if (card.className) {
             classesSet.add(card.className);
         }
     });
@@ -20,6 +21,7 @@ function getSubjectsAndClasses(cards: TaskCardInterface[]): {subjects: string[],
 }
 
 const Board = () => {
+    const dispatch = useDispatch<AppDispatch>();
     const tasks = useSelector((state: RootState) => state.studentTasks.tasks);
     const user = useSelector((state: RootState) => state.login);
 
@@ -28,14 +30,20 @@ const Board = () => {
     const [selectedSubjects, setSelectedSubjects] = useState<{ [key: string]: boolean }>({});
     const [selectedClasses, setSelectedClasses] = useState<{ [key: string]: boolean }>({});
 
+    useEffect(() => {
+        if (user.id) {
+            dispatch(fetchNewTasks({ userId: user.id, role: user.role }));
+        }
+    }, [dispatch, user.id, user.role]);
+
     const onSubjectChange = (subject: string) => {
-        const newSelectedSubjects = {...selectedSubjects};
+        const newSelectedSubjects = { ...selectedSubjects };
         newSelectedSubjects[subject] = !newSelectedSubjects[subject];
         setSelectedSubjects(newSelectedSubjects);
     };
 
     const onClassChange = (className: string) => {
-        const newSelectedClasses = {...selectedClasses};
+        const newSelectedClasses = { ...selectedClasses };
         newSelectedClasses[className] = !newSelectedClasses[className];
         setSelectedClasses(newSelectedClasses);
     };
@@ -43,9 +51,8 @@ const Board = () => {
     const filteredCards = tasks.map(card => {
         const subjectFilterPassed = Object.keys(selectedSubjects).length === 0 || Object.values(selectedSubjects).every(value => !value) || selectedSubjects[card.subject];
         const classFilterPassed = Object.keys(selectedClasses).length === 0 || Object.values(selectedClasses).every(value => !value) || !card.className || selectedClasses[card.className];
-        // Dodaliśmy warunek !card.className aby uwzględnić karty bez przypisanej klasy
 
-        return {...card, isSelected: subjectFilterPassed && classFilterPassed};
+        return { ...card, isSelected: subjectFilterPassed && classFilterPassed };
     });
 
     return (
@@ -58,23 +65,24 @@ const Board = () => {
                     checkedItems={selectedSubjects}
                     className={boardStyles.headers__select}
                 />
-                <SelectOptions
-                    name={"Class"}
-                    options={classes}
-                    onCheckboxChange={onClassChange}
-                    checkedItems={selectedClasses}
-                    className={boardStyles.headers__select}
-                />
-                {user.role === "Teacher" && <AddCard/>}
+                {user.role === "Teacher" &&
+                    <>
+                        <SelectOptions
+                            name={"Class"}
+                            options={classes}
+                            onCheckboxChange={onClassChange}
+                            checkedItems={selectedClasses}
+                            className={boardStyles.headers__select}
+                        />
+                        <AddCard />
+                    </>
+                }
             </div>
 
             <div className={boardStyles.board}>
-                <Column title="TO-DO" status="TO_DO" cards={filteredCards} setCards={() => {
-                }}/>
-                <Column title="DONE" status="DONE" cards={filteredCards} setCards={() => {
-                }}/>
-                <Column title="GRADED" status="GRADED" cards={filteredCards} setCards={() => {
-                }}/>
+                <Column title="TO-DO" status="TO_DO" cards={filteredCards} setCards={() => { }} />
+                <Column title="DONE" status="DONE" cards={filteredCards} setCards={() => { }} />
+                <Column title="GRADED" status="GRADED" cards={filteredCards} setCards={() => { }} />
             </div>
         </>
     );

@@ -36,7 +36,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable().cors().and().authorizeRequests()
+                .antMatchers("/forgotPassword/**").permitAll()
+                .antMatchers("/websocket").permitAll()
                 .antMatchers("/login").permitAll()
+                .antMatchers("/ping").permitAll()
                 .antMatchers("/api/v1/grades/**").hasAnyAuthority("Student")
                 .anyRequest().authenticated()
                 .and().addFilter(new JWTAuthenticationFilter(authenticationManagerBean(), jwtUtils))

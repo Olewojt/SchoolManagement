@@ -1,0 +1,12 @@
+.btn {
+  width: 15rem; //Na sztywno fest to jest
+
+  background-color: var(--color-fourth);
+  color: var(--color-main-font);
+  font-weight: 700;
+  font-size: 1.1rem;
+
+  &:hover {
+    background-color: var(--color-third);
+  }
+}

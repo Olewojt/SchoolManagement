@@ -1,7 +1,14 @@
 .board {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  width: calc(100vw - 20rem);
+  justify-content: space-between;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  box-sizing: border-box;
+  z-index: 10000;
+  height: 83dvh;
+  padding: 0 1rem;
 }
 
 .headers {
@@ -12,4 +19,8 @@
   &__select {
     width: 15rem;
   }
+}
+
+.board > * {
+  flex-shrink: 0; /* Zapobiega kurczeniu się elementów wewnątrz kontenera */
 }

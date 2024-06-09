@@ -1,20 +1,26 @@
 import { Link, LinkProps, useLocation } from "react-router-dom";
 import classes from "./Bookmark.module.scss";
-import {MouseEventHandler} from "react";
+import { MouseEventHandler} from "react";
+import useAnimated from "hooks/useAnimated.tsx";
 
 interface BookmarkProps extends LinkProps {
     svgIcon: React.ReactNode;
     onClick?: MouseEventHandler<HTMLAnchorElement>;
-    canActive?: boolean
+    canActive?: boolean;
 }
 
 const Bookmark = (props: BookmarkProps) => {
     const location = useLocation();
     const isActive = location.pathname === props.to;
-    const canActive = props.canActive !== false
+    const canActive = props.canActive !== false;
+    const isAnimated = useAnimated()
+
+    const bookmarkClasses = isActive && canActive ? classes.bookmark__active : '';
+    const containerClasses = isAnimated ? `${bookmarkClasses} ${classes.bookmark__anime}` : bookmarkClasses;
+    const style = isAnimated ? {} : { transform: 'translateX(40%)' };
 
     return (
-        <div className={isActive && canActive ? classes.bookmark__active : classes.bookmark__anime}>
+        <div className={containerClasses} style={style}>
             <Link
                 to={props.to}
                 className={classes.bookmark}

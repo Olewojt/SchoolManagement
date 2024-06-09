@@ -6,6 +6,10 @@ spring:
     username: root
     password:
     driver-class-name: com.mysql.cj.jdbc.Driver
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
   jpa:
     generate-ddl: true
     hibernate:
@@ -13,6 +17,17 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: "maciekzbronowic@gmail.com"
+    password: "imxs pkjv ygdk fqod"
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 jwt:
   secretKey: 2D4A614E645267556B58703273357638792F423F4428472B4B6250655368566D
   expirationHours: 24

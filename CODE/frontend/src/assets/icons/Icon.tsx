@@ -2,9 +2,9 @@ interface IconProps {
     className?: string;
 }
 
-const SettingsIcon = () => {
+const SettingsIcon = (props: IconProps) => {
     return (
-        <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg className={props.className} width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
                 d="M43.19 25.1101V20.03L38.44 18.8801C38.0491 17.116 37.3736 15.4272 36.44 13.8801L38.93 9.81006L35.33 6.22021L31.48 8.57007C29.8579 7.47036 28.0531 6.66799 26.15 6.2002L25.15 2H20.07L19.07 6C16.9906 6.38993 15.0049 7.17408 13.22 8.31006L9.84 6.23999L6.23999 9.83008L8.23999 13.1401C7.03766 14.9612 6.20207 16.9992 5.78 19.1401L2 20.0601V25.1101L5.89001 26.05C6.35669 28.0937 7.20487 30.0309 8.39001 31.76L6.22 35.3101L9.82001 38.9001L13.58 36.6101C15.2339 37.6 17.0477 38.2938 18.94 38.6602L20.02 43.1301H25.1L26.24 38.4302C27.956 37.9909 29.5902 37.2783 31.08 36.3201L35.3 38.9001L38.9 35.3101L36.27 31.01C37.1819 29.5522 37.857 27.9592 38.27 26.29L43.19 25.1101ZM22.63 29.55C21.2455 29.55 19.8922 29.1395 18.741 28.3704C17.5899 27.6012 16.6927 26.5081 16.1628 25.229C15.633 23.9499 15.4944 22.5424 15.7645 21.1846C16.0346 19.8267 16.7013 18.5793 17.6803 17.6003C18.6592 16.6214 19.9065 15.9547 21.2644 15.6846C22.6222 15.4145 24.0297 15.5532 25.3088 16.083C26.5879 16.6128 27.6811 17.51 28.4503 18.6611C29.2195 19.8123 29.63 21.1656 29.63 22.55C29.63 24.4066 28.8925 26.187 27.5797 27.4998C26.267 28.8125 24.4865 29.55 22.63 29.55V29.55Z"
                 stroke="#FFD6FF" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
@@ -205,6 +205,31 @@ export const PlusIcon = () => {
     )
 }
 
+export const CloseIcon = () => {
+    return (
+        <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g filter="url(#filter0_d_332_2383)">
+                <path d="M11.3667 12.1562L31.3095 31.2873" stroke="#FFD6FF" strokeWidth="4" strokeLinecap="round"/>
+                <path d="M30.9033 11.75L11.7723 31.6928" stroke="#FFD6FF" strokeWidth="4" strokeLinecap="round"/>
+            </g>
+            <defs>
+                <filter id="filter0_d_332_2383" x="0.366699" y="0.75" width="43.9429" height="43.9429"
+                        filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+                    <feFlood floodOpacity="0" result="BackgroundImageFix"/>
+                    <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                                   result="hardAlpha"/>
+                    <feOffset dx="1" dy="1"/>
+                    <feGaussianBlur stdDeviation="5"/>
+                    <feComposite in2="hardAlpha" operator="out"/>
+                    <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+                    <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_332_2383"/>
+                    <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_332_2383" result="shape"/>
+                </filter>
+            </defs>
+        </svg>
+    )
+}
+
 export const SearchIcon = () => {
     return (
         <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -304,12 +329,12 @@ export const ExpandIcon = (props: IconProps) => {
     )
 }
 
-export const SingleIcon = () => {
-    return (<svg width="70" height="70" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <ellipse cx="35" cy="23.3332" rx="11.6667" ry="11.6667" fill="#222222"/>
+export const SingleIcon = (props: IconProps) => {
+    return (<svg className={props.className} width="70" height="70" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="35" cy="23.3332" rx="11.6667" ry="11.6667" fill="#33363F"/>
             <path
                 d="M18.395 42.0894C19.5296 39.4522 22.1884 37.9165 25.0592 37.9165H44.9407C47.8116 37.9165 50.4703 39.4522 51.605 42.0894C53.199 45.7942 55.1879 51.5094 55.3984 57.3333C55.4183 57.8852 54.9689 58.3332 54.4166 58.3332H15.5833C15.031 58.3332 14.5816 57.8852 14.6016 57.3333C14.8121 51.5094 16.801 45.7942 18.395 42.0894Z"
-                fill="#222222"/>
+                fill="#33363F"/>
         </svg>
     )
 }

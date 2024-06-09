@@ -70,11 +70,11 @@ $noactive: true;
       font-weight: 500;
     }
   }
-  svg:hover {
+  &__svg:hover {
     transform: rotate(120deg);
     transition: transform 0.5s ease;
   }
-  svg:not(:hover) {
+  &__svg:not(:hover) {
     transform: rotate(0deg);
     transition: transform 0.5s ease;
   }

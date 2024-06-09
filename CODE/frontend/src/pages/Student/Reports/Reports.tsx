@@ -7,6 +7,7 @@ import { useSelector} from "react-redux";
 import {RootState} from "state/store.tsx";
 import Button from "ui/Button/Button.tsx";
 import {exportStudentGrades} from "api/User.tsx";
+import {PARENT} from "utilitiesconstants.tsx/";
 
 export interface SubjectSelectionState {
     [key: string]: boolean;
@@ -53,6 +54,7 @@ function getGradesCount(grades: SubjectsGrades[]): GradeDict {
 }
 
 const StudentReports = () => {
+    const parent = useSelector((state: RootState) => state.parentChildrenData)
     const user = useSelector((state: RootState) => state.login);
     const grades = useSelector((state: RootState) => state.studentGrades.grades);
     // const grades = DUMMY_GRADES
@@ -114,9 +116,14 @@ const StudentReports = () => {
         const selectedSubjectNames = Object.keys(selectedSubjects)
             .filter(subject => selectedSubjects[subject]);
 
-        console.log(selectedSubjectNames)
+        // console.log(selectedSubjectNames)
 
-        exportStudentGrades(user.id, selectedSubjectNames)
+        let id = user.id
+
+        if (user.role === PARENT && parent.selected != -1)
+            id = parent.children[parent.selected].id
+
+        exportStudentGrades(id, selectedSubjectNames)
             .then(data => {
                 console.log('Export request response', data);
 

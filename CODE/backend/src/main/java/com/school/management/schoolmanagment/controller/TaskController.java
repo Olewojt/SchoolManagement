@@ -1,16 +1,13 @@
 package com.school.management.schoolmanagment.controller;
 
-import com.school.management.schoolmanagment.dto.GradeInfoDTO;
-import com.school.management.schoolmanagment.dto.SubjectGradesDTO;
+import com.school.management.schoolmanagment.dto.*;
 import com.school.management.schoolmanagment.model.Task;
 import com.school.management.schoolmanagment.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -33,5 +30,57 @@ public class TaskController {
     @GetMapping("/subjects/grades/{userId}")
     public ResponseEntity<List<SubjectGradesDTO>> getStudentSubjectGrades(@PathVariable Long userId) {
         return ResponseEntity.ok(taskService.getStudentSubjectGrades(userId));
+    }
+
+    @GetMapping("/assigned/info/{userId}")
+    public ResponseEntity<List<TaskDTO>> getTasksInfoAssignedToUser(@PathVariable Long userId) {
+        return ResponseEntity.ok(taskService.getTasksInfoAssignedToUser(userId));
+    }
+
+    @GetMapping("/{taskId}")
+    public ResponseEntity<TaskDTO> findTaskById(@PathVariable Long taskId) {
+        return ResponseEntity.ok(taskService.findTaskById(taskId));
+    }
+
+    @PostMapping()
+    public ResponseEntity<Void> addTaskForStudents(@RequestBody TaskCreationDTO taskCreationDTO) {
+        taskService.createTaskForStudents(taskCreationDTO);
+        return ResponseEntity.created(URI.create("/api/v1/tasks/created")).build();
+    }
+
+    @PatchMapping("/{taskId}")
+    public ResponseEntity<Void> gradeTask(@PathVariable Long taskId,
+                                          @RequestBody GradeTaskDTO gradeTaskDTO) {
+        taskService.gradeTask(taskId, gradeTaskDTO);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/status/done/{taskId}")
+    public ResponseEntity<Void> markTaskAsDone(@PathVariable Long taskId) {
+        taskService.markTaskAsDone(taskId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/status/todo/{taskId}")
+    public ResponseEntity<Void> markTaskAsToDo(@PathVariable Long taskId) {
+        taskService.markTaskAsToDo(taskId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/created/{teacherId}")
+    public ResponseEntity<List<TaskDTO>> findTasksCreatedByTeacher(@PathVariable Long teacherId) {
+        return ResponseEntity.ok(taskService.findTasksCreatedByTeacher(teacherId));
+    }
+
+    @PatchMapping("/grades/remove/{taskId}")
+    public ResponseEntity<Void> removeGradeFromTask(@PathVariable Long taskId) {
+        taskService.removeGradeFromTask(taskId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/grades/{taskId}")
+    public ResponseEntity<Void> modifyTaskGrade(@PathVariable Long taskId, Integer grade) {
+        taskService.modifyTaskGrade(taskId, grade);
+        return ResponseEntity.noContent().build();
     }
 }

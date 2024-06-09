@@ -4,6 +4,7 @@ import {ChangeEvent} from "react";
 
 interface SearchProps {
     onInput: (event: ChangeEvent<HTMLInputElement>) => void;
+    value: string;
 }
 
 const Search = (props: SearchProps) => {
@@ -11,7 +12,7 @@ const Search = (props: SearchProps) => {
     return (
         <div className={classes.content}>
             <SearchIcon/>
-            <input type="text" name="search" placeholder="Search" onInput={props.onInput}></input>
+            <input type="text" name="search" placeholder="Search" onInput={props.onInput} value={props.value}></input>
         </div>
     )
 }

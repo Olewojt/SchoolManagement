@@ -1,18 +1,19 @@
 package com.school.management.schoolmanagment.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import java.time.Instant;
 
-import static jakarta.persistence.FetchType.LAZY;
-import static jakarta.persistence.GenerationType.IDENTITY;
+import static javax.persistence.FetchType.LAZY;
+import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @NoArgsConstructor
@@ -27,13 +28,13 @@ public class Notification {
     @CreationTimestamp
     private Instant createdAt;
     @ManyToOne(fetch = LAZY)
+    @JsonIgnore
     private User user;
     private Boolean isRead;
 
-    public Notification(String content, Instant createdAt, User user, Boolean isRead) {
+    public Notification(String content, User user) {
         this.content = content;
-        this.createdAt = createdAt;
         this.user = user;
-        this.isRead = isRead;
+        this.isRead = false;
     }
 }
