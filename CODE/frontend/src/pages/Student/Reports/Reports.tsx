@@ -14,10 +14,11 @@ export interface SubjectSelectionState {
 }
 
 // Generate initial state of selected subjects
-export function generateSubjectSelectionStates(subjects: string[]): SubjectSelectionState {
+export function generateSubjectSelectionStates(subjects: string[], initState?: boolean): SubjectSelectionState {
     const initialState: { [key: string]: boolean } = {};
     subjects.forEach((subject) => {
-        initialState[subject] = true;
+        if (initState != null) initialState[subject] = initState;
+        else initialState[subject] = true;
     });
     return initialState;
 }
@@ -67,6 +68,7 @@ const StudentReports = () => {
     const [studentGrades, setStudentGrades] = useState<GradeDict>(getGradesCount(grades));
     // State of export
     const [exportState, setExportState] = useState<string>("Export");
+    const [clearState, setClearState] = useState<string>("Clear");
 
 
     useEffect(() => {
@@ -99,15 +101,29 @@ const StudentReports = () => {
 
     const resetFilters = () => {
         setSelectedSubjects(generateSubjectSelectionStates(subjects));
+        displayExportState("Cleared!", "clear")
     }
 
-    function displayExportState(state: string) {
-        setExportState(state);
+    function displayExportState(state: string, type: "export" | "clear") {
+        switch (type) {
+            case "export":
+                setExportState(state);
 
-        setTimeout(() => {
-            setExportState("Export");
+                setTimeout(() => {
+                    setExportState("Export");
 
-        }, 2000);
+                }, 2000);
+                break
+
+            case "clear":
+                setClearState(state)
+
+                setTimeout(() => {
+                    setClearState("Clear");
+
+                }, 2000);
+                break
+        }
     }
 
     const exportRequest = () => {
@@ -127,24 +143,13 @@ const StudentReports = () => {
             .then(data => {
                 console.log('Export request response', data);
 
-                displayExportState("Exported!")
+                displayExportState("Exported!", "export")
             })
             .catch(error => {
                 console.error('Error requesting student grades report', error);
 
-                displayExportState("Export failure!");
+                displayExportState("Export failure!", "export");
             });
-    }
-
-    const getExportButtonClass = () => {
-        switch (exportState) {
-            case "Exported!":
-                return classes.export_success;
-            case "Export failure!":
-                return classes.export_failure;
-            default:
-                return "";
-        }
     }
 
     return (
@@ -163,8 +168,28 @@ const StudentReports = () => {
             </div>
 
             <div className={classes.buttons}>
-                <Button type={"button"} children={exportState} className={getExportButtonClass()} onClick={exportRequest}/>
-                <Button type={"button"} children={"Clear"} onClick={resetFilters}/>
+                <Button
+                    type={"button"}
+                    children={exportState}
+                    onClick={exportRequest}
+                    className={
+                        exportState == "Exported!"
+                            ? classes.export_success
+                            : exportState == "Export failure!"
+                                ? classes.export_failure
+                                : ""
+                    }
+                />
+                <Button
+                    type={"button"}
+                    children={clearState}
+                    onClick={resetFilters}
+                    className={
+                        clearState == "Cleared!"
+                            ? classes.export_success
+                            : ""
+                    }
+                />
             </div>
         </main>
     );

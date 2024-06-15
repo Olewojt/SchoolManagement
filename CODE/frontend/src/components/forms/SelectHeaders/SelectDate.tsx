@@ -53,7 +53,7 @@ const SelectDate: React.FC<SelectProps> = (props: SelectProps) => {
             </div>
             {isExpanded && (
                 <div className={`${baseClasses.expanded__content} ${classes.expanded__content}`}>
-                    <label>Od: </label>
+                    <label>From: </label>
                     <input
                         type="date"
                         name="from"
@@ -61,7 +61,7 @@ const SelectDate: React.FC<SelectProps> = (props: SelectProps) => {
                         onChange={props.handleFromDateChange}
                         max={currentDate()}
                     />
-                    <label>Do: </label>
+                    <label>To: </label>
                     <input
                         type="date"
                         name="to"

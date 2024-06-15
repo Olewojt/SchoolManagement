@@ -5,7 +5,7 @@
   "$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
   "appId": "YourAppID",
   "asar": true,
-  "productName": "YourAppName",
+  "productName": "SchoolManagement",
   "directories": {
     "output": "release/${version}",
     buildResources: "resources"
@@ -15,14 +15,22 @@
     "dist-electron",
     "resources/**/*"
   ],
-  extraResources: [{
-    "from": "resources",
-    "to": '.'
-  },
+  extraResources: [
+    {
+      "from": "resources",
+      "to": '.'
+    },
     {
       "from": "dist",
       "to": '.'
-    }],
+    }
+  ],
+  extraFiles: [
+    {
+      "from": "dist-mysql",
+      "to": '.'
+    }
+  ],
   "mac": {
     "target": [
       "dmg"
@@ -30,6 +38,7 @@
     "artifactName": "${productName}-Mac-${version}-Installer.${ext}"
   },
   "win": {
+    "icon": "school.ico",
     "target": [
       {
         "target": "nsis",
@@ -44,7 +53,12 @@
     "oneClick": false,
     "perMachine": false,
     "allowToChangeInstallationDirectory": true,
-    "deleteAppDataOnUninstall": false
+    "deleteAppDataOnUninstall": false,
+    "include": "build/installer.nsh",
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true,
+    "shortcutName": "School Management"
+
   },
   "linux": {
     "target": [

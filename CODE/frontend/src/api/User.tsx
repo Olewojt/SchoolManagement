@@ -346,6 +346,18 @@ export async function exportStudentGrades(userId: number, subjects: string[]): P
     }
 }
 
+export async function exportPrincipalStudentReport(): Promise<string> {
+    try {
+        const response: AxiosResponse<string, AxiosRequestConfig> = await axiosClient.get<string>(`api/v1/reports/adminReport`);
+        // Handle the response as needed
+        return response.data;
+    } catch (error) {
+        // Handle the error as needed
+        console.error('Error requesting principal student report', error);
+        throw error;
+    }
+}
+
 // export const DUMMY_STUDENTS: Student[] = [
 //     {
 //         id: 1,

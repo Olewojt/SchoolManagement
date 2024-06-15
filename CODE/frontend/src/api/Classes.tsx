@@ -45,6 +45,18 @@ export async function getSchoolClassesSubjects() : Promise<SchoolClassWithSubjec
     }
 }
 
+export async function removeSubjectFromClass(subject: string, className: string) : Promise<SchoolClassWithSubjects[]> {
+    try {
+        const response = await axiosClient.put(`/api/v1/subjects/${subject}/remove?className=${className}`);
+
+        return response.data;
+    } catch (error) {
+        // Handle the error as needed
+        console.error('Error removing subject from class', error);
+        throw error;
+    }
+}
+
 export async function addSubjectToClass() : Promise<SchoolClassSubject[]> {
     try {
         const response = await axiosClient.get(`/api/v1/classes`);

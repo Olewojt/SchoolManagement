@@ -28,7 +28,7 @@ const LastTaskCard: React.FC<LastTaskCardProps> = (props) => {
     return (
         <Link to="/tasks" onClick={handleLink} className={`${classes["last-task"]} ${props.className}`}>
             <div className={classes["card"]}>
-                <h3 className={classes["card__header"]}>Cumming Task</h3>
+                <h3 className={classes["card__header"]}>Coming Task</h3>
                 {lastTask ? (
                     <>
                         <h1 className={classes["card__title"]}>{lastTask.title}</h1>

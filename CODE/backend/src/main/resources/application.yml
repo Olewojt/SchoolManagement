@@ -2,9 +2,9 @@ spring:
   application:
     name: school-management
   datasource:
-    url: jdbc:mysql://localhost:3306/school?createDatabaseIfNotExist=true
+    url: jdbc:mysql://localhost:3308/school?createDatabaseIfNotExist=true
     username: root
-    password:
+    password: password
     driver-class-name: com.mysql.cj.jdbc.Driver
   servlet:
     multipart:
@@ -13,7 +13,7 @@ spring:
   jpa:
     generate-ddl: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect

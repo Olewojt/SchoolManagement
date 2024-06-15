@@ -41,6 +41,7 @@ const TeacherReports = () => {
     const [selectedSubjects, setSelectedSubjects] = useState<SubjectSelectionState>(generateSubjectSelectionStates(classInitialState.subjectNames));
     // State of export
     const [exportState, setExportState] = useState<string>("Export");
+    const [clearState, setClearState] = useState<string>("Clear");
     // State of data loading
     const [loading, setLoading] = useState<boolean>(true);
 
@@ -77,17 +78,31 @@ const TeacherReports = () => {
     };
 
     const resetFilters = () => {
+        displayExportState("Cleared!", "clear")
         setSelectedClass(classesSubjects[0]);
         setSelectedSubjects(generateSubjectSelectionStates(classInitialState.subjectNames));
     }
 
-    function displayExportState(state: string) {
-        setExportState(state);
+    function displayExportState(state: string, type: "export" | "clear") {
+        switch (type) {
+            case "export":
+                setExportState(state);
 
-        setTimeout(() => {
-            setExportState("Export");
+                setTimeout(() => {
+                    setExportState("Export");
 
-        }, 2000);
+                }, 2000);
+                break
+
+            case "clear":
+                setClearState(state)
+
+                setTimeout(() => {
+                    setClearState("Clear");
+
+                }, 2000);
+                break
+        }
     }
 
     const exportRequest = () => {
@@ -104,29 +119,18 @@ const TeacherReports = () => {
                     .then(data => {
                         console.log('Export request response', data);
 
-                        displayExportState("Exported!")
+                        displayExportState("Exported!", "export")
                     })
                     .catch(error => {
                         console.error('Error requesting student grades report', error);
 
-                        displayExportState("Export failure!");
+                        displayExportState("Export failure!", "export");
                     });
             } else {
-                displayExportState("Select subjects!")
+                displayExportState("Select subjects!", "export")
             }
         } else {
-            displayExportState("Select class!");
-        }
-    }
-
-    const getExportButtonClass = () => {
-        switch (exportState) {
-            case "Exported!":
-                return classes.export_success;
-            case "Export failure!":
-                return classes.export_failure;
-            default:
-                return "";
+            displayExportState("Select class!", "export");
         }
     }
 
@@ -148,14 +152,34 @@ const TeacherReports = () => {
             </div>
 
             <div className={classes.charts}>
-                {/*<PieChart data={}/>*/}
                 <h1>Pick up a class and select subjects you want to include in the report.</h1>
             </div>
 
             <div className={classes.buttons}>
-                <Button type={"button"} children={exportState} className={getExportButtonClass()}
-                        onClick={exportRequest}/>
-                <Button type={"button"} children={"Clear"} onClick={resetFilters}/>
+                <Button
+                    type={"button"}
+                    children={exportState}
+                    onClick={exportRequest}
+                    className={
+                        exportState == "Exported!"
+                            ? classes.export_success
+                            : exportState == "Export failure!"
+                                ? classes.export_success
+                                : exportState == "Select subjects!" || exportState == "Select class!"
+                                    ? classes.export_selectInfo
+                                    : ""
+                    }
+                />
+                <Button
+                    type={"button"}
+                    children={clearState}
+                    onClick={resetFilters}
+                    className={
+                        clearState == "Cleared!"
+                            ? classes.export_success
+                            : ""
+                    }
+                />
             </div>
         </main>
     );

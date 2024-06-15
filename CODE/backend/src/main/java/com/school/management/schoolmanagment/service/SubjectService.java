@@ -6,8 +6,10 @@ import com.school.management.schoolmanagment.mapper.SubjectDTOMapper;
 import com.school.management.schoolmanagment.mapper.SubjectWithClassesDTOMapper;
 import com.school.management.schoolmanagment.model.SchoolClass;
 import com.school.management.schoolmanagment.model.Subject;
+import com.school.management.schoolmanagment.model.TeacherSubjectInClass;
 import com.school.management.schoolmanagment.repository.SchoolClassRepository;
 import com.school.management.schoolmanagment.repository.SubjectRepository;
+import com.school.management.schoolmanagment.repository.TeacherSubjectInClassRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,7 @@ public class SubjectService {
 
     private final SubjectRepository subjectRepository;
     private final SchoolClassRepository schoolClassRepository;
+    private final TeacherSubjectInClassRepository teacherSubjectInClassRepository;
     private final SubjectDTOMapper subjectDTOMapper;
     private final SubjectWithClassesDTOMapper subjectWithClassesDTOMapper;
     private final NotificationService notificationService;
@@ -42,7 +45,9 @@ public class SubjectService {
     public SubjectWithClassesDTO removeClassFromSubject(String subjectName, String className) {
         Subject subject = subjectRepository.findByName(subjectName);
         SchoolClass schoolClass = schoolClassRepository.findByName(className);
+        TeacherSubjectInClass teacherSubjectInClass = teacherSubjectInClassRepository.findBySchoolClassIdAndSubjectId(schoolClass.getId(), subject.getId());
         subject.removeClass(schoolClass);
+        teacherSubjectInClassRepository.delete(teacherSubjectInClass);
         subjectRepository.save(subject);
 
         notificationService.sendNotificationToUser("Subject removed from class!");

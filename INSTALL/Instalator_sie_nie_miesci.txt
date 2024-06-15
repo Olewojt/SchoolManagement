@@ -1,0 +1,1 @@
+Instalator przekracza maksymalny rozmiar pliku na github (100MB). Waży 186MB

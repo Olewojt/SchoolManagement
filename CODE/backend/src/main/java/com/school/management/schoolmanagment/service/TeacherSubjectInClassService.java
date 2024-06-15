@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -51,9 +52,9 @@ public class TeacherSubjectInClassService {
         SchoolClass schoolClass = schoolClassRepository.findByName(className);
         if (subjectRepository.findByName(subjectName) == null) {
             subjectRepository.save(new Subject(subjectName));
-            subjectService.addClassToSubject(subjectName, className);
         }
 
+        subjectService.addClassToSubject(subjectName, className);
 
         Subject subject = subjectRepository.findByName(subjectName);
         User teacher = userRepository.findById(teacherId)
@@ -111,6 +112,7 @@ public class TeacherSubjectInClassService {
                             .stream()
                             .filter(subjectDTO -> teacherSubjectsIds.contains(subjectDTO.getId())
                                     && teacherClassesIds.contains(schoolClassWithSubjects.getId()))
+                            .sorted(Comparator.comparing(SubjectDTO::getName)) // Sorting the subjects alphabetically by name
                             .collect(Collectors.toList());
                     schoolClassWithSubjects.setSubjectDTOs(filteredSubjects);
                 });

@@ -7,6 +7,7 @@ import com.school.management.schoolmanagment.model.*;
 import com.school.management.schoolmanagment.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,6 +38,7 @@ public class UserService {
     private final PersonalInfoDTOMapper personalInfoDTOMapper;
     private final ParentDTOMapper parentDTOMapper;
     private final UserWithClassDTOMapper userWithClassDTOMapper;
+    private final PasswordEncoder passwordEncoder;
 
     public void setUserRole(String email, String roleName) {
         User user = userRepository.findByEmail(email)
@@ -68,6 +70,7 @@ public class UserService {
             throw new ExistingEntityException("User With Given Email Already Exists!");
         }
         User newUser = userInDTOMapper.mapToUser(userInDTO);
+        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         Optional<Role> role = roleRepository.findByName(roleName);
         newUser.setRole(role.orElseGet(() -> roleRepository.findByName("Student").get()));
         userRepository.save(newUser);

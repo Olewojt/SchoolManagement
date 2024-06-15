@@ -36,6 +36,6 @@
       "styles/*": ["./src/styles/*"]
     }
   },
-  "include": ["src", "electron"],
+  "include": ["src", "electron", "check-mysql.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -7,6 +7,7 @@ import com.school.management.schoolmanagment.service.ReportService;
 import com.school.management.schoolmanagment.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +16,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 import static com.school.management.schoolmanagment.mapper.SubjectGradesDTOMapper.mapToSubjectGradesDTO;
@@ -44,12 +46,20 @@ public class DatabaseSeeder implements CommandLineRunner {
 
     @Autowired
     private TaskService taskService;
+    @Autowired
+    private DatabaseStatusRepository databaseStatusRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
 
     @Override
     @Transactional
     public void run(String... args) {
+        if (isDatabaseAlreadySeeded()) {
+            return;
+        }
+
         seedRoles();
         seedSchoolClasses();
         seedPersonalInfo();
@@ -59,7 +69,18 @@ public class DatabaseSeeder implements CommandLineRunner {
         seedTasks();
         seedNotifications();
         seedReports();
+        markDatabaseAsSeeded();
+    }
 
+    private boolean isDatabaseAlreadySeeded() {
+        Optional<DatabaseStatus> status = databaseStatusRepository.findById(1L);
+        return status.isPresent() && status.get().isInitialized();
+    }
+
+    private void markDatabaseAsSeeded() {
+        DatabaseStatus status = databaseStatusRepository.findById(1L).orElse(new DatabaseStatus());
+        status.setInitialized(true);
+        databaseStatusRepository.save(status);
     }
 
     @Transactional
@@ -72,16 +93,18 @@ public class DatabaseSeeder implements CommandLineRunner {
 
     @Transactional
     public void seedPersonalInfo() {
-        personalInfoRepository.save(new PersonalInfo("John", "Doe", "12345678901", "1234567890", LocalDate.now(), "USA", "New York", "Main St", "42", "24", true));
-        personalInfoRepository.save(new PersonalInfo("Jane", "Smith", "98765432101", "0987654321", LocalDate.now(), "USA", "Chicago", "Elm St", "50", "12",false));
-        personalInfoRepository.save(new PersonalInfo("Bob", "Brown", "45612378901", "4561237890", LocalDate.now(), "USA", "San Francisco", "Pine St", "10", "5",true));
-        personalInfoRepository.save(new PersonalInfo("Alice", "Johnson", "32165498701", "3216549870", LocalDate.now(), "USA", "Los Angeles", "Maple St", "33", "2",false));
-        personalInfoRepository.save(new PersonalInfo("Tom", "White", "15975348601", "1597534860", LocalDate.now(), "USA", "Seattle", "Cedar St", "22", "3",true));
-        personalInfoRepository.save(new PersonalInfo("Emily", "Clark", "12312312345", "1231231231", LocalDate.now(), "USA", "Boston", "Oak St", "88", "11",true));
-        personalInfoRepository.save(new PersonalInfo("Michael", "Brown", "54354354321", "5435435432", LocalDate.now(), "USA", "Houston", "Pine St", "44", "8",true));
-        personalInfoRepository.save(new PersonalInfo("Emma", "Jones", "98798798765", "9879879876", LocalDate.now(), "USA", "Phoenix", "Spruce St", "12", "7",false));
-        personalInfoRepository.save(new PersonalInfo("David", "Wilson", "65465465432", "6546546543", LocalDate.now(), "USA", "Dallas", "Birch St", "23", "9",false));
-        personalInfoRepository.save(new PersonalInfo("Sophia", "Taylor", "32132132109", "3213213210", LocalDate.now(), "USA", "Austin", "Maple St", "77", "4",true));
+        personalInfoRepository.save(new PersonalInfo("John", "Doe", "12345678901", "123-456-789", LocalDate.now(), "USA", "New York", "Main St", "42", "24", true));
+        personalInfoRepository.save(new PersonalInfo("Jane", "Smith", "98765432101", "987-654-321", LocalDate.now(), "USA", "Chicago", "Elm St", "50", "12", false));
+        personalInfoRepository.save(new PersonalInfo("Bob", "Brown", "45612378901", "456-123-789", LocalDate.now(), "USA", "San Francisco", "Pine St", "10", "5", null));
+        personalInfoRepository.save(new PersonalInfo("Alice", "Johnson", "32165498701", "321-654-987", LocalDate.now(), "USA", "Los Angeles", "Maple St", "33", "2", null));
+        personalInfoRepository.save(new PersonalInfo("Tom", "White", "15975348601", "159-753-486", LocalDate.now(), "USA", "Seattle", "Cedar St", "22", "3", true));
+        personalInfoRepository.save(new PersonalInfo("Emily", "Clark", "12312312345", "123-123-123", LocalDate.now(), "USA", "Boston", "Oak St", "88", "11", true));
+        personalInfoRepository.save(new PersonalInfo("Michael", "Brown", "54354354321", "543-543-543", LocalDate.now(), "USA", "Houston", "Pine St", "44", "8", true));
+        personalInfoRepository.save(new PersonalInfo("Emma", "Jones", "98798798765", "987-987-987", LocalDate.now(), "USA", "Phoenix", "Spruce St", "12", "7", false));
+        personalInfoRepository.save(new PersonalInfo("David", "Wilson", "65465465432", "654-654-654", LocalDate.now(), "USA", "Dallas", "Birch St", "23", "9", false));
+        personalInfoRepository.save(new PersonalInfo("Sophia", "Taylor", "32132132109", "321-321-321", LocalDate.now(), "USA", "Austin", "Maple St", "77", "4", true));
+        personalInfoRepository.save(new PersonalInfo("Carl", "Johnson", null, "987-654-321", null, null, null, null, null, null, null));
+        personalInfoRepository.save(new PersonalInfo("Grace", "Williams", "45678912301", "456-789-123", LocalDate.now(), "USA", "Miami", "Bay St", "55", "10", null));
     }
 
     @Transactional
@@ -94,19 +117,19 @@ public class DatabaseSeeder implements CommandLineRunner {
         SchoolClass class5A = schoolClassRepository.findByName("5A");
         SchoolClass class8A = schoolClassRepository.findByName("8D");
 
-        User student1 = new User("john.doe@example.com", "password123", personalInfoRepository.findById(1L).orElseThrow(), studentRole, class5A);
-        User student2 = new User("jane.smith@example.com", "password123", personalInfoRepository.findById(2L).orElseThrow(), studentRole, class8A);
-        User student3 = new User("emily.clark@example.com", "password123", personalInfoRepository.findById(6L).orElseThrow(), studentRole, class5A);
-        User student4 = new User("michael.brown@example.com", "password123", personalInfoRepository.findById(7L).orElseThrow(), studentRole, class5A);
-        User student5 = new User("emma.jones@example.com", "password123", personalInfoRepository.findById(8L).orElseThrow(), studentRole, class5A);
-        User student6 = new User("david.wilson@example.com", "password123", personalInfoRepository.findById(9L).orElseThrow(), studentRole, class5A);
-        User student7 = new User("sophia.taylor@example.com", "password123", personalInfoRepository.findById(10L).orElseThrow(), studentRole, class5A);
+        User student1 = new User("john.doe@example.com", passwordEncoder.encode("password123"), personalInfoRepository.findById(1L).orElseThrow(), studentRole, class5A);
+        User student2 = new User("jane.smith@example.com", passwordEncoder.encode("password123"), personalInfoRepository.findById(2L).orElseThrow(), studentRole, class8A);
+        User student3 = new User("emily.clark@example.com", passwordEncoder.encode("password123"), personalInfoRepository.findById(6L).orElseThrow(), studentRole, class5A);
+        User student4 = new User("michael.brown@example.com", passwordEncoder.encode("password123"), personalInfoRepository.findById(7L).orElseThrow(), studentRole, class5A);
+        User student5 = new User("emma.jones@example.com", passwordEncoder.encode("password123"), personalInfoRepository.findById(8L).orElseThrow(), studentRole, class5A);
+        User student6 = new User("david.wilson@example.com", passwordEncoder.encode("password123"), personalInfoRepository.findById(9L).orElseThrow(), studentRole, class5A);
+        User student7 = new User("sophia.taylor@example.com", passwordEncoder.encode("password123"), personalInfoRepository.findById(10L).orElseThrow(), studentRole, class5A);
 
-        User teacher1 = new User("bob.brown@example.com", "password123", personalInfoRepository.findById(3L).orElseThrow(), teacherRole, null);
-        User teacher2 = new User("alice.johnson@example.com", "password123", personalInfoRepository.findById(4L).orElseThrow(), teacherRole, null);
-        User teacher3 = new User("tom.white@example.com", "password123", personalInfoRepository.findById(5L).orElseThrow(), teacherRole, null);
-        User admin = new User("admin@example.com", "password123", personalInfoRepository.findById(4L).orElseThrow(), adminRole, null);
-        User parent = new User("parent@example.com", "password123", personalInfoRepository.findById(5L).orElseThrow(), parentRole, null);
+        User teacher1 = new User("bob.brown@example.com", passwordEncoder.encode("password123"), personalInfoRepository.findById(3L).orElseThrow(), teacherRole, null);
+        User teacher2 = new User("grace.williams@example.com", passwordEncoder.encode("password123"), personalInfoRepository.findById(12L).orElseThrow(), teacherRole, null);
+        User teacher3 = new User("tom.white@example.com", passwordEncoder.encode("password123"), personalInfoRepository.findById(5L).orElseThrow(), teacherRole, null);
+        User admin = new User("admin@example.com", passwordEncoder.encode("password123"), personalInfoRepository.findById(4L).orElseThrow(), adminRole, null);
+        User parent = new User("parent@example.com", passwordEncoder.encode("password123"), personalInfoRepository.findById(11L).orElseThrow(), parentRole, null);
 
         userRepository.save(student1);
         userRepository.save(student2);
@@ -181,7 +204,7 @@ public class DatabaseSeeder implements CommandLineRunner {
     @Transactional
     public void seedTeacherSubjectsInClasses() {
         User teacher1 = userRepository.findByEmail("bob.brown@example.com").orElseThrow();
-        User teacher2 = userRepository.findByEmail("alice.johnson@example.com").orElseThrow();
+        User teacher2 = userRepository.findByEmail("grace.williams@example.com").orElseThrow();
         User teacher3 = userRepository.findByEmail("tom.white@example.com").orElseThrow();
 
         Subject math = subjectRepository.findByName("Math");

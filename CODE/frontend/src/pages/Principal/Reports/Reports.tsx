@@ -6,6 +6,7 @@ import Button from "ui/Button/Button.tsx";
 import {exportTeacherTasks, getBasicTeachers, TeacherSelection} from "api/Teachers.tsx";
 import {useSelector} from "react-redux";
 import {RootState} from "state/store.tsx";
+import {exportPrincipalStudentReport} from "api/User.tsx";
 
 const selectedTeacherInitialState = {
     id: -1,
@@ -20,6 +21,8 @@ const PrincipalReports = () => {
 
     // State of export
     const [exportState, setExportState] = useState<string>("Export");
+    const [principalExportState, setPrincipalExportState] = useState<string>("Export school principal report");
+    const [clearState, setClearState] = useState<string>("Clear");
     const [fromDate, setFromDate] = useState(currentDate(-180));
     const [toDate, setToDate] = useState(currentDate());
 
@@ -60,15 +63,38 @@ const PrincipalReports = () => {
     const resetFilters = () => {
         setToDate(currentDate());
         setFromDate(currentDate(-180));
+        displayExportState("Cleared!", "clear");
     }
 
-    function displayExportState(state: string) {
-        setExportState(state);
+    function displayExportState(state: string, type: "export" | "clear" | "admin") {
+        switch (type) {
+            case "export":
+                setExportState(state);
 
-        setTimeout(() => {
-            setExportState("Export");
+                setTimeout(() => {
+                    setExportState("Export");
 
-        }, 2000);
+                }, 2000);
+                break
+
+            case "clear":
+                setClearState(state)
+
+                setTimeout(() => {
+                    setClearState("Clear");
+
+                }, 2000);
+                break
+
+            case "admin":
+                setPrincipalExportState(state)
+
+                setTimeout(() => {
+                    setPrincipalExportState("Export school principal report");
+
+                }, 2000);
+                break
+        }
     }
 
     const exportRequest = () => {
@@ -78,24 +104,27 @@ const PrincipalReports = () => {
             .then(data => {
                 console.log('Export request response', data);
 
-                displayExportState("Exported!")
+                displayExportState("Exported!", "export")
             })
             .catch(error => {
                 console.error('Error requesting student grades report', error);
 
-                displayExportState("Export failure!");
+                displayExportState("Export failure!", "export");
             });
     }
 
-    const getExportButtonClass = () => {
-        switch (exportState) {
-            case "Exported!":
-                return classes.export_success;
-            case "Export failure!":
-                return classes.export_failure;
-            default:
-                return "";
-        }
+    const exportPrincipalRequest = () => {
+        setPrincipalExportState("Exporting...")
+
+        exportPrincipalStudentReport()
+            .then(data => {
+                console.log('Export request response', data);
+                displayExportState("Exported!", "admin")
+            })
+            .catch(error => {
+                console.error('Error requesting principal students report', error);
+                displayExportState("Exported failure!", "admin")
+            });
     }
 
     return (
@@ -121,13 +150,41 @@ const PrincipalReports = () => {
             </div>
 
             <div className={classes.buttons}>
-                <Button type={"button"} children={exportState} className={getExportButtonClass()}
-                        onClick={exportRequest}/>
-                <Button type={"button"} children={"Clear"} onClick={resetFilters}/>
+                <Button
+                    type={"button"}
+                    children={exportState}
+                    className={
+                        exportState == "Exported!"
+                            ? classes.export_success
+                            : exportState == "Export failure!"
+                                ? classes.export_failure
+                                : ""
+                    }
+                    onClick={exportRequest}/>
+                <Button
+                    type={"button"}
+                    children={clearState}
+                    onClick={resetFilters}
+                    className={
+                        clearState == "Cleared!"
+                            ? classes.export_success
+                            : ""
+                    }
+                />
             </div>
             <div className={classes.buttons}>
-                <Button type={"button"} children={"School principal Report"} className={classes.buttons}
-                        onClick={exportRequest}/>
+                <Button
+                    type={"button"}
+                    children={principalExportState}
+                    onClick={exportPrincipalRequest}
+                    className={`${classes.buttons} ${
+                        principalExportState == "Exported!" 
+                            ? classes.export_success
+                            : principalExportState == "Export failure!"
+                                ? classes.export_failure
+                                : ""
+                    }`}
+                />
             </div>
         </main>
     );

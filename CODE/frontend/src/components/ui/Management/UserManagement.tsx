@@ -11,9 +11,11 @@ import {
 } from "api/Teachers.tsx";
 import {
     createNewParent,
-    createNewStudent, defaultParentData,
+    createNewStudent,
+    defaultParentData,
     defaultStudentData,
-    defaultUserPersonalInfoDTO, deleteUser,
+    defaultUserPersonalInfoDTO,
+    deleteUser,
     getParents,
     getStudents,
     Parent,
@@ -29,6 +31,7 @@ import {
     defaultSchoolClassSubject,
     getSchoolClasses,
     getSchoolClassesSubjects,
+    removeSubjectFromClass,
     SchoolClassSubject
 } from "api/Classes.tsx";
 import SelectOptions from "forms/SelectHeaders/SelectOptions.tsx";
@@ -77,14 +80,17 @@ const UserManagement = () => {
     const [rowsToDelete, setRowsToDelete] = useState<number[]>([])
     const [rowsToAdd, setRowsToAdd] = useState<number[]>([])
 
-    const [selectedClass, setSelectedClass] = useState("Class"); // Track the currently selected class
+    const [selectedClass, setSelectedClass] = useState("Select Class"); // Track the currently selected class
     const [selectedClasses, setSelectedClasses] = useState<SubjectSelectionState>({});
     const [selectedSubjects, setSelectedSubjects] = useState<SubjectSelectionState>({});
     const [selectedSubject, setSelectedSubject] = useState<string>("Subject");
     const [selectedIsFromCity, setSelectedIsFromCity] = useState<"Yes" | "No" | "">("");
     const [selectedPeople, setSelectedPeople] = useState<number[]>([])
 
-    const [updateButtonState, setUpdateButtonState] = useState<string>("Save");
+    const [editButtonState, setEditButtonState] = useState<string>("Edit");
+    const [addButtonState, setAddButtonState] = useState<string>("Add");
+    const [saveButtonState, setSaveButtonState] = useState<string>("Save");
+    const [clearButtonState, setClearButtonState] = useState<string>("Clear");
 
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>("");
@@ -138,7 +144,7 @@ const UserManagement = () => {
                 .then(data => {
                     console.log('Classes', data);
                     setSelectedClass(data[0].name);
-                    setSelectedClasses(generateSubjectSelectionStates(getClasses(schoolClassesWithSubjects)));
+                    setSelectedClasses(generateSubjectSelectionStates(getClasses(schoolClassesWithSubjects), false));
                     setLoading(false);
                 })
                 .catch(error => {
@@ -161,7 +167,8 @@ const UserManagement = () => {
                 .then(data => {
                     console.log(data)
                     setSchoolClassesWithSubjects(data);
-                    setSelectedSubjects(generateSubjectSelectionStates(getSubjects(schoolClassesWithSubjects)))
+                    setSelectedSubjects(generateSubjectSelectionStates(getSubjects(schoolClassesWithSubjects), false))
+                    setLoading(false);
                 })
                 .catch(error => {
                     console.log("Error fetching schoolClassesWithSubjects", error);
@@ -172,6 +179,12 @@ const UserManagement = () => {
             getSchoolClassesSubjects()
                 .then(data => {
                     setSchoolClassesWithSubjects(data);
+                    if (selectedClass !== "Select Class") {
+                        setClassSubjectsData(
+                            data.find(school_class => school_class.name === selectedClass).subjectDTOs
+                        );
+                    }
+                    setLoading(false)
                 })
                 .catch(error => {
                     console.log("Error fetching schoolClassesWithSubjects", error);
@@ -179,7 +192,6 @@ const UserManagement = () => {
 
             getTeachers()
                 .then(data => {
-                    console.log("Teachers", data);
                     setTeachersData(data);
                     setLoading(false);
                 })
@@ -202,6 +214,7 @@ const UserManagement = () => {
                         },
                     }));
                     setParentsData(processedData);
+                    setLoading(false);
                 })
                 .catch(error => {
                     console.log("Couldn't fetch parents data", error);
@@ -211,20 +224,7 @@ const UserManagement = () => {
 
     const handleUpdateButton = () => {
         if (selectMode && selectedPeople.length > 0) {
-            if (currentTab === TABS.TEACHERS) {
-                setTeacherSubjectInClass(
-                    selectedClass,
-                    (editedRowInfo as SchoolClassSubject).name,
-                    teachersData[selectedPeople[0]].id
-                ).then(() => {
-                    handleClearButton()
-                    setSelectMode(false)
-                    editModeChange(false)
-                    setCurrentTab(TABS.CLASSES)
-                }).catch(error => {
-                    console.log("Error setTeacherSubjectInClass ", error)
-                })
-            } else if (currentTab === TABS.STUDENTS) {
+            if (currentTab === TABS.STUDENTS) {
                 const parentId = (editedRowInfo as Parent).id;
                 const parentChildrenIds = selectedPeople.map(index => studentsData[index].id);
 
@@ -242,39 +242,61 @@ const UserManagement = () => {
                 })
             }
         }
-        else if (rowsToUpdate.length > 0) {
+
+        if (rowsToUpdate.length > 0) {
+            setSaveButtonState("Saving...");
+
             const data: Teacher[] | Student[] | Parent[] | SchoolClassSubject[] = tabConfig[currentTab].data
 
-            setUpdateButtonState("Saving");
-
             rowsToUpdate.forEach((index) => {
-                updateUserData(data[index].id, (data[index] as Teacher | Student | Parent).personalInfoDTO)
-                    .then(() => {
-                        switch (currentTab) {
-                            case TABS.STUDENTS:
-                                updateUserClass((data[index] as Student).id, (data[index] as Student).schoolClassDTO.name)
-                                    .catch((error) => {
-                                        setUpdateButtonState("Saved!");
+                if (currentTab !== TABS.CLASSES) {
+                    updateUserData(data[index].id, (data[index] as Teacher | Student | Parent).personalInfoDTO)
+                        .then(() => {
+                            switch (currentTab) {
+                                case TABS.STUDENTS:
+                                    updateUserClass(
+                                        (data[index] as Student).id,
+                                        (data[index] as Student).schoolClassDTO.name
+                                    ).catch((error) => {
+                                        setSaveButtonState("Error!");
                                         console.log("Couldn't update class! ", error)
                                     })
-                        }
+                            }
+                            setSaveButtonState("Saved!");
+                        })
+                        .catch(error => {
+                            setSaveButtonState("Error!");
+                            console.log("Couldn't update personalData! ", error)
+                        })
+                }
+
+                if (currentTab === TABS.CLASSES) {
+                    setTeacherSubjectInClass(
+                        selectedClass,
+                        (data[index] as SchoolClassSubject).name,
+                        (data[index] as SchoolClassSubject).teacherInfo.id
+                    ).then(() => {
+                        console.log("Changed subject teacher!")
+                        setSaveButtonState("Saved!")
+                    }).catch(error => {
+                        console.log("Error setTeacherSubjectInClass ", error)
                     })
-                    .catch(error => {
-                        setUpdateButtonState("Error!");
-                        console.log("Couldn't update personalData! ", error)
-                    })
+                }
             })
 
             setRowsToUpdate([])
-        } else if (rowsToAdd.length > 0) {
-            setUpdateButtonState("Saving...")
+        }
+
+        if (rowsToAdd.length > 0) {
+            setSaveButtonState("Saving...")
+
             rowsToAdd.forEach((row) => {
                 if (currentTab === TABS.TEACHERS) {
                     createNewTeacher(teachersData[row])
                         .then(() => {
                             console.log("New teacher created!")
                             setRowsToAdd([])
-                            setUpdateButtonState("Saved!")
+                            setSaveButtonState("Saved!")
                         })
                         .catch(() => {
                             setError("Couldn't add teacher to the database.")
@@ -284,45 +306,88 @@ const UserManagement = () => {
                         .then(() => {
                             console.log("New student created!")
                             setRowsToAdd([])
-                            setUpdateButtonState("Saved!")
+                            setSaveButtonState("Saved!")
                         }).catch(() => {
-                            setError("Couldn't add student to the database.")
+                        setError("Couldn't add student to the database.")
+                        setSaveButtonState("Error!");
+                    })
+                } else if (currentTab === TABS.CLASSES) {
+                    setTeacherSubjectInClass(
+                        selectedClass,
+                        classSubjectsData[row].name,
+                        classSubjectsData[row].teacherInfo.id
+                    ).then(() => {
+                        console.log("New subject created!")
+                        setRowsToAdd([])
+                        setSaveButtonState("Saved!")
+                    }).catch(error => {
+                        setSaveButtonState("Error!");
+                        console.log("Error setTeacherSubjectInClass ", error)
                     })
                 } else if (currentTab === TABS.PARENTS) {
                     createNewParent(parentsData[row])
                         .then(() => {
                             console.log("New parent created!")
                             setRowsToAdd([])
-                            setUpdateButtonState("Saved!")
+                            setSaveButtonState("Saved!")
                         }).catch(() => {
                         setError("Couldn't add parent to the database.")
+                        setSaveButtonState("Error!");
                     })
                 }
             })
-        } else if (rowsToDelete.length > 0) {
-            rowsToDelete.forEach((row) => {
-                deleteUser(tabConfig[currentTab].data[row].id)
-                    .then(() => {
-                        handleClearButton()
-                    })
-                    .catch(error => {
-                        if (currentTab === TABS.TEACHERS) setError("Cannot remove this teacher!")
-                        console.log("Couldn't remove user ", error)
-                    })
-            })
-            setRowsToDelete([])
         }
 
-        setTimeout(() => {setUpdateButtonState("Save")},2000)
+        if (rowsToDelete.length > 0) {
+            rowsToDelete.forEach((row) => {
+                if (currentTab != TABS.CLASSES) {
+                    deleteUser(tabConfig[currentTab].data[row].id)
+                        .then(() => {
+                            handleClearButton()
+                            setSaveButtonState("Saved!")
+                        })
+                        .catch(error => {
+                            setSaveButtonState("Error!")
+                            if (currentTab === TABS.TEACHERS) setError("Cannot remove this teacher! (Is assigned to subjects in classes)")
+                            console.log("Couldn't remove user ", error)
+                        })
+                } else {
+                    removeSubjectFromClass((tabConfig[currentTab].data[row] as SchoolClassSubject).name, selectedClass)
+                        .then(() => {
+                            handleClearButton()
+                            setSaveButtonState("Saved!")
+                    }).catch(error => {
+                        setSaveButtonState("Error!")
+                        setError("Couldn't remove subject from class!")
+                        console.log("Couldn't remove subject ", error)
+                    })
+                }
+            })
+            setRowsToDelete([])
+            handleClearButton()
+        }
+
+        setTimeout(() => {setSaveButtonState("Save")},2000)
         setTimeout(() => {setError("")},3000)
     }
 
     useEffect(() => {
-        fetchData()
+        if (!selectMode && !addMode && !editMode) {
+            fetchData()
+            console.log("Pobieranie danych z bazy")
+        }
     }, [currentTab]);
 
     useEffect(() => {
     }, [loading]);
+
+    useEffect(() => {
+        if (editMode) setEditButtonState("Editing...")
+        else if (!editMode) setEditButtonState("Edit")
+
+        if (addMode) setAddButtonState("Adding...")
+        else if (!addMode) setAddButtonState("Add")
+    }, [editMode, addMode]);
 
     const onClassChange = (subject: string) => {
         setSelectedClasses((prevState) => ({
@@ -481,6 +546,22 @@ const UserManagement = () => {
         return true;
     };
 
+    const isSchoolClassValid = (schoolClass: SchoolClassSubject): boolean => {
+        const {name, teacherInfo} = schoolClass
+
+        if (name.length < 2) {
+            setError("Enter correct subject name (minimum 2 characters) or pick one from list below!")
+            return false
+        }
+
+        if (teacherInfo.id === -1) {
+            setError("Pick a teacher!")
+            return false
+        }
+
+        return true
+    }
+
     const isParentDataValid = (parent: Parent): boolean => {
         const { email, personalInfoDTO } = parent;
         const { firstName, lastName, phoneNumber } = personalInfoDTO;
@@ -525,7 +606,7 @@ const UserManagement = () => {
                 break;
         }
 
-        if (original !== editedRowInfo && original.id == editedRowInfo.id) {
+        if (editedRowInfo !== null && original !== editedRowInfo && original.id == editedRowInfo.id) {
             switch (currentTab) {
                 case TABS.TEACHERS:
                     if (isTeacherDataValid((editedRowInfo as Teacher))) {
@@ -544,9 +625,11 @@ const UserManagement = () => {
                     break;
 
                 case TABS.CLASSES:
-                    classSubjectsData[index] = (editedRowInfo as SchoolClassSubject)
-                    if (addMode) setRowsToAdd((prevState) => [...prevState, index])
-                    else setRowsToUpdate((prevState) => [...prevState, index])
+                    if (isSchoolClassValid((editedRowInfo as SchoolClassSubject))) {
+                        classSubjectsData[index] = (editedRowInfo as SchoolClassSubject)
+                        if (addMode) setRowsToAdd((prevState) => [...prevState, index])
+                        else setRowsToUpdate((prevState) => [...prevState, index])
+                    } else return
                     break;
 
                 case TABS.PARENTS:
@@ -582,7 +665,7 @@ const UserManagement = () => {
     }
 
     const handleSelectMode = (type: string) => {
-        if (selectMode) {
+        if (selectMode || type === "CLEAR") {
             setSelectMode(false)
         } else {
             setSelectMode(true)
@@ -607,13 +690,30 @@ const UserManagement = () => {
                 break
 
             case TABS.TEACHERS:
-                setSelectedPeople([row])
+                setEditedRowInfo(prevState => ({
+                   ...prevState,
+                   teacherInfo: {
+                       id: teachersData[row].id,
+                       firstName: teachersData[row].personalInfoDTO.firstName,
+                       lastName: teachersData[row].personalInfoDTO.lastName
+                   }
+                }))
+                setCurrentTab(TABS.CLASSES)
+                setSelectMode(false)
                 break
         }
     }
 
     const addModeChange = () => {
+        if (selectMode) return;
+
         if (!addMode && !editMode) {
+            if (currentTab == TABS.CLASSES && selectedClass == "Select Class") {
+                setError("First select class you want add subject to!")
+                setTimeout(() => {setError("")},2000)
+                return;
+            }
+
             setAddMode(true);
 
             const newTeacher = { ...defaultTeacherData };
@@ -647,7 +747,7 @@ const UserManagement = () => {
                     setClassSubjectsData(prevState => {
                         const updatedData = [...prevState, newSubject];
                         handleEditRow(newSubject);
-                        console.log(classSubjectsData)
+                        console.log("classSubjectsData = ", classSubjectsData)
                         return updatedData;
                     });
                     break;
@@ -711,12 +811,19 @@ const UserManagement = () => {
         if (addMode) {
             addModeChange()
         }
+
+        if (!addMode && !editMode && !selectMode) {
+            setClearButtonState("Cleared!");
+            setTimeout(() => {
+                setClearButtonState("Clear")
+            }, 2000)
+        }
     }
 
     const handleTabChange = (tabName: TABS) => {
         setError("")
-        setSelectMode(false)
         setAddMode(false)
+        setSelectMode(false)
         setEditMode(false)
         setEditedRow(-1)
         setRowsToDelete([])
@@ -737,6 +844,11 @@ const UserManagement = () => {
     }
 
     const handleClassFilterChange = (selected: string) => {
+        if (addMode || selectMode) {
+            setError("You can't change classes when adding or selecting!")
+            setTimeout(() => {setError("")},2000)
+            return
+        }
         setSelectedClass(selected);
         const selectedClassData = schoolClassesWithSubjects.find(schoolClass => schoolClass.name === selected);
         if (selectedClassData) {
@@ -773,6 +885,7 @@ const UserManagement = () => {
 
     const handleGoToClass = (className: string) => {
         setLoading(true)
+        handleSelectMode("CLEAR")
         setCurrentTab(TABS.CLASSES)
 
         setSelectedClass(className)
@@ -795,9 +908,16 @@ const UserManagement = () => {
             item.email.toLowerCase().includes(searchQuery.toLowerCase())
         );
 
+        // Check if at least one subject is selected
+        const isAnySubjectSelected = Object.values(selectedSubjects).some(selected => selected);
+
+        // Check if at least one class is selected
+        const isAnyClassSelected = Object.values(selectedClasses).some(selected => selected);
+
         // Additional filter logic based on current tab
         if (currentTab === TABS.STUDENTS) {
-            return matchesSearchQuery && selectedClasses[(item as Student).schoolClassDTO.name];
+            // If no classes are selected, skip class filtering
+            return matchesSearchQuery && (!isAnyClassSelected || selectedClasses[(item as Student).schoolClassDTO.name]);
         }
 
         if (currentTab === TABS.TEACHERS) {
@@ -807,12 +927,13 @@ const UserManagement = () => {
                     selectedSubjects[subject.name]
                 )
             );
-            return matchesSearchQuery && matchesSelectedClasses;
+
+            // If no subjects or classes are selected, skip subject and class filtering
+            return matchesSearchQuery && (!isAnySubjectSelected || matchesSelectedClasses) && (!isAnyClassSelected || teacher.schoolClassWithSubjectsDTOs.some(schoolClass => selectedClasses[schoolClass.name]));
         }
 
         return matchesSearchQuery;
     });
-
 
     return (
         <div className={classes.content}>
@@ -921,7 +1042,7 @@ const UserManagement = () => {
                                 )}
 
                                 <td colSpan={4}>
-                                    {(editMode || addMode) && editedRow == item.id
+                                    {(editMode || addMode) && (editedRow == item.id)
                                         ? <Input
                                             type={"text"}
                                             placeholder={item.personalInfoDTO.firstName ? item.personalInfoDTO.firstName : "-"}
@@ -1081,15 +1202,17 @@ const UserManagement = () => {
                                 <td colSpan={4}>
                                     {addMode && editedRow == subject.id
                                         ? <>
-                                            <p>Enter new subject or select existing one</p>
+                                            <p>Enter new subject or select existing one (atleast 2 characters)</p>
                                             <Input
                                                 type={"text"}
-                                                placeholder={subject.name ? subject.name : "-"}
+                                                placeholder={(editedRowInfo as SchoolClassSubject).name ? (editedRowInfo as SchoolClassSubject).name : "-"}
                                                 onChange={(item) => handleInputChange("name", item.target.value)}
                                             />
                                             <br/>
                                             <SelectOption
-                                                options={getSubjects(schoolClassesWithSubjects)}
+                                                options={getSubjects(schoolClassesWithSubjects).filter(
+                                                    subjName => !classSubjectsData.map(scs => scs.name).includes(subjName)
+                                                )}
                                                 name={selectedSubject}
                                                 selected={selectedSubject}
                                                 onOptionChange={onSubjectChange}
@@ -1101,10 +1224,16 @@ const UserManagement = () => {
 
                                 <td>
                                     {(editMode || addMode) && editedRow == subject.id
-                                        ? <Button
-                                            type={"button"}
-                                            children={"SELECT"}
-                                            onClick={() => handleSelectMode(TEACHER)} />
+                                        ?
+                                        <>
+                                            {`${(editedRowInfo as SchoolClassSubject).teacherInfo.firstName} ${(editedRowInfo as SchoolClassSubject).teacherInfo.lastName}`}
+                                            <br/>
+                                            <Button
+                                                type={"button"}
+                                                children={"SELECT"}
+                                                onClick={() => handleSelectMode(TEACHER)}
+                                            />
+                                        </>
                                         : `${subject.teacherInfo.firstName} ${subject.teacherInfo.lastName}`
                                     }
                                 </td>
@@ -1205,18 +1334,39 @@ const UserManagement = () => {
 
             <div className={classes.filters}>
                 <Button
-                    className={editMode ? classes.buttonOn : ''}
                     type={"button"}
-                    children={"Edit"}
+                    children={editButtonState}
                     onClick={() => editModeChange(!editMode)}
+                    className={editMode ? classes.buttonOn : ''}
                 />
                 <Button
                     type={"button"}
-                    children={"Add"}
+                    children={addButtonState}
                     onClick={addModeChange}
+                    className={addMode ? classes.buttonOn : ''}
                 />
-                <Button type={"button"} children={updateButtonState} onClick={handleUpdateButton}/>
-                <Button type={"button"} children={"Clear"} onClick={handleClearButton}/>
+                <Button
+                    type={"button"}
+                    children={saveButtonState}
+                    onClick={handleUpdateButton}
+                    className={
+                        saveButtonState == "Saved!"
+                            ? classes.button_success
+                            : saveButtonState == "Error!"
+                                ? classes.button_failure
+                                : ""
+                    }
+                />
+                <Button
+                    type={"button"}
+                    children={clearButtonState}
+                    onClick={handleClearButton}
+                    className={
+                        clearButtonState == "Cleared!"
+                            ? classes.button_success
+                            : ""
+                    }
+                />
             </div>
         </div>
     )

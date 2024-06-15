@@ -81,7 +81,7 @@ public class ForgotPasswordController {
         }
 
         // Update the password without encoding
-        userRepository.updatePassword(email, changePassword.password());
+        userRepository.updatePassword(email, passwordEncoder.encode(changePassword.password()));
 
         return ResponseEntity.ok("Password has been changed successfully!");
     }

@@ -40,35 +40,6 @@ const Login: React.FC = () => {
             password: form.password
         }
 
-        if ((form.name === "admin" && form.password === "admin")
-            || (form.name === "student" && form.password === "student")
-            || (form.name === "teacher" && form.password === "teacher")
-            || (form.name === "parent" && form.password === "parent")) {
-
-            switch (form.name) {
-                case "admin":
-                    payload.email = "admin@example.com"
-                    break
-
-                case "teacher":
-                    payload.email = "bob.brown@example.com"
-                    break
-
-                case "student":
-                    payload.email = "john.doe@example.com"
-                    break
-
-                case "parent":
-                    payload.email = "parent@example.com"
-                    break
-
-                default:
-                    payload.email = "admin@example.com"
-            }
-
-            payload.password = "password123"
-        }
-
         try {
             if (form.name === "" || form.password === "") {
                 setError("Please fill in the fields correctly <3");

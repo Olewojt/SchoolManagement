@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/schooltest?createDatabaseIfNotExist=true
+    url: jdbc:mysql://localhost:3308/schooltest?createDatabaseIfNotExist=true
     username: root
-    password:
+    password: password
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     generate-ddl: true

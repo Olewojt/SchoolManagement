@@ -1,41 +1,29 @@
-import {app, BrowserWindow} from "electron";
+import { app, BrowserWindow } from "electron";
 import path from "node:path";
-import {ChildProcess, spawn} from 'child_process';
-import {fileURLToPath} from "url";
-import express from "express"
+import { ChildProcess, spawn, exec } from 'child_process';
+import { fileURLToPath } from "url";
+import express from "express";
 
 process.env.DIST = path.join(__dirname, "../dist");
 
-const __filename = fileURLToPath("file://" + path.join(process.resourcesPath, '/index.html'))
-console.log(__filename)
-const serverapp = express()
+const __filename = fileURLToPath("file://" + path.join(process.resourcesPath, '/index.html'));
+console.log(__filename);
+const serverapp = express();
 
-const PORT = 5173
+const PORT = 5173;
 
-// const indexPath = path.join(process.env.DIST, "index.html");
-
-serverapp.use(express.static(process.resourcesPath))
+serverapp.use(express.static(process.resourcesPath));
 serverapp.get('*', (req, res) => {
     res.sendFile(__filename);
-    console.log(req.path)
+    console.log(req.path);
 });
 
-// The built directory structure
-//
-// ├─┬─┬ dist
-// │ │ └── index.html
-// │ │
-// │ ├─┬ dist-electron
-// │ │ ├── main.js
-// │ │ └── preload.js
-// │
 process.env.VITE_PUBLIC = app.isPackaged
     ? process.env.DIST
     : path.join(process.env.DIST, "../public");
 
 let win: BrowserWindow | null;
 let backendProcess: ChildProcess | null;
-// 🚧 Use ['ENV_NAME'] avoid vite:define plugin - Vite@2.x
 const VITE_DEV_SERVER_URL = process.env["VITE_DEV_SERVER_URL"];
 
 function createWindow() {
@@ -45,77 +33,120 @@ function createWindow() {
         webPreferences: {
             preload: path.join(__dirname, "preload.js")
         },
-        // fullscreen: true,
         width: 1920,
         height: 1080,
         minWidth: 1080,
         minHeight: 785
     });
 
-    // Test active push message to Renderer-process.
     win.webContents.on("did-finish-load", () => {
         win?.webContents.send("main-process-message", new Date().toLocaleString());
     });
 
     if (VITE_DEV_SERVER_URL) {
         win.loadURL(VITE_DEV_SERVER_URL);
-        console.log("ESSUNIA BYCZQ2")
-        win.on('closed', () => {
-            win = null;
-            if (backendProcess) {
-                backendProcess.kill();
-            }
-        });
+        console.log("ESSUNIA BYCZQ2");
     } else {
         win.loadURL(`http://localhost:${PORT}`)
             .then(r => console.log(r))
             .catch((e) => console.log(e));
-        console.log("ESSUNIA BYCZQ")
-        win.on('closed', () => {
-            win = null;
-            if (backendProcess) {
-                backendProcess.kill();
-            }
-        });
+        console.log("ESSUNIA BYCZQ");
     }
-    win.maximize()
+
+    win.on('closed', () => {
+        win = null;
+        if (backendProcess) {
+            console.log('Sending kill signal to backend process');
+            killBackendProcess();
+        }
+    });
+
+    win.maximize();
 }
 
-// Quit when all windows are closed, except on macOS. There, it's common
-// for applications and their menu bar to stay active until the user quits
-// explicitly with Cmd + Q.
+function killBackendProcess() {
+    if (backendProcess) {
+        console.log(`PID procesu do zabicia ${backendProcess.pid}`);
+        exec(`taskkill /pid ${backendProcess.pid} /f /t`, (err, stdout) => {
+            if (err) {
+                console.error(`Error killing backend process: ${err}`);
+                return;
+            }
+            console.log(`Backend process killed: ${stdout}`);
+        });
+    }
+}
+
 app.on('ready', async () => {
     const jarPath = path.join(process.resourcesPath, '/app_back.jar');
-    console.log(jarPath)
-    console.log(process.resourcesPath)
+    console.log(jarPath);
+    console.log(process.resourcesPath);
 
-    backendProcess = spawn('java', ['-jar', jarPath, ''])
+    backendProcess = spawn('java', ['-jar', jarPath, '']);
 
     backendProcess.on('close', (code) => {
-        console.log(`Proces zakończył się z kodem wyjścia ${code}`);
-    })
+        console.log(`Process exited with code ${code}`);
+    });
+
+    backendProcess.on('error', (err) => {
+        console.log(`Failed to start subprocess: ${err}`);
+    });
 
     serverapp.listen(PORT, () => {
-        console.log("SERWER FRONT START")
+        console.log("Server front started");
         createWindow();
-    })
+    });
 });
-
 
 app.on("window-all-closed", () => {
     if (process.platform !== "darwin") {
         app.quit();
-        win = null;
     }
-    createWindow();
 });
 
-// app.on("activate", () => {
-//   // On OS X it's common to re-create a window in the app when the
-//   // dock icon is clicked and there are no other windows open.
-//   if (BrowserWindow.getAllWindows().length === 0) {
-//     createWindow();
-//   }
-// });
+app.on('quit', () => {
+    console.log('Application quit event');
+    killBackendProcess();
+});
 
-// app.whenReady().then(createWindow);
+app.on('before-quit', () => {
+    console.log('App is about to quit. Performing cleanup.');
+    // Close all windows
+    if (win) {
+        win.close();
+    }
+    killBackendProcess();
+});
+
+process.on('exit', () => {
+    console.log('Main process is exiting. Ensuring child process is killed.');
+
+   killBackendProcess();
+});
+
+// Catch uncaught exceptions and ensure child process is killed
+process.on('uncaughtException', (error) => {
+    console.error('Uncaught exception:', error);
+
+   killBackendProcess();
+
+    process.exit(1);
+});
+
+// Ensure child process is killed on SIGINT (Ctrl+C)
+process.on('SIGINT', () => {
+    console.log('Received SIGINT. Ensuring child process is killed.');
+
+    killBackendProcess();
+
+    process.exit(0);
+});
+
+// Ensure child process is killed on SIGTERM
+process.on('SIGTERM', () => {
+    console.log('Received SIGTERM. Ensuring child process is killed.');
+
+    killBackendProcess();
+
+    process.exit(0);
+});
